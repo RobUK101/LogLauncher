@@ -35,6 +35,15 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.dgv_Logs = new System.Windows.Forms.DataGridView();
+            this.dgv_c_hiddenlogName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_c_logName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_c_Class = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_c_Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_c_logSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_c_logsizeMB = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_c_lastWritten = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_c_logPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_v_Product = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openLogFolderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFolderToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,14 +65,6 @@
             this.pb_colourpickerEnd = new System.Windows.Forms.PictureBox();
             this.b_launchconfigcustomLocations = new System.Windows.Forms.Button();
             this.b_launchLogs = new System.Windows.Forms.Button();
-            this.dgv_c_hiddenlogName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgv_c_logName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgv_c_Class = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgv_c_Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgv_c_logSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgv_c_logsizeMB = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgv_c_lastWritten = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgv_c_logPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -129,7 +130,8 @@
             this.dgv_c_logSize,
             this.dgv_c_logsizeMB,
             this.dgv_c_lastWritten,
-            this.dgv_c_logPath});
+            this.dgv_c_logPath,
+            this.dgv_v_Product});
             this.dgv_Logs.ContextMenuStrip = this.contextMenuStrip1;
             this.dgv_Logs.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgv_Logs.Location = new System.Drawing.Point(219, 12);
@@ -143,6 +145,74 @@
             this.dgv_Logs.TabIndex = 10;
             this.dgv_Logs.DoubleClick += new System.EventHandler(this.dgv_Logs_DoubleClick);
             this.dgv_Logs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_Logs_KeyDown);
+            // 
+            // dgv_c_hiddenlogName
+            // 
+            this.dgv_c_hiddenlogName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgv_c_hiddenlogName.HeaderText = "FullName";
+            this.dgv_c_hiddenlogName.Name = "dgv_c_hiddenlogName";
+            this.dgv_c_hiddenlogName.ReadOnly = true;
+            this.dgv_c_hiddenlogName.Visible = false;
+            // 
+            // dgv_c_logName
+            // 
+            this.dgv_c_logName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgv_c_logName.HeaderText = "Log Name";
+            this.dgv_c_logName.Name = "dgv_c_logName";
+            this.dgv_c_logName.ReadOnly = true;
+            this.dgv_c_logName.Width = 81;
+            // 
+            // dgv_c_Class
+            // 
+            this.dgv_c_Class.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgv_c_Class.HeaderText = "Class";
+            this.dgv_c_Class.Name = "dgv_c_Class";
+            this.dgv_c_Class.ReadOnly = true;
+            this.dgv_c_Class.Width = 57;
+            // 
+            // dgv_c_Type
+            // 
+            this.dgv_c_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgv_c_Type.HeaderText = "Type";
+            this.dgv_c_Type.Name = "dgv_c_Type";
+            this.dgv_c_Type.ReadOnly = true;
+            this.dgv_c_Type.Width = 56;
+            // 
+            // dgv_c_logSize
+            // 
+            this.dgv_c_logSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgv_c_logSize.HeaderText = "Size (Bytes)";
+            this.dgv_c_logSize.Name = "dgv_c_logSize";
+            this.dgv_c_logSize.ReadOnly = true;
+            this.dgv_c_logSize.Width = 87;
+            // 
+            // dgv_c_logsizeMB
+            // 
+            this.dgv_c_logsizeMB.HeaderText = "Size (MB)";
+            this.dgv_c_logsizeMB.Name = "dgv_c_logsizeMB";
+            this.dgv_c_logsizeMB.ReadOnly = true;
+            // 
+            // dgv_c_lastWritten
+            // 
+            this.dgv_c_lastWritten.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgv_c_lastWritten.HeaderText = "Last Modified";
+            this.dgv_c_lastWritten.Name = "dgv_c_lastWritten";
+            this.dgv_c_lastWritten.ReadOnly = true;
+            this.dgv_c_lastWritten.Width = 95;
+            // 
+            // dgv_c_logPath
+            // 
+            this.dgv_c_logPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgv_c_logPath.HeaderText = "Path";
+            this.dgv_c_logPath.Name = "dgv_c_logPath";
+            this.dgv_c_logPath.ReadOnly = true;
+            // 
+            // dgv_v_Product
+            // 
+            this.dgv_v_Product.HeaderText = "Product";
+            this.dgv_v_Product.Name = "dgv_v_Product";
+            this.dgv_v_Product.ReadOnly = true;
+            this.dgv_v_Product.Visible = false;
             // 
             // contextMenuStrip1
             // 
@@ -190,12 +260,13 @@
             // b_scanLogs
             // 
             this.b_scanLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.b_scanLogs.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.b_scanLogs.Location = new System.Drawing.Point(6, 495);
             this.b_scanLogs.Name = "b_scanLogs";
             this.b_scanLogs.Size = new System.Drawing.Size(96, 23);
             this.b_scanLogs.TabIndex = 6;
             this.b_scanLogs.Text = "Scan for Logs";
-            this.b_scanLogs.UseVisualStyleBackColor = true;
+            this.b_scanLogs.UseVisualStyleBackColor = false;
             this.b_scanLogs.Click += new System.EventHandler(this.b_scanLogs_Click);
             // 
             // cb_Monitor
@@ -296,9 +367,9 @@
             // b_refreshLogs
             // 
             this.b_refreshLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_refreshLogs.Location = new System.Drawing.Point(108, 551);
+            this.b_refreshLogs.Location = new System.Drawing.Point(117, 551);
             this.b_refreshLogs.Name = "b_refreshLogs";
-            this.b_refreshLogs.Size = new System.Drawing.Size(106, 23);
+            this.b_refreshLogs.Size = new System.Drawing.Size(96, 23);
             this.b_refreshLogs.TabIndex = 7;
             this.b_refreshLogs.Text = "Refresh Logs";
             this.b_refreshLogs.UseVisualStyleBackColor = true;
@@ -361,9 +432,9 @@
             // b_launchconfigcustomLocations
             // 
             this.b_launchconfigcustomLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_launchconfigcustomLocations.Location = new System.Drawing.Point(108, 524);
+            this.b_launchconfigcustomLocations.Location = new System.Drawing.Point(117, 524);
             this.b_launchconfigcustomLocations.Name = "b_launchconfigcustomLocations";
-            this.b_launchconfigcustomLocations.Size = new System.Drawing.Size(106, 23);
+            this.b_launchconfigcustomLocations.Size = new System.Drawing.Size(96, 23);
             this.b_launchconfigcustomLocations.TabIndex = 16;
             this.b_launchconfigcustomLocations.Text = "Custom Paths";
             this.b_launchconfigcustomLocations.UseVisualStyleBackColor = true;
@@ -372,75 +443,13 @@
             // b_launchLogs
             // 
             this.b_launchLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_launchLogs.Location = new System.Drawing.Point(108, 497);
+            this.b_launchLogs.Location = new System.Drawing.Point(117, 495);
             this.b_launchLogs.Name = "b_launchLogs";
-            this.b_launchLogs.Size = new System.Drawing.Size(106, 21);
+            this.b_launchLogs.Size = new System.Drawing.Size(96, 23);
             this.b_launchLogs.TabIndex = 17;
-            this.b_launchLogs.Text = "Launch Logs";
+            this.b_launchLogs.Text = "Open Logs";
             this.b_launchLogs.UseVisualStyleBackColor = true;
             this.b_launchLogs.Click += new System.EventHandler(this.b_launchLogs_Click);
-            // 
-            // dgv_c_hiddenlogName
-            // 
-            this.dgv_c_hiddenlogName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgv_c_hiddenlogName.HeaderText = "FullName";
-            this.dgv_c_hiddenlogName.Name = "dgv_c_hiddenlogName";
-            this.dgv_c_hiddenlogName.ReadOnly = true;
-            this.dgv_c_hiddenlogName.Visible = false;
-            this.dgv_c_hiddenlogName.Width = 57;
-            // 
-            // dgv_c_logName
-            // 
-            this.dgv_c_logName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgv_c_logName.HeaderText = "Log Name";
-            this.dgv_c_logName.Name = "dgv_c_logName";
-            this.dgv_c_logName.ReadOnly = true;
-            this.dgv_c_logName.Width = 81;
-            // 
-            // dgv_c_Class
-            // 
-            this.dgv_c_Class.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgv_c_Class.HeaderText = "Product";
-            this.dgv_c_Class.Name = "dgv_c_Class";
-            this.dgv_c_Class.ReadOnly = true;
-            this.dgv_c_Class.Width = 69;
-            // 
-            // dgv_c_Type
-            // 
-            this.dgv_c_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgv_c_Type.HeaderText = "Type";
-            this.dgv_c_Type.Name = "dgv_c_Type";
-            this.dgv_c_Type.ReadOnly = true;
-            this.dgv_c_Type.Width = 56;
-            // 
-            // dgv_c_logSize
-            // 
-            this.dgv_c_logSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgv_c_logSize.HeaderText = "Size (Bytes)";
-            this.dgv_c_logSize.Name = "dgv_c_logSize";
-            this.dgv_c_logSize.ReadOnly = true;
-            this.dgv_c_logSize.Width = 87;
-            // 
-            // dgv_c_logsizeMB
-            // 
-            this.dgv_c_logsizeMB.HeaderText = "Size (MB)";
-            this.dgv_c_logsizeMB.Name = "dgv_c_logsizeMB";
-            this.dgv_c_logsizeMB.ReadOnly = true;
-            // 
-            // dgv_c_lastWritten
-            // 
-            this.dgv_c_lastWritten.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgv_c_lastWritten.HeaderText = "Last Modified";
-            this.dgv_c_lastWritten.Name = "dgv_c_lastWritten";
-            this.dgv_c_lastWritten.ReadOnly = true;
-            this.dgv_c_lastWritten.Width = 95;
-            // 
-            // dgv_c_logPath
-            // 
-            this.dgv_c_logPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgv_c_logPath.HeaderText = "Path";
-            this.dgv_c_logPath.Name = "dgv_c_logPath";
-            this.dgv_c_logPath.ReadOnly = true;
             // 
             // Form1
             // 
@@ -521,6 +530,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgv_c_logsizeMB;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgv_c_lastWritten;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgv_c_logPath;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgv_v_Product;
     }
 }
 

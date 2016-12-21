@@ -18,7 +18,7 @@ namespace LogLauncher
 {
     public partial class Form1 : Form
     {
-        private const string c_productVersion = "V2.0 - Robert Marshall";
+        private const string c_productVersion = "V2.1 - Robert Marshall";
 
         public static readonly string[] c_colourWheel = {"FF2D3AF7", "FF3E4AF7", "FF4F5AF7", "FF606BF7", "FF7C84F7", "FF9299F7", "FFC6C9F7", "FFDFE0F7", "FFE6E7F5"};
 
@@ -139,7 +139,7 @@ namespace LogLauncher
         public class reportSuffixUpdatedRows
         {
             public string suffixText { get; set; }
-            public DataGridViewRowCollection updatedRows { get; set; }
+            public logitemCollection updatedRows { get; set; }
         }
 
         public class messageObject
@@ -534,7 +534,7 @@ namespace LogLauncher
             return false;
         }
 
-        private void dgvAdd(string fulllogName, string logClass, string cleanedlogName, string cmagentlogLocation, string logType, long logfileSize, DateTime loglastModified, bool isVisible)
+        private void dgvAdd(string logProduct, string fulllogName, string logClass, string cleanedlogName, string cmagentlogLocation, string logType, long logfileSize, DateTime loglastModified, bool isVisible)
         {
             try
             {
@@ -551,6 +551,8 @@ namespace LogLauncher
                 string cleanedlogLocation = fulllogName.Substring(0, fulllogName.LastIndexOf(@"\"));
 
                 newRow.Cells[7].Value = cleanedlogLocation;
+
+                newRow.Cells[8].Value = logProduct;
 
                 newRow.Visible = true;
 
@@ -577,6 +579,7 @@ namespace LogLauncher
                 string cleanedlogLocation = fulllogName.Substring(0, fulllogName.LastIndexOf(@"\"));
 
                 newRow.Cells[7].Value = cleanedlogLocation;
+                newRow.Cells[8].Value = logProduct;
 
                 if (isVisible)
                 {
@@ -598,23 +601,47 @@ namespace LogLauncher
             {
                 List<string> traceSources = new List<string>();
 
-                RegistryKey hkcu = RegistryKey.OpenRemoteBaseKey(RegistryHive.CurrentUser, System.Environment.MachineName);
+                RegistryKey hkcuV1 = RegistryKey.OpenRemoteBaseKey(RegistryHive.CurrentUser, System.Environment.MachineName);
 
-                if (hkcu != null)
+                // Detection code V1 - Not an exact science to say the least
+
+                //if (hkcuV1 != null)
+                //{
+                //    hkcuV1 = hkcuV1.OpenSubKey(@"Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache");
+
+                //    if (hkcuV1 != null)
+                //    {
+                //        foreach (string registrykeyName in hkcuV1.GetValueNames())
+                //        {
+                //            if (registrykeyName.ToLower().Contains("cmtrace.exe") && registrykeyName.ToLower().Contains("friendly"))
+                //            {                                
+                //                // traceSources.Add(registrykeyName.ToLower().Replace(".friendlyappname", ""));
+
+                //                diagnosticMessage("CMTrace location found: " + registrykeyName.ToLower().Replace(".friendlyappname", ""));
+                //            }
+                //        }
+                //    }
+                //}
+
+                // Detection code V2 - Seems much of an improvement with Notepad fall-back
+
+                diagnosticMessage("Locating CMTrace");
+
+                RegistryKey hkcuV2 = RegistryKey.OpenRemoteBaseKey(RegistryHive.CurrentUser, System.Environment.MachineName);
+
+                if (hkcuV2 != null)
                 {
-                    hkcu = hkcu.OpenSubKey(@"Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache");
+                    hkcuV2 = hkcuV2.OpenSubKey(@"SOFTWARE\Classes\Log.File\shell\open\command");
 
-                    if (hkcu != null)
+                    string cmtraceunformattedPath = hkcuV2.GetValue(null).ToString(); // Get the default value                    
+
+                    string cmtraceformattedPath = cmtraceunformattedPath.Replace("%1", "").Replace((char)34, (char)32).Trim();
+
+                    if ((cmtraceformattedPath != null) && (cmtraceformattedPath.ToLower().Contains("cmtrace.exe")))
                     {
-                        foreach (string registrykeyName in hkcu.GetValueNames())
-                        {
-                            if (registrykeyName.ToLower().Contains("cmtrace.exe") && registrykeyName.ToLower().Contains("friendly"))
-                            {                                
-                                traceSources.Add(registrykeyName.ToLower().Replace(".friendlyappname", ""));
+                        traceSources.Add(cmtraceformattedPath.ToLower());
 
-                                diagnosticMessage("CMTrace location found: " + registrykeyName.ToLower().Replace(".friendlyappname", ""));
-                            }
-                        }
+                        diagnosticMessage(" CMTrace location found: " + cmtraceunformattedPath);
                     }
                 }
 
@@ -624,30 +651,34 @@ namespace LogLauncher
                     {
                         if (File.Exists(foundcmtracePath))
                         {
-                            diagnosticMessage("   using CMTrace: " + foundcmtracePath);
+                            diagnosticMessage("  using CMTrace: " + foundcmtracePath);
 
                             return foundcmtracePath;
                         }
                     }
-                }             
+                } 
+                else // No CMTrace found, revert to Notepad!
+                {
+                    diagnosticMessage(" CMTrace binary not found");
+                }            
             }
             catch (Exception ee)
             {
                 diagnosticMessage("Error looking for CMTrace - " + ee.Message);
-
-                return null;
             }
 
-            diagnosticMessage("No CMTrace found");
+            diagnosticMessage(" CMTrace binary not found");
 
-            return null;
+            diagnosticMessage(" Reverting to Notepad");
+
+            return @"c:\windows\notepad.exe";
         }
 
         private string[] getregkeyValues(string remoteServer, string regClass, string regPath)
         {
             try
             {
-RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), remoteServer);
+                RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), remoteServer);
 
                 if (hk != null)
                 {
@@ -691,7 +722,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
         {
             try
             {
-                RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), remoteServer);
+                RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), remoteServer);
 
                 if (hk != null)
                 {
@@ -699,7 +730,6 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
 
                     if (hk != null)
                     {
-
                         Object regResult = hk.GetValue(regKey);
 
                         if (regResult != null)
@@ -717,47 +747,19 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
             return null;
         }
 
-        private DataGridViewRowCollection refreshlogsinView(DataGridViewRowCollection theRows)
+        private logitemCollection refreshlogsinView(logitemCollection thelogItems)
         {
             try
             {
-                foreach (DataGridViewRow aRow in theRows)
+                foreach (logItem alogItem in thelogItems)
                 {
-                    FileInfo thelogFile = new System.IO.FileInfo(aRow.Cells[0].Value.ToString());
+                    FileInfo thelogFile = new System.IO.FileInfo(alogItem.fulllogName);                        
 
-                    if (aRow.Cells[6].Value.ToString() != thelogFile.LastWriteTime.ToString())
+                    if (alogItem.loglastModified.ToString() != thelogFile.LastWriteTime.ToString())
                     {
-                        aRow.Cells[4].Value = thelogFile.Length;
-                        aRow.Cells[5].Value = thelogFile.Length / 1024 / 1024;
-                        aRow.Cells[6].Value = thelogFile.LastWriteTime;
+                        alogItem.logSize = thelogFile.Length;
 
-                        try
-                        {
-                            aRow.DefaultCellStyle.BackColor = colourList[0];
-                        }
-                        catch (Exception ee)
-                        {
-
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < colourList.Count; i++)
-                        {
-                            if (aRow.DefaultCellStyle.BackColor.Name.ToLower() == colourList[i].Name.ToLower())
-                            {
-                                if (i < colourList.Count - 1)
-                                {
-                                    aRow.DefaultCellStyle.BackColor = colourList[i + 1];
-
-                                    break;
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                        }
+                        alogItem.loglastModified = thelogFile.LastWriteTime;
                     }
                 }
             }
@@ -766,7 +768,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
 
             }
 
-            return theRows;
+            return thelogItems;
         }
 
         private logitemCollection fetchLogs(combinedconfigCollection acombinedconfigCollection, logitemCollection existinglogitemCollection, object sender)
@@ -870,7 +872,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
                                     }
                                 }
                             }
-                        }
+                        } // Epic nesting!
 
                         if (acombinedConfig.abladeConfig is custombladeConfig) // Handle the custom Blade
                         {
@@ -2056,7 +2058,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
                     {                     
                         if (thelogItem.logClass == this.tv_Logs.SelectedNode.Text || this.tv_Logs.SelectedNode.Text == "All" || thelogItem.logProduct == this.tv_Logs.SelectedNode.Text)
                         {
-                            dgvAdd(thelogItem.fulllogName, thelogItem.logClass, thelogItem.LogName, thelogItem.logLocation, thelogItem.logType, thelogItem.logSize, thelogItem.loglastModified, true);
+                            dgvAdd(thelogItem.logProduct, thelogItem.fulllogName, thelogItem.logClass, thelogItem.LogName, thelogItem.logLocation, thelogItem.logType, thelogItem.logSize, thelogItem.loglastModified, true);
                         }
                     }
                 }
@@ -2066,20 +2068,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
                 // diagnosticMessage("No logs where found");
             }
         }
-
-        private void discoverLogs()
-        {            
-            
-        }
-
-        public static Color Lighten(Color inColor, double inAmount)
-        {
-            return Color.FromArgb(
-              inColor.A,
-              (int)Math.Min(255, inColor.R + 255 * inAmount),
-              (int)Math.Min(255, inColor.G + 255 * inAmount),
-              (int)Math.Min(255, inColor.B + 255 * inAmount));
-        }
+        
         private void updateGradient()
         {
             colourList.Clear();
@@ -2114,13 +2103,13 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
 
             getloglauncherSettings();
 
-            // GetGradientColors();
-
-             updateGradient();
+            updateGradient();
 
             // Set throttle value
 
             throttleDelay = Convert.ToInt16(nup_Delay.Value);
+
+            // Add context menu strip
 
             dgv_Logs.ContextMenuStrip = contextMenuStrip1;
             
@@ -2136,7 +2125,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
             {
                 notificationMessage("No trace of CMTrace found in HKCU registry hive ... has it been run before?");
 
-                cmtracePath = "cmtrace.exe";
+                cmtracePath = @"c:\windows\notepad.exe";
             }
 
             notificationMessage("Discovering Logs ...");
@@ -2367,7 +2356,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
             }
             catch (Exception ee)
             {
-                diagnosticMessage("Error during scanLogs - " + ee.Message);
+                diagnosticMessage("Error during scanning of logs - " + ee.Message);
             }            
         }
 
@@ -2404,8 +2393,6 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
             {
                 renderLogs((logitemCollection)e.Result, false);
 
-                this.dgv_Logs.Sort(this.dgv_c_lastWritten, ListSortDirection.Descending);
-
                 thelogitemCollection = (logitemCollection)e.Result; // Store the returned logs into the global logs collection for reuse
 
                 // Set Saying
@@ -2435,7 +2422,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
         {
             try
             {
-                DataGridViewRowCollection theRows = (DataGridViewRowCollection)e.Argument;
+                logitemCollection thelogItems = (logitemCollection)e.Argument;
 
                 switches_threadRunning = true;
 
@@ -2465,12 +2452,13 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
                             dottedSuffix = "...";
                         }
 
-                        DataGridViewRowCollection refreshedlogRows = refreshlogsinView(theRows);
+                        thelogItems = refreshlogsinView(thelogItems);
 
                         reportSuffixUpdatedRows suffixRowsPayload = new reportSuffixUpdatedRows();
 
                         suffixRowsPayload.suffixText = dottedSuffix;
-                        suffixRowsPayload.updatedRows = refreshedlogRows;
+
+                        suffixRowsPayload.updatedRows = thelogItems;
 
                         worker.ReportProgress(0, suffixRowsPayload);
 
@@ -2515,7 +2503,52 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
         }
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            dgv_Logs.SuspendLayout();
+
             reportSuffixUpdatedRows suffixRowsPayload = (reportSuffixUpdatedRows)e.UserState;
+
+            // We need to update the DGV from here using 
+
+            logitemCollection thelogItems = (logitemCollection)suffixRowsPayload.updatedRows;
+
+            foreach (DataGridViewRow aRow in dgv_Logs.Rows)
+            {
+                foreach (logItem alogItem in thelogItems)
+                {
+                    if (alogItem.fulllogName == aRow.Cells[0].Value.ToString())
+                    {
+                        if (aRow.Cells[6].Value.ToString() != alogItem.loglastModified.ToString()) // Row needs updating
+                        {
+                            aRow.Cells[4].Value = alogItem.logSize;
+                            aRow.Cells[5].Value = alogItem.logSize / 1024 / 1024;
+                            aRow.Cells[6].Value = alogItem.loglastModified;
+
+                            aRow.DefaultCellStyle.BackColor = colourList[0];
+                        }
+                        else
+                        {
+                            for (int i = 0; i < colourList.Count; i++)
+                            {
+                                if (aRow.DefaultCellStyle.BackColor.Name.ToLower() == colourList[i].Name.ToLower())
+                                {
+                                    if (i < colourList.Count - 1)
+                                    {
+                                        aRow.DefaultCellStyle.BackColor = colourList[i + 1];
+
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        break; // Since we found a match no longer need to process the inside foreach loop (logItems)
+                    }
+                }
+            }
 
             notificationMessage("Monitoring visible logs " + suffixRowsPayload.suffixText);
 
@@ -2527,6 +2560,8 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
             {
 
             }
+
+            dgv_Logs.ResumeLayout();
         }
 
         private void cb_Monitor_CheckedChanged(object sender, EventArgs e)
@@ -2554,6 +2589,36 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
                                 new ProgressChangedEventHandler(bw_ProgressChanged);
                             bw.RunWorkerCompleted +=
                                 new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+
+
+                            logitemCollection tosendlogitemCollection = new logitemCollection();
+
+                            foreach (DataGridViewRow dgvRow in dgv_Logs.Rows) // Get a copy of the DGV rows as a logitemCollection
+                            {
+                                // Convert into a logitemCollection object and store away
+
+                                try
+                                {
+                                    logItem alogItem = new logItem();
+
+                                    alogItem.fulllogName = dgvRow.Cells[0].Value.ToString();
+                                    alogItem.LogName = dgvRow.Cells[1].Value.ToString();
+                                    alogItem.logClass = dgvRow.Cells[2].Value.ToString(); 
+                                    alogItem.logType = dgvRow.Cells[3].Value.ToString();
+                                    alogItem.logSize = (long)dgvRow.Cells[4].Value;
+                                    alogItem.loglastModified = (DateTime)dgvRow.Cells[6].Value;
+                                    alogItem.logLocation = dgvRow.Cells[7].Value.ToString();
+                                    alogItem.logProduct = dgvRow.Cells[8].Value.ToString();
+
+                                    tosendlogitemCollection.Add(alogItem);
+                                }
+                                catch (Exception ee)
+                                {
+
+                                }
+                            }
+
+                            bw.RunWorkerAsync(tosendlogitemCollection);
 
                             bw.RunWorkerAsync(dgv_Logs.Rows);
 
@@ -2689,7 +2754,7 @@ RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), rem
         {
             if (!switches_scan_threadRunning && !switches_threadRunning)
             {
-                refreshlogsinView(dgv_Logs.Rows);
+                // refreshlogsinView(dgv_Logs.Rows); *** Come back and fix up
             }
             else
             {

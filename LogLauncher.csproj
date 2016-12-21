@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>SMSMarshall-Logo-clean.ico</ApplicationIcon>
+    <ApplicationIcon>SMSMarshall-Logo-TRANS-256.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -125,6 +125,7 @@
   <ItemGroup>
     <Content Include="SMSMarshall-Logo-256x256.ico" />
     <Content Include="SMSMarshall-Logo-clean.ico" />
+    <Content Include="SMSMarshall-Logo-TRANS-256.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
