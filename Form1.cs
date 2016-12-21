@@ -2501,19 +2501,12 @@ namespace LogLauncher
                 diagnosticMessage("Stopped monitoring logs thread");
             }
         }
-        private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            dgv_Logs.SuspendLayout();
 
-            reportSuffixUpdatedRows suffixRowsPayload = (reportSuffixUpdatedRows)e.UserState;
-
-            // We need to update the DGV from here using 
-
-            logitemCollection thelogItems = (logitemCollection)suffixRowsPayload.updatedRows;
-
+        private void updatedgvRows(logitemCollection alotitemCollection)
+        {            
             foreach (DataGridViewRow aRow in dgv_Logs.Rows)
             {
-                foreach (logItem alogItem in thelogItems)
+                foreach (logItem alogItem in alotitemCollection)
                 {
                     if (alogItem.fulllogName == aRow.Cells[0].Value.ToString())
                     {
@@ -2550,9 +2543,7 @@ namespace LogLauncher
                 }
             }
 
-            notificationMessage("Monitoring visible logs " + suffixRowsPayload.suffixText);
-
-            try
+            try // Sort the DGV on last modified
             {
                 this.dgv_Logs.Sort(this.dgv_c_lastWritten, ListSortDirection.Descending);
             }
@@ -2560,8 +2551,51 @@ namespace LogLauncher
             {
 
             }
+        }
 
+        private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            dgv_Logs.SuspendLayout();
+
+            reportSuffixUpdatedRows suffixRowsPayload = (reportSuffixUpdatedRows)e.UserState;
+
+            logitemCollection thelogItems = (logitemCollection)suffixRowsPayload.updatedRows; // Obtain updated logitem Collection
+
+            updatedgvRows(thelogItems); // Render the updated logitem Collection
+
+            notificationMessage("Monitoring visible logs " + suffixRowsPayload.suffixText);
+            
             dgv_Logs.ResumeLayout();
+        }
+
+        private logitemCollection convertdgvtologItems(DataGridViewRowCollection theRows)
+        {
+            logitemCollection alogitemCollection = new logitemCollection();
+
+            foreach (DataGridViewRow dgvRow in theRows)
+            {
+                try
+                {
+                    logItem alogItem = new logItem();
+
+                    alogItem.fulllogName = dgvRow.Cells[0].Value.ToString();
+                    alogItem.LogName = dgvRow.Cells[1].Value.ToString();
+                    alogItem.logClass = dgvRow.Cells[2].Value.ToString();
+                    alogItem.logType = dgvRow.Cells[3].Value.ToString();
+                    alogItem.logSize = (long)dgvRow.Cells[4].Value;
+                    alogItem.loglastModified = (DateTime)dgvRow.Cells[6].Value;
+                    alogItem.logLocation = dgvRow.Cells[7].Value.ToString();
+                    alogItem.logProduct = dgvRow.Cells[8].Value.ToString();
+
+                    alogitemCollection.Add(alogItem);
+                }
+                catch (Exception ee)
+                {
+
+                }
+            }
+
+            return alogitemCollection;
         }
 
         private void cb_Monitor_CheckedChanged(object sender, EventArgs e)
@@ -2589,38 +2623,10 @@ namespace LogLauncher
                                 new ProgressChangedEventHandler(bw_ProgressChanged);
                             bw.RunWorkerCompleted +=
                                 new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
-
-
-                            logitemCollection tosendlogitemCollection = new logitemCollection();
-
-                            foreach (DataGridViewRow dgvRow in dgv_Logs.Rows) // Get a copy of the DGV rows as a logitemCollection
-                            {
-                                // Convert into a logitemCollection object and store away
-
-                                try
-                                {
-                                    logItem alogItem = new logItem();
-
-                                    alogItem.fulllogName = dgvRow.Cells[0].Value.ToString();
-                                    alogItem.LogName = dgvRow.Cells[1].Value.ToString();
-                                    alogItem.logClass = dgvRow.Cells[2].Value.ToString(); 
-                                    alogItem.logType = dgvRow.Cells[3].Value.ToString();
-                                    alogItem.logSize = (long)dgvRow.Cells[4].Value;
-                                    alogItem.loglastModified = (DateTime)dgvRow.Cells[6].Value;
-                                    alogItem.logLocation = dgvRow.Cells[7].Value.ToString();
-                                    alogItem.logProduct = dgvRow.Cells[8].Value.ToString();
-
-                                    tosendlogitemCollection.Add(alogItem);
-                                }
-                                catch (Exception ee)
-                                {
-
-                                }
-                            }
+                            
+                            logitemCollection tosendlogitemCollection = convertdgvtologItems(dgv_Logs.Rows);                            
 
                             bw.RunWorkerAsync(tosendlogitemCollection);
-
-                            bw.RunWorkerAsync(dgv_Logs.Rows);
 
                             diagnosticMessage("Monitoring thread started");
                         }
@@ -2754,7 +2760,11 @@ namespace LogLauncher
         {
             if (!switches_scan_threadRunning && !switches_threadRunning)
             {
-                // refreshlogsinView(dgv_Logs.Rows); *** Come back and fix up
+                logitemCollection tosendlogitemCollection = convertdgvtologItems(dgv_Logs.Rows);
+
+                tosendlogitemCollection = refreshlogsinView(tosendlogitemCollection);
+
+                updatedgvRows(tosendlogitemCollection); // Render the updated logitem Collection
             }
             else
             {
