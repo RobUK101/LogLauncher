@@ -13,12 +13,13 @@ using Microsoft.Win32;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
+using System.ServiceProcess;
 
 namespace LogLauncher
 {
     public partial class Form1 : Form
     {
-        private const string c_productVersion = "V2.1 - Robert Marshall";
+        private const string c_productVersion = "V2.2 - Robert Marshall";
 
         public static readonly string[] c_colourWheel = {"FF2D3AF7", "FF3E4AF7", "FF4F5AF7", "FF606BF7", "FF7C84F7", "FF9299F7", "FFC6C9F7", "FFDFE0F7", "FFE6E7F5"};
 
@@ -69,7 +70,6 @@ namespace LogLauncher
             "The early bird catches the worm",
             "Never look a gift horse in the mouth",
             "You can't make an omelet without breaking a few eggs",
-            "God helps those who help themselves",
             "You can't always get what you want",
             "A watched pot never boils",
             "Beggars can't be choosers",
@@ -104,13 +104,15 @@ namespace LogLauncher
 
         private logitemCollection thelogitemCollection = new logitemCollection();
 
-        private string cmtracePath = "";
+        private string cmtracePath = null;
 
-        private bool disabletreeView = false;
+        private bool disabletreeView = false;        
 
         private bool switches_monitorLogs = false;
 
         public bool switches_threadRunning = false;
+
+        public bool switches_logging_threadRunning = false;
 
         private bool switches_hide_archiveLogs = false;
         private bool switches_open_multipleLogs = true;
@@ -134,7 +136,23 @@ namespace LogLauncher
         private Color gradientcolourStart = new Color();
         private Color gradientcolourEnd = new Color();
 
+        private bool siteserverDetected = false;
+
+        private bool clientDetected = false;
+
         private List<Color> colourList = new List<Color>();
+
+        public class servicecycleMessage
+        {
+            public string remoteServer { get; set; }
+            public string serviceName { get; set; }
+        }
+
+        public class loggingMessage
+        {
+            public string messageType { get; set; }
+            public string messageText { get; set; }
+        }
 
         public class reportSuffixUpdatedRows
         {
@@ -220,6 +238,49 @@ namespace LogLauncher
                 return (combinedConfig)List[Index];
             }
         }
+
+
+        public class loggingItem
+        {
+            public string componentName{ get; set; }
+            public bool debugLogging { get; set; }
+            public bool Enabled { get; set; }
+            public int loggingLevel { get; set; }
+            public int logmaxHistory { get; set; }
+            public int maxfileSize { get; set; }            
+        }
+
+        public class loggingitemCollection : System.Collections.CollectionBase
+        {
+            public void Add(loggingItem aloggingItem)
+            {
+                List.Add(aloggingItem);
+            }
+
+            public void RemoveAll()
+            {
+                for (int i = 0; i <= List.Count; i++)
+                {
+                    List.RemoveAt(i);
+                }
+            }
+
+            public void Remove(int index)
+            {
+                if (index > Count - 1 || index < 0)
+                {
+                }
+                else
+                {
+                    List.RemoveAt(index);
+                }
+            }
+
+            public loggingItem Item(int Index)
+            {
+                return (loggingItem)List[Index];
+            }
+        }        
 
         public class logItem
         {
@@ -330,13 +391,34 @@ namespace LogLauncher
 
                 if (!anArgument.Contains(".exe"))
                 {
-                    tb_remoteServer.Text = anArgument;
+                    cb_remoteServer.Text = anArgument;
                 }
             }
         }
 
         private void getloglauncherSettings()
         {
+            try
+            {
+                if (!regkeyExist("", "HKEY_LOCAL_MACHINE", @"Software\SMSMarshall"))
+                {
+                    RegistryKey companyReg = Registry.LocalMachine.OpenSubKey("Software", true);
+
+                    companyReg.CreateSubKey("SMSMarshall");
+                }
+
+                if (!regkeyExist("", "HKEY_LOCAL_MACHINE", @"Software\SMSMarshall\LogLauncher"))
+                {
+                    RegistryKey logLauncherKey = Registry.LocalMachine.OpenSubKey(@"Software\SMSMarshall", true);
+
+                    logLauncherKey.CreateSubKey("LogLauncher");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
             try
             {
                 if (!regkeyExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall"))
@@ -358,6 +440,41 @@ namespace LogLauncher
                 diagnosticMessage("Could not create the LogLauncher registry keys to store your preferences");
             }
 
+            // Recent servers list
+
+            try
+            {
+                if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers"))
+                {
+                    string[] recentServers = (string[])getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher","RecentServers");
+
+                    try
+                    {
+                        cb_remoteServer.Items.Clear();
+
+                        foreach (string recentServer in recentServers)
+                        {
+                            cb_remoteServer.Items.Add(recentServer);
+                        }
+
+                        cb_remoteServer.SelectedIndex = cb_remoteServer.Items.Count -1;
+
+                        cb_remoteServer.Refresh();
+                    }
+
+                    catch (Exception ee)
+                    {
+
+                    }
+                    
+                                     
+                }
+            }
+            catch (Exception ee)
+            {
+
+            }
+
             // Monitoring Timer Duration
 
             try
@@ -370,7 +487,7 @@ namespace LogLauncher
                 {
                     nup_Delay.Value = 5;
 
-                    updateloglauncherSettings("MonitoringTimerDuration", "5");
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MonitoringTimerDuration", "5");
                 }
             }
             catch (Exception ee)
@@ -390,7 +507,7 @@ namespace LogLauncher
                 {                    
                     pb_colourpickerStart.BackColor = Color.FromArgb(Convert.ToInt32("ff1dacf1", 16));                    
 
-                    updateloglauncherSettings("GradientStartColour", pb_colourpickerStart.BackColor.ToArgb().ToString());
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientStartColour", pb_colourpickerStart.BackColor.ToArgb().ToString());
                 }
             }
             catch (Exception ee)
@@ -410,7 +527,7 @@ namespace LogLauncher
                 {
                     pb_colourpickerEnd.BackColor = Color.FromArgb(Convert.ToInt32("ffeeffff", 16));
 
-                    updateloglauncherSettings("GradientEndColour", pb_colourpickerEnd.BackColor.ToArgb().ToString());
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientEndColour", pb_colourpickerEnd.BackColor.ToArgb().ToString());
                 }
             }
             catch (Exception ee)
@@ -430,7 +547,7 @@ namespace LogLauncher
                 {
                     cb_openLogsMulti.Checked = true;
 
-                    updateloglauncherSettings("MultipleLogsSingleCMTrace", cb_openLogsMulti.Checked.ToString());
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MultipleLogsSingleCMTrace", cb_openLogsMulti.Checked.ToString());
                 }
             }
             catch (Exception ee)
@@ -450,7 +567,7 @@ namespace LogLauncher
                 {
                     cb_hidearchiveLogs.Checked = true;
 
-                    updateloglauncherSettings("HideArchiveLogs", cb_hidearchiveLogs.Checked.ToString());
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"HideArchiveLogs", cb_hidearchiveLogs.Checked.ToString());
                 }
             }
             catch (Exception ee)
@@ -459,18 +576,34 @@ namespace LogLauncher
             }
         }
 
-        private void updateloglauncherSettings(string regvalueName, string regvalueValue)
+        private void updateloglauncherSettings(RegistryHive regHive, string regvalueName, string regvalueValue)
         {
-            try
+            if (regHive == RegistryHive.LocalMachine)
             {
-                RegistryKey aregKey = Registry.CurrentUser.OpenSubKey(@"Software\SMSMarshall\LogLauncher", true);
+                try
+                {
+                    RegistryKey aregKey = Registry.LocalMachine.OpenSubKey(@"Software\SMSMarshall\LogLauncher", true);
 
-                aregKey.SetValue(regvalueName, regvalueValue);
+                    aregKey.SetValue(regvalueName, regvalueValue);
+                }
+                catch (Exception ee)
+                {
+                    diagnosticMessage("Could not create preferences registry key value " + regvalueName + " - " + ee.Message);
+                }
             }
-            catch (Exception ee)
+            else
             {
-                diagnosticMessage("Could not create preferences registry key value " + regvalueName + " - " + ee.Message);
-            }            
+                try
+                {
+                    RegistryKey aregKey = Registry.CurrentUser.OpenSubKey(@"Software\SMSMarshall\LogLauncher", true);
+
+                    aregKey.SetValue(regvalueName, regvalueValue);
+                }
+                catch (Exception ee)
+                {
+                    diagnosticMessage("Could not create preferences registry key value " + regvalueName + " - " + ee.Message);
+                }
+            }          
         }
 
         private bool regkeyvalueExist(string remoteServer, string regClass, string regKey, string regValue)
@@ -603,28 +736,6 @@ namespace LogLauncher
 
                 RegistryKey hkcuV1 = RegistryKey.OpenRemoteBaseKey(RegistryHive.CurrentUser, System.Environment.MachineName);
 
-                // Detection code V1 - Not an exact science to say the least
-
-                //if (hkcuV1 != null)
-                //{
-                //    hkcuV1 = hkcuV1.OpenSubKey(@"Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache");
-
-                //    if (hkcuV1 != null)
-                //    {
-                //        foreach (string registrykeyName in hkcuV1.GetValueNames())
-                //        {
-                //            if (registrykeyName.ToLower().Contains("cmtrace.exe") && registrykeyName.ToLower().Contains("friendly"))
-                //            {                                
-                //                // traceSources.Add(registrykeyName.ToLower().Replace(".friendlyappname", ""));
-
-                //                diagnosticMessage("CMTrace location found: " + registrykeyName.ToLower().Replace(".friendlyappname", ""));
-                //            }
-                //        }
-                //    }
-                //}
-
-                // Detection code V2 - Seems much of an improvement with Notepad fall-back
-
                 diagnosticMessage("Locating CMTrace");
 
                 RegistryKey hkcuV2 = RegistryKey.OpenRemoteBaseKey(RegistryHive.CurrentUser, System.Environment.MachineName);
@@ -651,27 +762,23 @@ namespace LogLauncher
                     {
                         if (File.Exists(foundcmtracePath))
                         {
-                            diagnosticMessage("  using CMTrace: " + foundcmtracePath);
-
                             return foundcmtracePath;
                         }
                     }
                 } 
-                else // No CMTrace found, revert to Notepad!
+                else
                 {
                     diagnosticMessage(" CMTrace binary not found");
                 }            
             }
             catch (Exception ee)
             {
-                diagnosticMessage("Error looking for CMTrace - " + ee.Message);
+                diagnosticMessage(" Error looking for CMTrace - " + ee.Message);
             }
 
-            diagnosticMessage(" CMTrace binary not found");
+            diagnosticMessage(" CMTrace not found");
 
-            diagnosticMessage(" Reverting to Notepad");
-
-            return @"c:\windows\notepad.exe";
+            return null;
         }
 
         private string[] getregkeyValues(string remoteServer, string regClass, string regPath)
@@ -702,6 +809,31 @@ namespace LogLauncher
 
             return null;
         }
+
+        private bool setregkeyValues(string remoteServer, string regClass, string regPath, string regValue, string[] regValues)
+        {
+            try
+            {
+                RegistryKey hk = RegistryKey.OpenRemoteBaseKey(returnregistryHive(regClass), remoteServer);
+
+                if (hk != null)
+                {
+                    hk = hk.OpenSubKey(regPath, true);
+
+                    if (hk != null)
+                    {
+                        hk.SetValue(regValue, regValues, RegistryValueKind.MultiString);
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
 
         private RegistryHive returnregistryHive(string registryClass)
         {
@@ -741,7 +873,7 @@ namespace LogLauncher
             }
             catch (Exception ee)
             {
-                return null;
+
             }
 
             return null;
@@ -1969,6 +2101,12 @@ namespace LogLauncher
 
         private void buildtreeView(logitemCollection theLogs)
         {
+            // Helper for Site server detection
+
+            siteserverDetected = false;
+
+            clientDetected = false;
+
             disabletreeView = true;
 
             tv_Logs.BeginUpdate();
@@ -1985,7 +2123,7 @@ namespace LogLauncher
             {
                 foreach (string productName in productList)
                 {
-                    parentNode.Nodes.Add(productName);
+                    parentNode.Nodes.Add(productName);                    
 
                     TreeNode childNode = parentNode.Nodes[parentNode.Nodes.Count - 1];
 
@@ -1997,6 +2135,15 @@ namespace LogLauncher
                         {
                             if (alogItem.logProduct == productName)
                             {
+                                if (alogItem.logClass == "Site") // Detect if a Site is being added
+                                {
+                                    siteserverDetected = true;
+                                }
+
+                                if (alogItem.logClass == @"Agent\MP") // Detect if a ConfigMgr Agent is being added
+                                {
+                                    clientDetected = true;
+                                }
 
                                 childNode.Nodes.Add(alogItem.logClass);
                             }
@@ -2065,7 +2212,7 @@ namespace LogLauncher
             }
             catch (Exception ee)
             {
-                // diagnosticMessage("No logs where found");
+                // diagnosticMessage("No logs found");
             }
         }
         
@@ -2099,6 +2246,8 @@ namespace LogLauncher
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            switches_startupPhase = true;
+
             getcommandlineParameters();
 
             getloglauncherSettings();
@@ -2117,16 +2266,66 @@ namespace LogLauncher
 
             toolStripStatusLabel2.Text = c_productVersion;
 
-            notificationMessage("Discovering CMTrace ...");
-            
-            cmtracePath = getcmtraceregkeyValue();
+            // Handle CMTrace lookup fallback, and last resort, Notepad
 
+            notificationMessage("Discovering CMTrace ...");
+
+            cmtracePath = getcmtraceregkeyValue();
+            
             if (cmtracePath == null)
             {
-                notificationMessage("No trace of CMTrace found in HKCU registry hive ... has it been run before?");
+                if (regkeyvalueExist("", "HKEY_LOCAL_MACHINE", @"Software\SMSMarshall\LogLauncher", "CMTracePath"))
+                {
+                    cmtracePath = getregkeyValue("", "HKEY_LOCAL_MACHINE", @"Software\SMSMarshall\LogLauncher", "CMTracePath").ToString();
+                }
 
-                cmtracePath = @"c:\windows\notepad.exe";
+                if (File.Exists(cmtracePath))
+                {
+                    diagnosticMessage("CMTrace fallback specified in preferences " + cmtracePath + ", using that ...");
+                }
+                else
+                {
+                    diagnosticMessage("No trace of CMTrace found in HKCU registry hive ... has it been run before?");
+
+                    cmtracePath = Environment.GetFolderPath(Environment.SpecialFolder.Windows) + @"\notepad.exe";
+
+                    DialogResult adialogResult = MessageBox.Show("Do you want to locate CMTrace manually?", "CMTrace Missing", MessageBoxButtons.YesNo);
+
+                    if (adialogResult == DialogResult.Yes)
+                    {
+                        openFileDialog1.InitialDirectory = Environment.SystemDirectory;
+                        openFileDialog1.Filter = "CMTrace (CMTrace.exe)|CMTrace.exe";
+                        openFileDialog1.FileName = "";
+
+                        DialogResult result = openFileDialog1.ShowDialog();
+
+                        if (result == DialogResult.OK) // Set for current session, and store in registry
+                        {
+                            diagnosticMessage(" Located manually, storing path in preferences");
+
+                            cmtracePath = openFileDialog1.FileName;
+
+                            updateloglauncherSettings(returnregistryHive("HKEY_LOCAL_MACHINE"),"CMTracePath", cmtracePath);                            
+                        }
+
+                        if (result == DialogResult.Cancel)
+                        {
+                            diagnosticMessage("No CMTrace found, using Notepad instead ...");
+                        }
+                    }
+
+                    if (adialogResult == DialogResult.No)
+                    {
+                        diagnosticMessage("Ok, using Notepad instead ...");
+                    }
+                }            
             }
+            else
+            {
+                diagnosticMessage("CMTrace found " + cmtracePath + ", using that ...");
+            }
+
+            // Perform log discovery
 
             notificationMessage("Discovering Logs ...");
 
@@ -2142,7 +2341,7 @@ namespace LogLauncher
             bw.RunWorkerCompleted +=
                 new RunWorkerCompletedEventHandler(bw_scan_RunWorkerCompleted);
 
-            bw.RunWorkerAsync();
+            bw.RunWorkerAsync(cb_remoteServer.Text);            
         }
 
         private void launchLogs(DataGridViewSelectedRowCollection dgvRows)
@@ -2286,6 +2485,10 @@ namespace LogLauncher
 
         private void tv_Logs_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            p_Logging.Visible = false;
+            dgv_Diagnostics.Visible = false;
+            dgv_Logs.Visible = true;
+
             try
             {
                 if (switches_monitorLogs) // Stop monitoring the log view contents
@@ -2312,15 +2515,108 @@ namespace LogLauncher
             }
         }
 
+        private void populateclientPanel(string remoteServer)
+        {
+            try
+            {
+                int logEnabled = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\CCM\Logging\@Global", "LogEnabled");
+                int logLevel = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\CCM\Logging\@Global", "LogLevel");
+                int logmaxHistory = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\CCM\Logging\@Global", "LogMaxHistory");
+                int logmaxSize = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\CCM\Logging\@Global", "LogMaxSize");
+
+                if (Convert.ToInt16(logEnabled) != 0)
+                {
+                    cb_client_Logging.Checked = true;
+                }
+                else
+                {
+                    cb_client_Logging.Checked = false;
+                }
+
+                nud_client_logLevel.Value = logLevel;
+                nud_client_logmaxHistory.Value = logmaxHistory;
+                nud_client_logmaxSize.Value = logmaxSize;
+
+                if (regkeyExist(remoteServer, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\CCM\Logging\@Global\DebugLogging"))
+                {
+                    cb_client_debugLogging.Checked = true;
+                }
+                else
+                {
+                    cb_client_debugLogging.Checked = false;
+                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Error while obtaining client logging properties - " + ee.Message);
+            }
+        }
+
+        private void populateserverPanel(string remoteServer)
+        {
+            try
+            {
+                int logEnabled = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\SMS\Tracing", "Enabled");
+                int sqlLogging = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\SMS\Tracing", "SqlEnabled");
+                int archiveEnabled = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\SMS\Tracing", "ArchiveEnabled");
+
+                if (logEnabled != 0)
+                {
+                    cb_site_siteLogging.Checked = true;
+                }
+                else
+                {
+                    cb_site_siteLogging.Checked = false;
+                }
+
+                if (sqlLogging != 0)
+                {
+                    cb_site_sqlLogging.Checked = true;
+                }
+                else
+                {
+                    cb_site_sqlLogging.Checked = false;
+                }
+
+                if (archiveEnabled != 0)
+                {
+                    cb_site_archiveLogs.Checked = true;
+                }
+                else
+                {
+                    cb_site_archiveLogs.Checked = false;
+                }
+
+                int providerlogLevel = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\SMS\Providers", "Logging Level");
+                int providersqlCache = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\SMS\Providers", "SQL Cache Logging Level");
+                int providerlogSize = (int)getregkeyValue(remoteServer, @"HKEY_LOCAL_MACHINE", @"SOFTWARE\Microsoft\SMS\Providers", "Log Size Mb");
+
+                num_provider_loggingLevel.Value = providerlogLevel;
+                num_provider_sqlcacheloggingLevel.Value = providersqlCache;
+                num_provider_logsizeMb.Value = providerlogSize;                
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Error while obtaining client logging properties - " + ee.Message);
+            }
+        }
+
         private void b_scanLogs_Click(object sender, EventArgs e)
         {
+            b_logSettings.Visible = false;
+            p_Logging.Visible = false;
+            dgv_Diagnostics.Visible = false;
+            dgv_Logs.Visible = true;
+
+            dgv_Logging.Rows.Clear();
+
             try
             {
                 if (!switches_scan_threadRunning && !switches_threadRunning)
                 {
                     // Check if destination exists, query a basic registry key
 
-                    if (regkeyExist(tb_remoteServer.Text, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\Windows\CurrentVersion\Setup"))
+                    if (regkeyExist(cb_remoteServer.Text, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\Windows\CurrentVersion\Setup"))
                     {
                         BackgroundWorker bw = new BackgroundWorker();
                         bw.WorkerSupportsCancellation = true;
@@ -2332,7 +2628,45 @@ namespace LogLauncher
                         bw.RunWorkerCompleted +=
                             new RunWorkerCompletedEventHandler(bw_scan_RunWorkerCompleted);
 
-                        bw.RunWorkerAsync();
+                        bw.RunWorkerAsync(cb_remoteServer.Text);
+
+
+                        // Manage the Recent Server entries
+
+                        if (!cb_remoteServer.Items.Contains(cb_remoteServer.Text))
+                        {
+                            try
+                            {
+                                cb_remoteServer.Items.Remove(cb_remoteServer.Items.Count);
+
+                                cb_remoteServer.Items.Add(cb_remoteServer.Text);
+
+                                // Store recent servers back to registry
+
+                                String[] recentserverArray = new String[cb_remoteServer.Items.Count];
+
+                                cb_remoteServer.Items.CopyTo(recentserverArray, 0);
+
+                                setregkeyValues("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers", recentserverArray);
+
+                                if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers"))
+                                {
+                                    string[] recentServers = (string[])getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers");
+
+                                    cb_remoteServer.Items.Clear();
+
+                                    foreach (string recentServer in recentServers)
+                                    {
+                                        cb_remoteServer.Items.Add(recentServer);
+                                    }
+                                }
+                            }
+                            catch (Exception ee)
+                            {
+
+                            }
+
+                        }
                     }
                     else
                     {
@@ -2359,16 +2693,6 @@ namespace LogLauncher
                 diagnosticMessage("Error during scanning of logs - " + ee.Message);
             }            
         }
-
-        private void bw_scan_DoWork(object sender, DoWorkEventArgs e)
-        {
-            switches_scan_threadRunning = true;
-
-            logitemCollection theLogs = logDiscovery(tb_remoteServer.Text, sender); // Discover logs            
-
-            e.Result = theLogs;
-        }
-
         private string getSaying()
         {
             try
@@ -2387,20 +2711,315 @@ namespace LogLauncher
             return "";
         }
 
+        private void bw_logging_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string remoteServer = (string)e.Argument;
+
+            switches_logging_threadRunning = true;
+
+            loggingitemCollection aloggingitemCollection = new loggingitemCollection();
+
+            RegistryKey componentKeys = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), remoteServer); // ***
+
+            componentKeys = componentKeys.OpenSubKey(@"SOFTWARE\Microsoft\SMS\Tracing");
+
+            foreach (string asubkeyName in componentKeys.GetSubKeyNames())
+            {
+                loggingItem aloggingItem = new loggingItem();
+
+                aloggingItem.componentName = asubkeyName;
+
+                RegistryKey componentKey = componentKeys.OpenSubKey(asubkeyName, true);
+
+                if (componentKey != null)
+                {
+                    foreach (string valueName in componentKey.GetValueNames())
+                    {
+                        if (valueName == "DebugLogging")
+                        {
+                            if (componentKey.GetValue(valueName).ToString() != "")
+                            {
+                                try
+                                {
+                                    aloggingItem.debugLogging = Convert.ToBoolean(componentKey.GetValue(valueName).ToString());
+                                }
+                                catch (Exception)
+                                {
+                                    aloggingItem.debugLogging = false;
+                                }
+                            }
+                        }
+
+                        if (valueName == "Enabled")
+                        {
+                            if (componentKey.GetValue(valueName).ToString() != "")
+                            {
+                                try
+                                {
+                                    object enabledState = componentKey.GetValue(valueName);
+
+                                    aloggingItem.Enabled = Convert.ToBoolean(enabledState);
+                                }
+                                catch (Exception)
+                                {
+                                    aloggingItem.Enabled = false;
+                                }
+                            }
+                        }
+
+                        if (valueName == "LoggingLevel")
+                        {
+                            if (componentKey.GetValue(valueName).ToString() != "")
+                            {
+                                try
+                                {
+                                    aloggingItem.loggingLevel = (int)componentKey.GetValue(valueName);
+                                }
+                                catch (Exception)
+                                {
+                                    aloggingItem.loggingLevel = 0;
+                                }
+                            }
+                        }
+
+                        if (valueName == "LogMaxHistory")
+                        {
+                            if (componentKey.GetValue(valueName).ToString() != "")
+                            {
+                                try
+                                {
+                                    aloggingItem.logmaxHistory = (int)componentKey.GetValue(valueName);
+                                }
+                                catch (Exception)
+                                {
+                                    aloggingItem.logmaxHistory = 0;
+                                }
+                            }
+                        }
+
+                        if (valueName == "MaxFileSize")
+                        {
+                            if (componentKey.GetValue(valueName).ToString() != "")
+                            {
+                                try
+                                {
+                                    aloggingItem.maxfileSize = (int)componentKey.GetValue(valueName);
+                                }
+                                catch (Exception)
+                                {
+                                    aloggingItem.maxfileSize = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                        // componentKey.Close();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+
+                aloggingitemCollection.Add(aloggingItem);
+            }
+
+            e.Result = aloggingitemCollection;
+        }
+
+        private void bw_logging_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled == false)
+            {
+                loggingitemCollection aloggingitemCollection = (loggingitemCollection)e.Result;
+
+                foreach (loggingItem aloggingItem in aloggingitemCollection)
+                {
+                    dgv_Logging.Rows.Add(aloggingItem.componentName, aloggingItem.debugLogging, aloggingItem.Enabled, aloggingItem.loggingLevel, aloggingItem.logmaxHistory, aloggingItem.maxfileSize);
+                }
+
+                dgv_Logging.Sort(this.dgv_Logging.Columns["c_dgv_logging_componentName"], ListSortDirection.Ascending);
+
+                dgv_Logging.Refresh();
+            }
+        }        
+
+        private void bw_logging_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+        }        
+
+        private void bw_serviceCycle_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            servicecycleMessage aservicecycleMessage = (servicecycleMessage)e.Argument;
+
+            try
+            {
+                ServiceController sc = new ServiceController(aservicecycleMessage.serviceName, aservicecycleMessage.remoteServer);
+
+                try
+                {
+                    loggingMessage aloggingMessage = new loggingMessage();
+
+                    aloggingMessage.messageType = "Notification";
+                    aloggingMessage.messageText = "Stopping " + aservicecycleMessage.serviceName + " - This can take a while";
+
+                    worker.ReportProgress(0, aloggingMessage);
+
+                    sc.Stop();
+
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped);
+                }
+                catch (Exception ee)
+                {
+                    loggingMessage aloggingMessage = new loggingMessage();
+
+                    aloggingMessage.messageType = "Diagnostic";
+                    aloggingMessage.messageText = "Error when stopping " + aservicecycleMessage.serviceName + " - " + ee.Message;
+
+                    worker.ReportProgress(0, aloggingMessage);
+                }
+
+                if (sc.Status.ToString() == "Stopped")
+                {
+                    try
+                    {
+                        loggingMessage aloggingMessage = new loggingMessage();
+
+                        aloggingMessage.messageType = "Notification";
+                        aloggingMessage.messageText = "Starting " + aservicecycleMessage.serviceName + " - This can take a while";
+
+                        worker.ReportProgress(0, aloggingMessage);
+
+                        sc.Start();
+
+                        aloggingMessage.messageText = aservicecycleMessage.serviceName + " started";
+
+                        worker.ReportProgress(0, aloggingMessage);
+                    }
+                    catch (Exception ee)
+                    {
+                        loggingMessage aloggingMessage = new loggingMessage();
+
+                        aloggingMessage.messageType = "Diagnostic";
+                        aloggingMessage.messageText = "Error starting " + aservicecycleMessage.serviceName;
+
+                        worker.ReportProgress(0, aloggingMessage);
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                loggingMessage aloggingMessage = new loggingMessage();
+
+                aloggingMessage.messageType = "Notification";
+                aloggingMessage.messageText = "Failed handling " + aservicecycleMessage.serviceName;
+
+                worker.ReportProgress(0, aloggingMessage);
+
+                aloggingMessage.messageType = "Diagnostic";
+                aloggingMessage.messageText = "Could not cycle " + aservicecycleMessage.serviceName + " - " + ee.Message;
+
+                worker.ReportProgress(0, aloggingMessage);
+            }
+
+            e.Result = aservicecycleMessage.serviceName;
+        }
+
+        private void bw_serviceCycle_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {            
+            if (e.Cancelled == false)
+            {
+            }
+
+            string serviceName = (string)e.Result;
+
+            if (serviceName == "SMS_EXECUTIVE")
+            {
+                b_cycleSMSEXEC.Enabled = true; 
+            }
+            else
+            {
+                b_cycleCCMEXEC.Enabled = true;
+            }
+        }
+
+        private void bw_serviceCycle_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            loggingMessage aloggingMessage = (loggingMessage)e.UserState;
+
+            if (aloggingMessage.messageType == "Diagnostic")
+            {
+                diagnosticMessage(aloggingMessage.messageText);
+            }
+            else
+            {
+                notificationMessage(aloggingMessage.messageText);
+            }
+        }
+
+        private void bw_scan_DoWork(object sender, DoWorkEventArgs e)
+        {
+            switches_scan_threadRunning = true;
+
+            logitemCollection theLogs = logDiscovery(e.Argument.ToString(), sender); // Discover logs
+
+            e.Result = theLogs;
+        }     
+
         private void bw_scan_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled == false)
             {
                 renderLogs((logitemCollection)e.Result, false);
 
-                thelogitemCollection = (logitemCollection)e.Result; // Store the returned logs into the global logs collection for reuse
-
-                // Set Saying
+                thelogitemCollection = (logitemCollection)e.Result; // Store the returned logs into the global logs collection for reuse            
 
                 notificationMessage(thelogitemCollection.Count + " total logs found - " + getSaying());
             }
 
+            if (siteserverDetected) // Populate dgv_Logging
+            {
+                populateserverPanel(cb_remoteServer.Text);
+
+                BackgroundWorker bw = new BackgroundWorker();
+                bw.WorkerSupportsCancellation = true;
+                bw.WorkerReportsProgress = true;
+                bw.DoWork +=
+                    new DoWorkEventHandler(bw_logging_DoWork);
+                bw.ProgressChanged +=
+                    new ProgressChangedEventHandler(bw_logging_ProgressChanged);
+                bw.RunWorkerCompleted +=
+                    new RunWorkerCompletedEventHandler(bw_logging_RunWorkerCompleted);
+
+                bw.RunWorkerAsync(cb_remoteServer.Text);
+
+                dgv_Logging.Visible = true;
+
+                p_Site.Visible = true;
+
+                b_logSettings.Visible = true;
+
+                // Get those site logging details
+            }
+
+            if (clientDetected)
+            {
+                // Populate the elements on the p_Client panel
+
+                populateclientPanel(cb_remoteServer.Text);
+
+                b_logSettings.Visible = true;
+                p_Client.Visible = true;
+            }
+
             switches_scan_threadRunning = false;
+
+            switches_startupPhase = false;
         }
 
         private void bw_scan_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -2563,6 +3182,8 @@ namespace LogLauncher
 
             updatedgvRows(thelogItems); // Render the updated logitem Collection
 
+            thelogitemCollection = thelogItems; // ***            
+
             notificationMessage("Monitoring visible logs " + suffixRowsPayload.suffixText);
             
             dgv_Logs.ResumeLayout();
@@ -2614,6 +3235,16 @@ namespace LogLauncher
 
                             switches_monitorLogs = true;
 
+                            // Refresh the stale view in dgv_Logs
+
+                            logitemCollection alogitemCollection = refreshlogsinView(convertdgvtologItems(dgv_Logs.Rows));
+
+                            renderLogs(alogitemCollection, true);
+
+                            thelogitemCollection = alogitemCollection;
+
+                            // Start the monitoring thread
+
                             BackgroundWorker bw = new BackgroundWorker();
                             bw.WorkerSupportsCancellation = true;
                             bw.WorkerReportsProgress = true;
@@ -2649,7 +3280,7 @@ namespace LogLauncher
 
         private void cb_hidearchiveLogs_CheckedChanged(object sender, EventArgs e)
         {
-            updateloglauncherSettings("HideArchiveLogs", Convert.ToString(cb_hidearchiveLogs.Checked)); 
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"HideArchiveLogs", Convert.ToString(cb_hidearchiveLogs.Checked)); 
 
             if (cb_hidearchiveLogs.Checked)
             {
@@ -2671,7 +3302,7 @@ namespace LogLauncher
 
         private void cb_openLogsMulti_CheckedChanged(object sender, EventArgs e)
         {
-            updateloglauncherSettings("MultipleLogsSingleCMTrace", Convert.ToString(cb_openLogsMulti.Checked));
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MultipleLogsSingleCMTrace", Convert.ToString(cb_openLogsMulti.Checked));
 
             if (cb_openLogsMulti.Checked)
             {
@@ -2681,11 +3312,6 @@ namespace LogLauncher
             {
                 switches_open_multipleLogs = false;
             }            
-        }
-
-        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void b_About_Click(object sender, EventArgs e)
@@ -2744,14 +3370,14 @@ namespace LogLauncher
         {
             if (dgv_Diagnostics.Visible)
             {
-                diagnosticMessage("Disabling the diagnostics window");
                 dgv_Diagnostics.Visible = false;
-                dgv_Logs.Visible = true;
+                p_Logging.Visible = false;
+                dgv_Logs.Visible = true;                
             }
             else
             {
-                diagnosticMessage("Enabling the diagnostics window");
                 dgv_Diagnostics.Visible = true;
+                p_Logging.Visible = false;
                 dgv_Logs.Visible = false;
             }
         }
@@ -2784,7 +3410,7 @@ namespace LogLauncher
         {
             throttleDelay = Convert.ToInt16(nup_Delay.Value);
 
-            updateloglauncherSettings("MonitoringTimerDuration", Convert.ToString(nup_Delay.Value));
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MonitoringTimerDuration", Convert.ToString(nup_Delay.Value));
         }
 
         private void pb_colourpickerStart_Click(object sender, EventArgs e)
@@ -2802,7 +3428,7 @@ namespace LogLauncher
 
             updateGradient();
 
-            updateloglauncherSettings("GradientStartColour", Convert.ToString(pb_colourpickerStart.BackColor.ToArgb()));
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientStartColour", Convert.ToString(pb_colourpickerStart.BackColor.ToArgb()));
         }
 
         private void pb_colourpickerEnd_Click(object sender, EventArgs e)
@@ -2820,7 +3446,7 @@ namespace LogLauncher
 
             updateGradient();
 
-            updateloglauncherSettings("GradientEndColour", Convert.ToString(pb_colourpickerEnd.BackColor.ToArgb()));
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientEndColour", Convert.ToString(pb_colourpickerEnd.BackColor.ToArgb()));
         }
 
         private void openLogFolderToolStripMenuItem2_Click(object sender, EventArgs e)
@@ -2838,6 +3464,378 @@ namespace LogLauncher
         private void b_launchLogs_Click(object sender, EventArgs e)
         {
             launchLogs(dgv_Logs.SelectedRows);
+        }
+
+        private void b_logSettings_Click(object sender, EventArgs e)
+        {
+            if (p_Logging.Visible)
+            {
+                dgv_Diagnostics.Visible = false;
+                dgv_Logs.Visible = true;
+                p_Logging.Visible = false;
+            }
+            else
+            {
+                dgv_Diagnostics.Visible = false;
+                dgv_Logs.Visible = false;
+                p_Logging.Visible = true;
+            }
+        }
+
+        private void dgv_Logging_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!switches_startupPhase)
+            {
+                try
+                {
+                    string componentName = dgv_Logging.Rows[e.RowIndex].Cells["c_dgv_logging_componentName"].Value.ToString();
+
+                    RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                    remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Tracing\" + componentName, true);
+
+                    string dfdew = dgv_Logging.Rows[e.RowIndex].Cells["c_dgv_logging_debugLogging"].Value.ToString().ToLower();
+
+                    for (int i = 1; i < dgv_Logging.ColumnCount; i++)
+                    {
+                        switch (dgv_Logging.Columns[i].Name)
+                        {
+                            case "c_dgv_logging_debugLogging":
+
+                                if (dgv_Logging.Rows[e.RowIndex].Cells["c_dgv_logging_debugLogging"].Value.ToString().ToLower() == "true")
+                                {
+                                    remoteHK.SetValue("DebugLogging", "1", RegistryValueKind.DWord);
+                                }
+                                else
+                                {
+                                    remoteHK.SetValue("DebugLogging", "0", RegistryValueKind.DWord);
+                                }
+
+                                break;
+
+                            case "c_dgv_logging_Enabled":
+
+                                if (dgv_Logging.Rows[e.RowIndex].Cells["c_dgv_logging_Enabled"].Value.ToString().ToLower() == "true")
+                                {
+                                    remoteHK.SetValue("Enabled", "1", RegistryValueKind.DWord);
+                                }
+                                else
+                                {
+                                    remoteHK.SetValue("Enabled", "0", RegistryValueKind.DWord);
+                                }
+
+                                break;
+                            case "c_dgv_logging_loggingLevel":
+
+                                int logginglevelValue;
+
+                                if (int.TryParse(dgv_Logging.Rows[e.RowIndex].Cells["c_dgv_logging_loggingLevel"].Value.ToString(), out logginglevelValue))
+                                {
+                                    remoteHK.SetValue("LoggingLevel", logginglevelValue, RegistryValueKind.DWord);
+                                }
+
+                                break;
+
+                            case "c_dgv_logging_logmaxHistory":
+
+                                int logmaxhistoryValue;
+
+                                if (int.TryParse(dgv_Logging.Rows[e.RowIndex].Cells["c_dgv_logging_logmaxHistory"].Value.ToString(), out logmaxhistoryValue))
+                                {
+                                    remoteHK.SetValue("LogMaxHistory", logmaxhistoryValue, RegistryValueKind.DWord);
+                                }
+
+                                break;
+
+                            case "c_dgv_logging_maxfileSize":
+
+                                int maxfilesizeValue;
+
+                                if (int.TryParse(dgv_Logging.Rows[e.RowIndex].Cells["c_dgv_logging_maxfileSize"].Value.ToString(), out maxfilesizeValue))
+                                {
+                                    remoteHK.SetValue("MaxFileSize", maxfilesizeValue, RegistryValueKind.DWord);
+                                }
+
+                                break;
+                        }
+                    }
+                }
+                catch (Exception ee)
+                {
+                    diagnosticMessage("Could not set Sites logging settings - " + ee.Message);
+                }
+            }
+        }
+
+        private void cb_site_siteLogging_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Tracing", true);
+
+                if (cb_site_siteLogging.Checked)
+                {
+                    remoteHK.SetValue("Enabled", "1", RegistryValueKind.DWord);
+                }
+                else
+                {
+                    remoteHK.SetValue("Enabled", "0", RegistryValueKind.DWord);
+                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Sites Logging Enabled property - " + ee.Message);
+            }
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Tracing", true);
+
+                if (cb_site_sqlLogging.Checked)
+                {
+                    remoteHK.SetValue("SqlEnabled", "1", RegistryValueKind.DWord);
+                }
+                else
+                {
+                    remoteHK.SetValue("SqlEnabled", "0", RegistryValueKind.DWord);
+                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Sites SQL Enabled property - " + ee.Message);
+            }
+        }
+
+        private void cb_site_archiveLogs_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Tracing", true);
+
+                if (cb_site_archiveLogs.Checked)
+                {
+                    remoteHK.SetValue("ArchiveEnabled", "1", RegistryValueKind.DWord);
+                }
+                else
+                {
+                    remoteHK.SetValue("ArchiveEnabled", "0", RegistryValueKind.DWord);
+                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Sites Archive Enabled property - " + ee.Message);
+            }
+        }
+
+        private void num_provider_loggingLevel_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Providers", true);
+
+                remoteHK.SetValue("Logging Level", num_provider_loggingLevel.Value, RegistryValueKind.DWord);
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Site Providers Logging Level property - " + ee.Message);
+            }
+        }
+
+        private void num_provider_sqlcacheloggingLevel_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Providers", true);
+
+                remoteHK.SetValue("SQL Cache Logging Level", num_provider_sqlcacheloggingLevel.Value, RegistryValueKind.DWord);
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Site Providers SQL Cache Logging Level property - " + ee.Message);
+            }
+        }
+
+        private void num_provider_logsizeMb_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Providers", true);
+
+                remoteHK.SetValue("Log Size Mb", num_provider_logsizeMb.Value, RegistryValueKind.DWord);
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Site Providers Log Size Mb property - " + ee.Message);
+            }
+        }
+
+        private void cb_client_debugLogging_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
+
+                if (cb_client_Logging.Checked)
+                {
+                    remoteHK.SetValue("LogEnabled", "1", RegistryValueKind.DWord);
+                }
+                else
+                {
+                    remoteHK.SetValue("LogEnabled", "0", RegistryValueKind.DWord);
+                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Clients Logging property - " + ee.Message);
+            }
+        }
+
+        private void cb_client_debugLogging_CheckedChanged_1(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cb_client_debugLogging.Checked)
+                {
+
+                    if (!regkeyExist(cb_remoteServer.Text, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\CCM\Logging\@Global\DebugLogging"))
+                    {
+                        RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                        remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
+
+                        remoteHK.CreateSubKey("DebugLogging");
+
+                        nud_client_logLevel.Value = 0;
+                    }
+                }
+                else
+                {
+                    if (regkeyExist(cb_remoteServer.Text, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\CCM\Logging\@Global\DebugLogging"))
+                    {
+                        RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                        remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
+
+                        remoteHK.DeleteSubKey("DebugLogging");
+
+                        nud_client_logLevel.Value = 1;
+                    }
+                }                    
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Clients Debug Logging property - " + ee.Message);
+            }
+        }
+
+        private void nud_client_logLevel_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
+
+                remoteHK.SetValue("LogLevel", nud_client_logLevel.Value, RegistryValueKind.DWord);
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Clients Log Level property - " + ee.Message);
+            }
+        }
+
+        private void nud_client_logmaxHistory_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
+
+                remoteHK.SetValue("LogMaxHistory", nud_client_logmaxHistory.Value, RegistryValueKind.DWord);
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Clients Log Max History property - " + ee.Message);
+            }
+        }
+
+        private void nud_client_logmaxSize_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+
+                remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
+
+                remoteHK.SetValue("LogMaxSize", nud_client_logmaxSize.Value, RegistryValueKind.DWord);
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Could not set Clients Log Max Size property - " + ee.Message);
+            }
+        }
+
+        private void b_cycleCCMEXEC_Click(object sender, EventArgs e)
+        {
+            servicecycleMessage aservicecycleMessage = new servicecycleMessage();
+
+            aservicecycleMessage.remoteServer = cb_remoteServer.Text;
+            aservicecycleMessage.serviceName = "CCMEXEC";
+
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.WorkerSupportsCancellation = true;
+            bw.WorkerReportsProgress = true;
+            bw.DoWork +=
+                new DoWorkEventHandler(bw_serviceCycle_DoWork);
+            bw.ProgressChanged +=
+                new ProgressChangedEventHandler(bw_serviceCycle_ProgressChanged);
+            bw.RunWorkerCompleted +=
+                new RunWorkerCompletedEventHandler(bw_serviceCycle_RunWorkerCompleted);
+
+            b_cycleCCMEXEC.Enabled = false;
+
+            bw.RunWorkerAsync(aservicecycleMessage);
+                                   
+        }
+
+        private void b_cycleSMSEXEC_Click(object sender, EventArgs e)
+        {
+            servicecycleMessage aservicecycleMessage = new servicecycleMessage();
+
+            aservicecycleMessage.remoteServer = cb_remoteServer.Text;
+            aservicecycleMessage.serviceName = "SMS_EXECUTIVE";
+
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.WorkerSupportsCancellation = true;
+            bw.WorkerReportsProgress = true;
+            bw.DoWork +=
+                new DoWorkEventHandler(bw_serviceCycle_DoWork);
+            bw.ProgressChanged +=
+                new ProgressChangedEventHandler(bw_serviceCycle_ProgressChanged);
+            bw.RunWorkerCompleted +=
+                new RunWorkerCompletedEventHandler(bw_serviceCycle_RunWorkerCompleted);
+
+            b_cycleSMSEXEC.Enabled = false;
+
+            bw.RunWorkerAsync(aservicecycleMessage);
         }
     }
 }
