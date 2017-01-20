@@ -49,23 +49,9 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openLogFolderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFolderToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.cb_hidearchiveLogs = new System.Windows.Forms.CheckBox();
-            this.b_scanLogs = new System.Windows.Forms.Button();
-            this.cb_Monitor = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cb_openLogsMulti = new System.Windows.Forms.CheckBox();
-            this.b_About = new System.Windows.Forms.Button();
             this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.b_debugWindow = new System.Windows.Forms.Button();
             this.dgv_Diagnostics = new System.Windows.Forms.DataGridView();
             this.c_dgvDiag_Diagnostics = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.b_refreshLogs = new System.Windows.Forms.Button();
-            this.nup_Delay = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.pb_colourpickerStart = new System.Windows.Forms.PictureBox();
-            this.pb_colourpickerEnd = new System.Windows.Forms.PictureBox();
-            this.b_launchconfigcustomLocations = new System.Windows.Forms.Button();
-            this.b_launchLogs = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.p_Logging = new System.Windows.Forms.Panel();
             this.p_Client = new System.Windows.Forms.Panel();
@@ -98,15 +84,77 @@
             this.c_dgv_logging_loggingLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.c_dgv_logging_logmaxHistory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.c_dgv_logging_maxfileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.b_logSettings = new System.Windows.Forms.Button();
-            this.cb_remoteServer = new System.Windows.Forms.ComboBox();
+            this.ribbon1 = new System.Windows.Forms.Ribbon();
+            this.rt_Home = new System.Windows.Forms.RibbonTab();
+            this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
+            this.rb_scanLogs = new System.Windows.Forms.RibbonButton();
+            this.ribbonSeparator1 = new System.Windows.Forms.RibbonSeparator();
+            this.rcb_remoteServer = new System.Windows.Forms.RibbonComboBox();
+            this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
+            this.rcb_hidearchiveLogs = new System.Windows.Forms.RibbonCheckBox();
+            this.rcb_openmultiLogs = new System.Windows.Forms.RibbonCheckBox();
+            this.ribbonPanel4 = new System.Windows.Forms.RibbonPanel();
+            this.rb_openLogs = new System.Windows.Forms.RibbonButton();
+            this.rb_refreshLogs = new System.Windows.Forms.RibbonButton();
+            this.ribbonPanel5 = new System.Windows.Forms.RibbonPanel();
+            this.rb_Logging = new System.Windows.Forms.RibbonButton();
+            this.ribbonPanel6 = new System.Windows.Forms.RibbonPanel();
+            this.rb_customPaths = new System.Windows.Forms.RibbonButton();
+            this.rb_debugWindow = new System.Windows.Forms.RibbonButton();
+            this.rb_Help = new System.Windows.Forms.RibbonButton();
+            this.rt_Monitoring = new System.Windows.Forms.RibbonTab();
+            this.ribbonPanel3 = new System.Windows.Forms.RibbonPanel();
+            this.rb_Monitor = new System.Windows.Forms.RibbonButton();
+            this.ribbonSeparator3 = new System.Windows.Forms.RibbonSeparator();
+            this.rup_Duration = new System.Windows.Forms.RibbonUpDown();
+            this.ribbonSeparator4 = new System.Windows.Forms.RibbonSeparator();
+            this.rcc_Newest = new System.Windows.Forms.RibbonColorChooser();
+            this.rcc_Oldest = new System.Windows.Forms.RibbonColorChooser();
+            this.ribbonOrbRecentItem1 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbRecentItem2 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbRecentItem3 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbRecentItem4 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbRecentItem5 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbMenuItem1 = new System.Windows.Forms.RibbonOrbMenuItem();
+            this.ribbonButton1 = new System.Windows.Forms.RibbonButton();
+            this.ribbonOrbMenuItem2 = new System.Windows.Forms.RibbonOrbMenuItem();
+            this.surface_mainPanel = new System.Windows.Forms.Panel();
+            this.surface_lowerPanel = new System.Windows.Forms.Panel();
+            this.rtb_Help = new System.Windows.Forms.RichTextBox();
+            this.surface_customlocationsPanel = new System.Windows.Forms.Panel();
+            this.b_deleteLocation = new System.Windows.Forms.Button();
+            this.b_addupdateLocation = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.cb_recurseFolder = new System.Windows.Forms.ComboBox();
+            this.tb_logProduct = new System.Windows.Forms.TextBox();
+            this.tb_logCategory = new System.Windows.Forms.TextBox();
+            this.tb_fileMask = new System.Windows.Forms.TextBox();
+            this.tb_customLocation = new System.Windows.Forms.TextBox();
+            this.dgv_customLocations = new System.Windows.Forms.DataGridView();
+            this.c_cust_customLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.c_cust_fileMask = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.c_cust_recurseFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.c_cust_logClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.c_cust_logProduct = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rt_Trace = new System.Windows.Forms.RibbonTab();
+            this.ribbonPanel7 = new System.Windows.Forms.RibbonPanel();
+            this.ribbonPanel8 = new System.Windows.Forms.RibbonPanel();
+            this.rcb_MultiMerge = new System.Windows.Forms.RibbonCheckBox();
+            this.rb_selectTracer = new System.Windows.Forms.RibbonComboBox();
+            this.ribbonTextBox1 = new System.Windows.Forms.RibbonTextBox();
+            this.ribbonTextBox2 = new System.Windows.Forms.RibbonTextBox();
+            this.ribbonTextBox3 = new System.Windows.Forms.RibbonTextBox();
+            this.ribbonTextBox4 = new System.Windows.Forms.RibbonTextBox();
+            this.ribbonTextBox5 = new System.Windows.Forms.RibbonTextBox();
+            this.ribbonSeparator2 = new System.Windows.Forms.RibbonSeparator();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Diagnostics)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nup_Delay)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_colourpickerStart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_colourpickerEnd)).BeginInit();
             this.p_Logging.SuspendLayout();
             this.p_Client.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -119,16 +167,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_sqlcacheloggingLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_loggingLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logging)).BeginInit();
+            this.surface_mainPanel.SuspendLayout();
+            this.surface_lowerPanel.SuspendLayout();
+            this.surface_customlocationsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_customLocations)).BeginInit();
             this.SuspendLayout();
             // 
             // tv_Logs
             // 
             this.tv_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.tv_Logs.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.tv_Logs.Location = new System.Drawing.Point(12, 12);
+            this.tv_Logs.BackColor = System.Drawing.SystemColors.Info;
+            this.tv_Logs.Location = new System.Drawing.Point(0, 0);
             this.tv_Logs.Name = "tv_Logs";
-            this.tv_Logs.Size = new System.Drawing.Size(201, 370);
+            this.tv_Logs.Size = new System.Drawing.Size(204, 463);
             this.tv_Logs.TabIndex = 0;
             this.tv_Logs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv_Logs_AfterSelect);
             // 
@@ -166,6 +218,7 @@
             this.dgv_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_Logs.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             this.dgv_Logs.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             this.dgv_Logs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_Logs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -180,13 +233,13 @@
             this.dgv_v_Product});
             this.dgv_Logs.ContextMenuStrip = this.contextMenuStrip1;
             this.dgv_Logs.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgv_Logs.Location = new System.Drawing.Point(219, 12);
+            this.dgv_Logs.Location = new System.Drawing.Point(210, 0);
             this.dgv_Logs.Name = "dgv_Logs";
             this.dgv_Logs.ReadOnly = true;
             this.dgv_Logs.RowHeadersVisible = false;
             this.dgv_Logs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgv_Logs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_Logs.Size = new System.Drawing.Size(661, 564);
+            this.dgv_Logs.Size = new System.Drawing.Size(658, 463);
             this.dgv_Logs.StandardTab = true;
             this.dgv_Logs.TabIndex = 10;
             this.dgv_Logs.DoubleClick += new System.EventHandler(this.dgv_Logs_DoubleClick);
@@ -283,93 +336,11 @@
             this.openLogFolderToolStripMenuItem2.Text = "Open Log or Logs";
             this.openLogFolderToolStripMenuItem2.Click += new System.EventHandler(this.openLogFolderToolStripMenuItem2_Click);
             // 
-            // cb_hidearchiveLogs
-            // 
-            this.cb_hidearchiveLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cb_hidearchiveLogs.AutoSize = true;
-            this.cb_hidearchiveLogs.Location = new System.Drawing.Point(6, 413);
-            this.cb_hidearchiveLogs.Name = "cb_hidearchiveLogs";
-            this.cb_hidearchiveLogs.Size = new System.Drawing.Size(113, 17);
-            this.cb_hidearchiveLogs.TabIndex = 3;
-            this.cb_hidearchiveLogs.Text = "Hide Archive Logs";
-            this.cb_hidearchiveLogs.UseVisualStyleBackColor = true;
-            this.cb_hidearchiveLogs.CheckedChanged += new System.EventHandler(this.cb_hidearchiveLogs_CheckedChanged);
-            // 
-            // b_scanLogs
-            // 
-            this.b_scanLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_scanLogs.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.b_scanLogs.Location = new System.Drawing.Point(165, 467);
-            this.b_scanLogs.Name = "b_scanLogs";
-            this.b_scanLogs.Size = new System.Drawing.Size(45, 23);
-            this.b_scanLogs.TabIndex = 6;
-            this.b_scanLogs.Text = "Scan";
-            this.b_scanLogs.UseVisualStyleBackColor = false;
-            this.b_scanLogs.Click += new System.EventHandler(this.b_scanLogs_Click);
-            // 
-            // cb_Monitor
-            // 
-            this.cb_Monitor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cb_Monitor.AutoSize = true;
-            this.cb_Monitor.Location = new System.Drawing.Point(6, 390);
-            this.cb_Monitor.Name = "cb_Monitor";
-            this.cb_Monitor.Size = new System.Drawing.Size(83, 17);
-            this.cb_Monitor.TabIndex = 1;
-            this.cb_Monitor.Text = "Monitor logs";
-            this.cb_Monitor.UseVisualStyleBackColor = true;
-            this.cb_Monitor.CheckedChanged += new System.EventHandler(this.cb_Monitor_CheckedChanged);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 455);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Device";
-            // 
-            // cb_openLogsMulti
-            // 
-            this.cb_openLogsMulti.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cb_openLogsMulti.AutoSize = true;
-            this.cb_openLogsMulti.Checked = true;
-            this.cb_openLogsMulti.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_openLogsMulti.Location = new System.Drawing.Point(6, 437);
-            this.cb_openLogsMulti.Name = "cb_openLogsMulti";
-            this.cb_openLogsMulti.Size = new System.Drawing.Size(191, 17);
-            this.cb_openLogsMulti.TabIndex = 4;
-            this.cb_openLogsMulti.Text = "Open multiple logs in one CMTrace";
-            this.cb_openLogsMulti.UseVisualStyleBackColor = true;
-            this.cb_openLogsMulti.CheckedChanged += new System.EventHandler(this.cb_openLogsMulti_CheckedChanged);
-            // 
-            // b_About
-            // 
-            this.b_About.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_About.Location = new System.Drawing.Point(6, 551);
-            this.b_About.Name = "b_About";
-            this.b_About.Size = new System.Drawing.Size(96, 23);
-            this.b_About.TabIndex = 8;
-            this.b_About.Text = "Help";
-            this.b_About.UseVisualStyleBackColor = true;
-            this.b_About.Click += new System.EventHandler(this.b_About_Click);
-            // 
             // openLogFolderToolStripMenuItem
             // 
             this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
             this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.openLogFolderToolStripMenuItem.Text = "Open Log folder";
-            // 
-            // b_debugWindow
-            // 
-            this.b_debugWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_debugWindow.Location = new System.Drawing.Point(6, 524);
-            this.b_debugWindow.Name = "b_debugWindow";
-            this.b_debugWindow.Size = new System.Drawing.Size(96, 23);
-            this.b_debugWindow.TabIndex = 9;
-            this.b_debugWindow.Text = "Debug Window";
-            this.b_debugWindow.UseVisualStyleBackColor = true;
-            this.b_debugWindow.Click += new System.EventHandler(this.b_debugWindow_Click);
             // 
             // dgv_Diagnostics
             // 
@@ -381,16 +352,17 @@
             this.dgv_Diagnostics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_Diagnostics.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             this.dgv_Diagnostics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_Diagnostics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_dgvDiag_Diagnostics});
-            this.dgv_Diagnostics.Location = new System.Drawing.Point(219, 12);
+            this.dgv_Diagnostics.Location = new System.Drawing.Point(210, 0);
             this.dgv_Diagnostics.Name = "dgv_Diagnostics";
             this.dgv_Diagnostics.ReadOnly = true;
             this.dgv_Diagnostics.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgv_Diagnostics.RowHeadersVisible = false;
             this.dgv_Diagnostics.ShowEditingIcon = false;
-            this.dgv_Diagnostics.Size = new System.Drawing.Size(661, 564);
+            this.dgv_Diagnostics.Size = new System.Drawing.Size(658, 463);
             this.dgv_Diagnostics.TabIndex = 11;
             this.dgv_Diagnostics.TabStop = false;
             this.dgv_Diagnostics.Visible = false;
@@ -401,93 +373,6 @@
             this.c_dgvDiag_Diagnostics.HeaderText = "Diagnostics";
             this.c_dgvDiag_Diagnostics.Name = "c_dgvDiag_Diagnostics";
             this.c_dgvDiag_Diagnostics.ReadOnly = true;
-            // 
-            // b_refreshLogs
-            // 
-            this.b_refreshLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_refreshLogs.Location = new System.Drawing.Point(6, 495);
-            this.b_refreshLogs.Name = "b_refreshLogs";
-            this.b_refreshLogs.Size = new System.Drawing.Size(96, 23);
-            this.b_refreshLogs.TabIndex = 7;
-            this.b_refreshLogs.Text = "Refresh Logs";
-            this.b_refreshLogs.UseVisualStyleBackColor = true;
-            this.b_refreshLogs.Click += new System.EventHandler(this.b_refreshLogs_Click);
-            // 
-            // nup_Delay
-            // 
-            this.nup_Delay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.nup_Delay.Location = new System.Drawing.Point(95, 389);
-            this.nup_Delay.Maximum = new decimal(new int[] {
-            300,
-            0,
-            0,
-            0});
-            this.nup_Delay.Minimum = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            this.nup_Delay.Name = "nup_Delay";
-            this.nup_Delay.Size = new System.Drawing.Size(42, 20);
-            this.nup_Delay.TabIndex = 2;
-            this.nup_Delay.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.nup_Delay.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(143, 394);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "seconds";
-            // 
-            // pb_colourpickerStart
-            // 
-            this.pb_colourpickerStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pb_colourpickerStart.Location = new System.Drawing.Point(191, 392);
-            this.pb_colourpickerStart.Name = "pb_colourpickerStart";
-            this.pb_colourpickerStart.Size = new System.Drawing.Size(19, 17);
-            this.pb_colourpickerStart.TabIndex = 14;
-            this.pb_colourpickerStart.TabStop = false;
-            this.pb_colourpickerStart.Click += new System.EventHandler(this.pb_colourpickerStart_Click);
-            // 
-            // pb_colourpickerEnd
-            // 
-            this.pb_colourpickerEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pb_colourpickerEnd.Location = new System.Drawing.Point(191, 415);
-            this.pb_colourpickerEnd.Name = "pb_colourpickerEnd";
-            this.pb_colourpickerEnd.Size = new System.Drawing.Size(19, 17);
-            this.pb_colourpickerEnd.TabIndex = 15;
-            this.pb_colourpickerEnd.TabStop = false;
-            this.pb_colourpickerEnd.Click += new System.EventHandler(this.pb_colourpickerEnd_Click);
-            // 
-            // b_launchconfigcustomLocations
-            // 
-            this.b_launchconfigcustomLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_launchconfigcustomLocations.Location = new System.Drawing.Point(117, 524);
-            this.b_launchconfigcustomLocations.Name = "b_launchconfigcustomLocations";
-            this.b_launchconfigcustomLocations.Size = new System.Drawing.Size(96, 23);
-            this.b_launchconfigcustomLocations.TabIndex = 16;
-            this.b_launchconfigcustomLocations.Text = "Custom Paths";
-            this.b_launchconfigcustomLocations.UseVisualStyleBackColor = true;
-            this.b_launchconfigcustomLocations.Click += new System.EventHandler(this.b_launchconfigcustomLocations_Click);
-            // 
-            // b_launchLogs
-            // 
-            this.b_launchLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_launchLogs.Location = new System.Drawing.Point(117, 495);
-            this.b_launchLogs.Name = "b_launchLogs";
-            this.b_launchLogs.Size = new System.Drawing.Size(96, 23);
-            this.b_launchLogs.TabIndex = 17;
-            this.b_launchLogs.Text = "Open Logs";
-            this.b_launchLogs.UseVisualStyleBackColor = true;
-            this.b_launchLogs.Click += new System.EventHandler(this.b_launchLogs_Click);
             // 
             // openFileDialog1
             // 
@@ -501,9 +386,9 @@
             this.p_Logging.Controls.Add(this.p_Client);
             this.p_Logging.Controls.Add(this.p_Site);
             this.p_Logging.Controls.Add(this.dgv_Logging);
-            this.p_Logging.Location = new System.Drawing.Point(219, 12);
+            this.p_Logging.Location = new System.Drawing.Point(210, 0);
             this.p_Logging.Name = "p_Logging";
-            this.p_Logging.Size = new System.Drawing.Size(661, 564);
+            this.p_Logging.Size = new System.Drawing.Size(658, 460);
             this.p_Logging.TabIndex = 19;
             this.p_Logging.Visible = false;
             // 
@@ -512,9 +397,9 @@
             this.p_Client.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.p_Client.Controls.Add(this.groupBox2);
-            this.p_Client.Location = new System.Drawing.Point(304, 449);
+            this.p_Client.Location = new System.Drawing.Point(304, 345);
             this.p_Client.Name = "p_Client";
-            this.p_Client.Size = new System.Drawing.Size(354, 115);
+            this.p_Client.Size = new System.Drawing.Size(351, 115);
             this.p_Client.TabIndex = 24;
             this.p_Client.Visible = false;
             // 
@@ -638,7 +523,7 @@
             // 
             this.p_Site.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.p_Site.Controls.Add(this.groupBox1);
-            this.p_Site.Location = new System.Drawing.Point(3, 448);
+            this.p_Site.Location = new System.Drawing.Point(3, 344);
             this.p_Site.Name = "p_Site";
             this.p_Site.Size = new System.Drawing.Size(298, 116);
             this.p_Site.TabIndex = 23;
@@ -786,6 +671,7 @@
             this.dgv_Logging.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_Logging.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             this.dgv_Logging.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_Logging.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_dgv_logging_componentName,
@@ -801,7 +687,7 @@
             this.dgv_Logging.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgv_Logging.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_Logging.ShowEditingIcon = false;
-            this.dgv_Logging.Size = new System.Drawing.Size(660, 442);
+            this.dgv_Logging.Size = new System.Drawing.Size(657, 338);
             this.dgv_Logging.TabIndex = 11;
             this.dgv_Logging.Visible = false;
             this.dgv_Logging.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Logging_CellValueChanged);
@@ -850,55 +736,579 @@
             this.c_dgv_logging_maxfileSize.HeaderText = "Max File Size";
             this.c_dgv_logging_maxfileSize.Name = "c_dgv_logging_maxfileSize";
             // 
-            // b_logSettings
+            // ribbon1
             // 
-            this.b_logSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_logSettings.Location = new System.Drawing.Point(117, 551);
-            this.b_logSettings.Name = "b_logSettings";
-            this.b_logSettings.Size = new System.Drawing.Size(96, 23);
-            this.b_logSettings.TabIndex = 20;
-            this.b_logSettings.Text = "Log Settings";
-            this.b_logSettings.UseVisualStyleBackColor = true;
-            this.b_logSettings.Visible = false;
-            this.b_logSettings.Click += new System.EventHandler(this.b_logSettings_Click);
+            this.ribbon1.CaptionBarVisible = false;
+            this.ribbon1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.ribbon1.Location = new System.Drawing.Point(0, 0);
+            this.ribbon1.Minimized = false;
+            this.ribbon1.Name = "ribbon1";
             // 
-            // cb_remoteServer
             // 
-            this.cb_remoteServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cb_remoteServer.FormattingEnabled = true;
-            this.cb_remoteServer.Location = new System.Drawing.Point(6, 469);
-            this.cb_remoteServer.MaxDropDownItems = 10;
-            this.cb_remoteServer.Name = "cb_remoteServer";
-            this.cb_remoteServer.Size = new System.Drawing.Size(153, 21);
-            this.cb_remoteServer.TabIndex = 21;
+            // 
+            this.ribbon1.OrbDropDown.BorderRoundness = 8;
+            this.ribbon1.OrbDropDown.Location = new System.Drawing.Point(0, 0);
+            this.ribbon1.OrbDropDown.Name = "";
+            this.ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 447);
+            this.ribbon1.OrbDropDown.TabIndex = 0;
+            this.ribbon1.OrbImage = null;
+            this.ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010;
+            this.ribbon1.RibbonTabFont = new System.Drawing.Font("Trebuchet MS", 9F);
+            this.ribbon1.Size = new System.Drawing.Size(892, 107);
+            this.ribbon1.TabIndex = 22;
+            this.ribbon1.Tabs.Add(this.rt_Home);
+            this.ribbon1.Tabs.Add(this.rt_Monitoring);
+            this.ribbon1.Tabs.Add(this.rt_Trace);
+            this.ribbon1.TabsMargin = new System.Windows.Forms.Padding(12, 2, 20, 0);
+            this.ribbon1.ThemeColor = System.Windows.Forms.RibbonTheme.Blue;
+            // 
+            // rt_Home
+            // 
+            this.rt_Home.Panels.Add(this.ribbonPanel1);
+            this.rt_Home.Panels.Add(this.ribbonPanel2);
+            this.rt_Home.Panels.Add(this.ribbonPanel4);
+            this.rt_Home.Panels.Add(this.ribbonPanel5);
+            this.rt_Home.Panels.Add(this.ribbonPanel6);
+            this.rt_Home.Text = "Home";
+            // 
+            // ribbonPanel1
+            // 
+            this.ribbonPanel1.Items.Add(this.rb_scanLogs);
+            this.ribbonPanel1.Items.Add(this.ribbonSeparator1);
+            this.ribbonPanel1.Items.Add(this.rcb_remoteServer);
+            this.ribbonPanel1.Text = "";
+            // 
+            // rb_scanLogs
+            // 
+            this.rb_scanLogs.Image = ((System.Drawing.Image)(resources.GetObject("rb_scanLogs.Image")));
+            this.rb_scanLogs.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_scanLogs.SmallImage")));
+            this.rb_scanLogs.Text = "Scan";
+            this.rb_scanLogs.ToolTip = "Click to scan device for Logs";
+            this.rb_scanLogs.ToolTipTitle = "Scan Device";
+            this.rb_scanLogs.Click += new System.EventHandler(this.rb_scanLogs_Click);
+            // 
+            // rcb_remoteServer
+            // 
+            this.rcb_remoteServer.Text = "Device";
+            this.rcb_remoteServer.TextBoxText = "";
+            this.rcb_remoteServer.ToolTip = "Device Name";
+            this.rcb_remoteServer.ToolTipTitle = "Enter a device name";
+            this.rcb_remoteServer.Value = "";
+            this.rcb_remoteServer.TextBoxTextChanged += new System.EventHandler(this.rcb_remoteServer_TextBoxTextChanged);
+            // 
+            // ribbonPanel2
+            // 
+            this.ribbonPanel2.Items.Add(this.rcb_hidearchiveLogs);
+            this.ribbonPanel2.Items.Add(this.rcb_openmultiLogs);
+            this.ribbonPanel2.Text = "";
+            // 
+            // rcb_hidearchiveLogs
+            // 
+            this.rcb_hidearchiveLogs.Text = "Hide Archive Logs";
+            this.rcb_hidearchiveLogs.CheckBoxCheckChanged += new System.EventHandler(this.rcb_hidearchiveLogs_CheckBoxCheckChanged);
+            // 
+            // rcb_openmultiLogs
+            // 
+            this.rcb_openmultiLogs.Checked = true;
+            this.rcb_openmultiLogs.Text = "Merge or Multiple Logs";
+            this.rcb_openmultiLogs.ToolTip = "Open multiple log files in Trace as either merged, if supported, or as multiple w" +
+    "indows";
+            this.rcb_openmultiLogs.CheckBoxCheckChanged += new System.EventHandler(this.rcb_openmultiLogs_CheckBoxCheckChanged);
+            // 
+            // ribbonPanel4
+            // 
+            this.ribbonPanel4.Items.Add(this.rb_openLogs);
+            this.ribbonPanel4.Items.Add(this.rb_refreshLogs);
+            this.ribbonPanel4.Text = "";
+            // 
+            // rb_openLogs
+            // 
+            this.rb_openLogs.Image = ((System.Drawing.Image)(resources.GetObject("rb_openLogs.Image")));
+            this.rb_openLogs.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_openLogs.SmallImage")));
+            this.rb_openLogs.Text = "Open Logs";
+            this.rb_openLogs.ToolTip = "Open the selected log(s)";
+            this.rb_openLogs.ToolTipTitle = "Open Logs";
+            this.rb_openLogs.Click += new System.EventHandler(this.rb_openLogs_Click);
+            // 
+            // rb_refreshLogs
+            // 
+            this.rb_refreshLogs.Image = ((System.Drawing.Image)(resources.GetObject("rb_refreshLogs.Image")));
+            this.rb_refreshLogs.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_refreshLogs.SmallImage")));
+            this.rb_refreshLogs.Text = "Refresh";
+            this.rb_refreshLogs.ToolTip = "Refresh visible logs";
+            this.rb_refreshLogs.ToolTipTitle = "Refresh Logs";
+            this.rb_refreshLogs.Click += new System.EventHandler(this.rb_refreshLogs_Click);
+            // 
+            // ribbonPanel5
+            // 
+            this.ribbonPanel5.Items.Add(this.rb_Logging);
+            this.ribbonPanel5.Text = "";
+            // 
+            // rb_Logging
+            // 
+            this.rb_Logging.Image = ((System.Drawing.Image)(resources.GetObject("rb_Logging.Image")));
+            this.rb_Logging.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_Logging.SmallImage")));
+            this.rb_Logging.Text = "Logging";
+            this.rb_Logging.ToolTip = "Show ConfigMgr Site\\Client Logging Panel";
+            this.rb_Logging.ToolTipTitle = "Logging";
+            this.rb_Logging.Value = "Logging";
+            this.rb_Logging.Click += new System.EventHandler(this.rb_Logging_Click);
+            // 
+            // ribbonPanel6
+            // 
+            this.ribbonPanel6.Items.Add(this.rb_customPaths);
+            this.ribbonPanel6.Items.Add(this.rb_debugWindow);
+            this.ribbonPanel6.Items.Add(this.rb_Help);
+            this.ribbonPanel6.Text = "";
+            // 
+            // rb_customPaths
+            // 
+            this.rb_customPaths.Image = ((System.Drawing.Image)(resources.GetObject("rb_customPaths.Image")));
+            this.rb_customPaths.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_customPaths.SmallImage")));
+            this.rb_customPaths.Text = "Locations";
+            this.rb_customPaths.ToolTip = "Extend built-in rules for scanning, by adding custom paths";
+            this.rb_customPaths.ToolTipTitle = "Show Custom Locations";
+            this.rb_customPaths.Click += new System.EventHandler(this.rb_customPaths_Click);
+            // 
+            // rb_debugWindow
+            // 
+            this.rb_debugWindow.Image = ((System.Drawing.Image)(resources.GetObject("rb_debugWindow.Image")));
+            this.rb_debugWindow.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_debugWindow.SmallImage")));
+            this.rb_debugWindow.Text = "Debug";
+            this.rb_debugWindow.ToolTip = "Show the Debug Window";
+            this.rb_debugWindow.ToolTipTitle = "Debugging";
+            this.rb_debugWindow.Click += new System.EventHandler(this.rb_debugWindow_Click);
+            // 
+            // rb_Help
+            // 
+            this.rb_Help.Image = ((System.Drawing.Image)(resources.GetObject("rb_Help.Image")));
+            this.rb_Help.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_Help.SmallImage")));
+            this.rb_Help.Text = "Help";
+            this.rb_Help.ToolTip = "Help on using LogLauncher";
+            this.rb_Help.ToolTipTitle = "Help";
+            this.rb_Help.Value = "Help";
+            this.rb_Help.Click += new System.EventHandler(this.rb_Help_Click);
+            // 
+            // rt_Monitoring
+            // 
+            this.rt_Monitoring.Panels.Add(this.ribbonPanel3);
+            this.rt_Monitoring.Text = "Monitoring";
+            // 
+            // ribbonPanel3
+            // 
+            this.ribbonPanel3.Items.Add(this.rb_Monitor);
+            this.ribbonPanel3.Items.Add(this.ribbonSeparator3);
+            this.ribbonPanel3.Items.Add(this.rup_Duration);
+            this.ribbonPanel3.Items.Add(this.ribbonSeparator4);
+            this.ribbonPanel3.Items.Add(this.rcc_Newest);
+            this.ribbonPanel3.Items.Add(this.rcc_Oldest);
+            this.ribbonPanel3.Text = "";
+            // 
+            // rb_Monitor
+            // 
+            this.rb_Monitor.Image = ((System.Drawing.Image)(resources.GetObject("rb_Monitor.Image")));
+            this.rb_Monitor.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_Monitor.SmallImage")));
+            this.rb_Monitor.Text = "Monitor";
+            this.rb_Monitor.ToolTip = "Begin monitoring device Logs";
+            this.rb_Monitor.Click += new System.EventHandler(this.rb_Monitor_Click);
+            // 
+            // rup_Duration
+            // 
+            this.rup_Duration.Text = "Refresh every (seconds) ";
+            this.rup_Duration.TextBoxText = "5";
+            this.rup_Duration.TextBoxWidth = 50;
+            this.rup_Duration.Value = "5";
+            this.rup_Duration.UpButtonClicked += new System.Windows.Forms.MouseEventHandler(this.rup_Duration_UpButtonClicked);
+            this.rup_Duration.DownButtonClicked += new System.Windows.Forms.MouseEventHandler(this.rup_Duration_DownButtonClicked);
+            this.rup_Duration.TextBoxValidated += new System.EventHandler(this.rup_Duration_TextBoxValidated);
+            // 
+            // rcc_Newest
+            // 
+            this.rcc_Newest.Color = System.Drawing.Color.Transparent;
+            this.rcc_Newest.Image = ((System.Drawing.Image)(resources.GetObject("rcc_Newest.Image")));
+            this.rcc_Newest.SmallImage = ((System.Drawing.Image)(resources.GetObject("rcc_Newest.SmallImage")));
+            this.rcc_Newest.Text = "Newest";
+            this.rcc_Newest.Click += new System.EventHandler(this.rcc_Newest_Click);
+            // 
+            // rcc_Oldest
+            // 
+            this.rcc_Oldest.Color = System.Drawing.Color.Transparent;
+            this.rcc_Oldest.Image = ((System.Drawing.Image)(resources.GetObject("rcc_Oldest.Image")));
+            this.rcc_Oldest.SmallImage = ((System.Drawing.Image)(resources.GetObject("rcc_Oldest.SmallImage")));
+            this.rcc_Oldest.Text = "Oldest";
+            this.rcc_Oldest.Click += new System.EventHandler(this.rcc_Oldest_Click);
+            // 
+            // ribbonOrbRecentItem1
+            // 
+            this.ribbonOrbRecentItem1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem1.Image")));
+            this.ribbonOrbRecentItem1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem1.SmallImage")));
+            this.ribbonOrbRecentItem1.Text = "ribbonOrbRecentItem1";
+            // 
+            // ribbonOrbRecentItem2
+            // 
+            this.ribbonOrbRecentItem2.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem2.Image")));
+            this.ribbonOrbRecentItem2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem2.SmallImage")));
+            this.ribbonOrbRecentItem2.Text = "ribbonOrbRecentItem2";
+            // 
+            // ribbonOrbRecentItem3
+            // 
+            this.ribbonOrbRecentItem3.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem3.Image")));
+            this.ribbonOrbRecentItem3.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem3.SmallImage")));
+            this.ribbonOrbRecentItem3.Text = "ribbonOrbRecentItem3";
+            // 
+            // ribbonOrbRecentItem4
+            // 
+            this.ribbonOrbRecentItem4.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem4.Image")));
+            this.ribbonOrbRecentItem4.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem4.SmallImage")));
+            this.ribbonOrbRecentItem4.Text = "ribbonOrbRecentItem4";
+            // 
+            // ribbonOrbRecentItem5
+            // 
+            this.ribbonOrbRecentItem5.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem5.Image")));
+            this.ribbonOrbRecentItem5.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem5.SmallImage")));
+            this.ribbonOrbRecentItem5.Text = "ribbonOrbRecentItem5";
+            // 
+            // ribbonOrbMenuItem1
+            // 
+            this.ribbonOrbMenuItem1.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left;
+            this.ribbonOrbMenuItem1.DropDownItems.Add(this.ribbonButton1);
+            this.ribbonOrbMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem1.Image")));
+            this.ribbonOrbMenuItem1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem1.SmallImage")));
+            this.ribbonOrbMenuItem1.Text = "ribbonOrbMenuItem1";
+            // 
+            // ribbonButton1
+            // 
+            this.ribbonButton1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.Image")));
+            this.ribbonButton1.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonButton1.SmallImage")));
+            this.ribbonButton1.Text = "Exit";
+            // 
+            // ribbonOrbMenuItem2
+            // 
+            this.ribbonOrbMenuItem2.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left;
+            this.ribbonOrbMenuItem2.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem2.Image")));
+            this.ribbonOrbMenuItem2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem2.SmallImage")));
+            this.ribbonOrbMenuItem2.Text = "ribbonOrbMenuItem2";
+            // 
+            // surface_mainPanel
+            // 
+            this.surface_mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.surface_mainPanel.Controls.Add(this.tv_Logs);
+            this.surface_mainPanel.Controls.Add(this.dgv_Logs);
+            this.surface_mainPanel.Controls.Add(this.dgv_Diagnostics);
+            this.surface_mainPanel.Controls.Add(this.p_Logging);
+            this.surface_mainPanel.Location = new System.Drawing.Point(12, 113);
+            this.surface_mainPanel.Name = "surface_mainPanel";
+            this.surface_mainPanel.Size = new System.Drawing.Size(868, 463);
+            this.surface_mainPanel.TabIndex = 23;
+            // 
+            // surface_lowerPanel
+            // 
+            this.surface_lowerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.surface_lowerPanel.Controls.Add(this.rtb_Help);
+            this.surface_lowerPanel.Location = new System.Drawing.Point(12, 113);
+            this.surface_lowerPanel.Name = "surface_lowerPanel";
+            this.surface_lowerPanel.Size = new System.Drawing.Size(868, 463);
+            this.surface_lowerPanel.TabIndex = 24;
+            // 
+            // rtb_Help
+            // 
+            this.rtb_Help.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtb_Help.BackColor = System.Drawing.SystemColors.Control;
+            this.rtb_Help.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtb_Help.Location = new System.Drawing.Point(0, 0);
+            this.rtb_Help.Name = "rtb_Help";
+            this.rtb_Help.ReadOnly = true;
+            this.rtb_Help.Size = new System.Drawing.Size(868, 463);
+            this.rtb_Help.TabIndex = 0;
+            this.rtb_Help.Text = "";
+            // 
+            // surface_customlocationsPanel
+            // 
+            this.surface_customlocationsPanel.Controls.Add(this.b_deleteLocation);
+            this.surface_customlocationsPanel.Controls.Add(this.b_addupdateLocation);
+            this.surface_customlocationsPanel.Controls.Add(this.label1);
+            this.surface_customlocationsPanel.Controls.Add(this.label2);
+            this.surface_customlocationsPanel.Controls.Add(this.label9);
+            this.surface_customlocationsPanel.Controls.Add(this.label10);
+            this.surface_customlocationsPanel.Controls.Add(this.label11);
+            this.surface_customlocationsPanel.Controls.Add(this.cb_recurseFolder);
+            this.surface_customlocationsPanel.Controls.Add(this.tb_logProduct);
+            this.surface_customlocationsPanel.Controls.Add(this.tb_logCategory);
+            this.surface_customlocationsPanel.Controls.Add(this.tb_fileMask);
+            this.surface_customlocationsPanel.Controls.Add(this.tb_customLocation);
+            this.surface_customlocationsPanel.Controls.Add(this.dgv_customLocations);
+            this.surface_customlocationsPanel.Location = new System.Drawing.Point(222, 113);
+            this.surface_customlocationsPanel.Name = "surface_customlocationsPanel";
+            this.surface_customlocationsPanel.Size = new System.Drawing.Size(658, 463);
+            this.surface_customlocationsPanel.TabIndex = 25;
+            this.surface_customlocationsPanel.Visible = false;
+            // 
+            // b_deleteLocation
+            // 
+            this.b_deleteLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.b_deleteLocation.Location = new System.Drawing.Point(152, 427);
+            this.b_deleteLocation.Name = "b_deleteLocation";
+            this.b_deleteLocation.Size = new System.Drawing.Size(75, 23);
+            this.b_deleteLocation.TabIndex = 26;
+            this.b_deleteLocation.TabStop = false;
+            this.b_deleteLocation.Text = "Delete";
+            this.b_deleteLocation.UseVisualStyleBackColor = true;
+            this.b_deleteLocation.Click += new System.EventHandler(this.b_deleteLocation_Click);
+            // 
+            // b_addupdateLocation
+            // 
+            this.b_addupdateLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.b_addupdateLocation.Location = new System.Drawing.Point(18, 427);
+            this.b_addupdateLocation.Name = "b_addupdateLocation";
+            this.b_addupdateLocation.Size = new System.Drawing.Size(107, 23);
+            this.b_addupdateLocation.TabIndex = 19;
+            this.b_addupdateLocation.Text = "Add / Update";
+            this.b_addupdateLocation.UseVisualStyleBackColor = true;
+            this.b_addupdateLocation.Click += new System.EventHandler(this.b_addupdateLocation_Click);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(315, 376);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Log Product";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(15, 376);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "Log Category";
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(551, 322);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(79, 13);
+            this.label9.TabIndex = 23;
+            this.label9.Text = "Recurse Folder";
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(15, 322);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(125, 13);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "File Mask - Example *.lo_";
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(15, 262);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(135, 13);
+            this.label11.TabIndex = 20;
+            this.label11.Text = "Custom Location (No UNC)";
+            // 
+            // cb_recurseFolder
+            // 
+            this.cb_recurseFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cb_recurseFolder.FormattingEnabled = true;
+            this.cb_recurseFolder.Items.AddRange(new object[] {
+            "True",
+            "False"});
+            this.cb_recurseFolder.Location = new System.Drawing.Point(554, 340);
+            this.cb_recurseFolder.Name = "cb_recurseFolder";
+            this.cb_recurseFolder.Size = new System.Drawing.Size(84, 21);
+            this.cb_recurseFolder.TabIndex = 16;
+            this.cb_recurseFolder.Text = "False";
+            // 
+            // tb_logProduct
+            // 
+            this.tb_logProduct.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tb_logProduct.Location = new System.Drawing.Point(318, 395);
+            this.tb_logProduct.Name = "tb_logProduct";
+            this.tb_logProduct.Size = new System.Drawing.Size(320, 20);
+            this.tb_logProduct.TabIndex = 18;
+            // 
+            // tb_logCategory
+            // 
+            this.tb_logCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tb_logCategory.Location = new System.Drawing.Point(18, 395);
+            this.tb_logCategory.Name = "tb_logCategory";
+            this.tb_logCategory.Size = new System.Drawing.Size(283, 20);
+            this.tb_logCategory.TabIndex = 17;
+            // 
+            // tb_fileMask
+            // 
+            this.tb_fileMask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tb_fileMask.Location = new System.Drawing.Point(18, 341);
+            this.tb_fileMask.Name = "tb_fileMask";
+            this.tb_fileMask.Size = new System.Drawing.Size(522, 20);
+            this.tb_fileMask.TabIndex = 15;
+            // 
+            // tb_customLocation
+            // 
+            this.tb_customLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tb_customLocation.Location = new System.Drawing.Point(18, 280);
+            this.tb_customLocation.Name = "tb_customLocation";
+            this.tb_customLocation.Size = new System.Drawing.Size(620, 20);
+            this.tb_customLocation.TabIndex = 14;
+            // 
+            // dgv_customLocations
+            // 
+            this.dgv_customLocations.AllowUserToAddRows = false;
+            this.dgv_customLocations.AllowUserToDeleteRows = false;
+            this.dgv_customLocations.AllowUserToResizeColumns = false;
+            this.dgv_customLocations.AllowUserToResizeRows = false;
+            this.dgv_customLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_customLocations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_customLocations.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.c_cust_customLocation,
+            this.c_cust_fileMask,
+            this.c_cust_recurseFolder,
+            this.c_cust_logClass,
+            this.c_cust_logProduct});
+            this.dgv_customLocations.Location = new System.Drawing.Point(0, 0);
+            this.dgv_customLocations.MultiSelect = false;
+            this.dgv_customLocations.Name = "dgv_customLocations";
+            this.dgv_customLocations.ReadOnly = true;
+            this.dgv_customLocations.RowHeadersVisible = false;
+            this.dgv_customLocations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_customLocations.Size = new System.Drawing.Size(658, 243);
+            this.dgv_customLocations.TabIndex = 13;
+            this.dgv_customLocations.SelectionChanged += new System.EventHandler(this.dgv_customLocations_SelectionChanged);
+            // 
+            // c_cust_customLocation
+            // 
+            this.c_cust_customLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.c_cust_customLocation.HeaderText = "Custom Location";
+            this.c_cust_customLocation.Name = "c_cust_customLocation";
+            this.c_cust_customLocation.ReadOnly = true;
+            this.c_cust_customLocation.Width = 102;
+            // 
+            // c_cust_fileMask
+            // 
+            this.c_cust_fileMask.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.c_cust_fileMask.HeaderText = "File Mask";
+            this.c_cust_fileMask.Name = "c_cust_fileMask";
+            this.c_cust_fileMask.ReadOnly = true;
+            // 
+            // c_cust_recurseFolder
+            // 
+            this.c_cust_recurseFolder.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.c_cust_recurseFolder.HeaderText = "Recurse Folder";
+            this.c_cust_recurseFolder.Name = "c_cust_recurseFolder";
+            this.c_cust_recurseFolder.ReadOnly = true;
+            this.c_cust_recurseFolder.Width = 96;
+            // 
+            // c_cust_logClass
+            // 
+            this.c_cust_logClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.c_cust_logClass.HeaderText = "Log Category";
+            this.c_cust_logClass.Name = "c_cust_logClass";
+            this.c_cust_logClass.ReadOnly = true;
+            this.c_cust_logClass.Width = 87;
+            // 
+            // c_cust_logProduct
+            // 
+            this.c_cust_logProduct.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.c_cust_logProduct.HeaderText = "Log Product";
+            this.c_cust_logProduct.Name = "c_cust_logProduct";
+            this.c_cust_logProduct.ReadOnly = true;
+            // 
+            // rt_Trace
+            // 
+            this.rt_Trace.Panels.Add(this.ribbonPanel7);
+            this.rt_Trace.Panels.Add(this.ribbonPanel8);
+            this.rt_Trace.Text = "Trace Configuration";
+            // 
+            // ribbonPanel7
+            // 
+            this.ribbonPanel7.Items.Add(this.rb_selectTracer);
+            this.ribbonPanel7.Items.Add(this.ribbonSeparator2);
+            this.ribbonPanel7.Items.Add(this.ribbonTextBox5);
+            this.ribbonPanel7.Text = "Tracer";
+            // 
+            // ribbonPanel8
+            // 
+            this.ribbonPanel8.Items.Add(this.rcb_MultiMerge);
+            this.ribbonPanel8.Text = "Configuration";
+            // 
+            // rcb_MultiMerge
+            // 
+            this.rcb_MultiMerge.Text = "Merge\\Multiple";
+            this.rcb_MultiMerge.ToolTip = "Open multiple log files in Trace as either merged, if supported, or as multiple w" +
+    "indows";
+            this.rcb_MultiMerge.CheckBoxCheckChanged += new System.EventHandler(this.rcb_MultiMerge_CheckBoxCheckChanged);
+            // 
+            // rb_selectTracer
+            // 
+            this.rb_selectTracer.DropDownItems.Add(this.ribbonTextBox1);
+            this.rb_selectTracer.DropDownItems.Add(this.ribbonTextBox2);
+            this.rb_selectTracer.DropDownItems.Add(this.ribbonTextBox4);
+            this.rb_selectTracer.DropDownItems.Add(this.ribbonTextBox3);
+            this.rb_selectTracer.Text = "Log Viewer";
+            this.rb_selectTracer.TextBoxText = "";
+            // 
+            // ribbonTextBox1
+            // 
+            this.ribbonTextBox1.AllowTextEdit = false;
+            this.ribbonTextBox1.Text = "CMTrace";
+            this.ribbonTextBox1.TextBoxText = "CMTrace";
+            this.ribbonTextBox1.Value = "CMTrace";
+            // 
+            // ribbonTextBox2
+            // 
+            this.ribbonTextBox2.AllowTextEdit = false;
+            this.ribbonTextBox2.Text = "Trace Viewer";
+            this.ribbonTextBox2.TextBoxText = "Trace Viewer";
+            this.ribbonTextBox2.Value = "CMTrace";
+            // 
+            // ribbonTextBox3
+            // 
+            this.ribbonTextBox3.AllowTextEdit = false;
+            this.ribbonTextBox3.Text = "Notepad";
+            this.ribbonTextBox3.TextBoxText = "Notepad";
+            this.ribbonTextBox3.Value = "CMTrace";
+            // 
+            // ribbonTextBox4
+            // 
+            this.ribbonTextBox4.AllowTextEdit = false;
+            this.ribbonTextBox4.Text = "Notepad++";
+            this.ribbonTextBox4.TextBoxText = "Notepad++";
+            this.ribbonTextBox4.Value = "Notepad++";
+            // 
+            // ribbonTextBox5
+            // 
+            this.ribbonTextBox5.Text = "Path";
+            this.ribbonTextBox5.TextBoxText = "";
+            this.ribbonTextBox5.TextBoxWidth = 400;
             // 
             // Form1
             // 
-            this.AcceptButton = this.b_scanLogs;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 601);
-            this.Controls.Add(this.cb_remoteServer);
-            this.Controls.Add(this.p_Logging);
-            this.Controls.Add(this.b_logSettings);
-            this.Controls.Add(this.b_launchLogs);
-            this.Controls.Add(this.b_launchconfigcustomLocations);
-            this.Controls.Add(this.pb_colourpickerEnd);
-            this.Controls.Add(this.pb_colourpickerStart);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.nup_Delay);
-            this.Controls.Add(this.b_refreshLogs);
-            this.Controls.Add(this.b_debugWindow);
-            this.Controls.Add(this.b_About);
-            this.Controls.Add(this.cb_openLogsMulti);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cb_Monitor);
-            this.Controls.Add(this.b_scanLogs);
-            this.Controls.Add(this.cb_hidearchiveLogs);
+            this.Controls.Add(this.surface_customlocationsPanel);
+            this.Controls.Add(this.surface_mainPanel);
+            this.Controls.Add(this.ribbon1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.tv_Logs);
-            this.Controls.Add(this.dgv_Logs);
-            this.Controls.Add(this.dgv_Diagnostics);
+            this.Controls.Add(this.surface_lowerPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(800, 640);
             this.Name = "Form1";
@@ -909,9 +1319,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Diagnostics)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nup_Delay)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_colourpickerStart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_colourpickerEnd)).EndInit();
             this.p_Logging.ResumeLayout(false);
             this.p_Client.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -926,6 +1333,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_sqlcacheloggingLevel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_loggingLevel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logging)).EndInit();
+            this.surface_mainPanel.ResumeLayout(false);
+            this.surface_lowerPanel.ResumeLayout(false);
+            this.surface_customlocationsPanel.ResumeLayout(false);
+            this.surface_customlocationsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_customLocations)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -938,26 +1350,12 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.DataGridView dgv_Logs;
-        private System.Windows.Forms.CheckBox cb_hidearchiveLogs;
-        private System.Windows.Forms.Button b_scanLogs;
-        private System.Windows.Forms.CheckBox cb_Monitor;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox cb_openLogsMulti;
-        private System.Windows.Forms.Button b_About;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem openLogFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openLogFolderToolStripMenuItem1;
-        private System.Windows.Forms.Button b_debugWindow;
         private System.Windows.Forms.DataGridView dgv_Diagnostics;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_dgvDiag_Diagnostics;
-        private System.Windows.Forms.Button b_refreshLogs;
-        private System.Windows.Forms.NumericUpDown nup_Delay;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.PictureBox pb_colourpickerStart;
-        private System.Windows.Forms.PictureBox pb_colourpickerEnd;
         private System.Windows.Forms.ToolStripMenuItem openLogFolderToolStripMenuItem2;
-        private System.Windows.Forms.Button b_launchconfigcustomLocations;
-        private System.Windows.Forms.Button b_launchLogs;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgv_c_hiddenlogName;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgv_c_logName;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgv_c_Class;
@@ -970,7 +1368,6 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Panel p_Logging;
         private System.Windows.Forms.DataGridView dgv_Logging;
-        private System.Windows.Forms.Button b_logSettings;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_dgv_logging_componentName;
         private System.Windows.Forms.DataGridViewCheckBoxColumn c_dgv_logging_debugLogging;
         private System.Windows.Forms.DataGridViewCheckBoxColumn c_dgv_logging_Enabled;
@@ -1000,7 +1397,73 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button b_cycleCCMEXEC;
         private System.Windows.Forms.Button b_cycleSMSEXEC;
-        private System.Windows.Forms.ComboBox cb_remoteServer;
+        private System.Windows.Forms.Ribbon ribbon1;
+        private System.Windows.Forms.RibbonTab rt_Home;
+        private System.Windows.Forms.RibbonPanel ribbonPanel1;
+        private System.Windows.Forms.RibbonButton rb_scanLogs;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator1;
+        private System.Windows.Forms.RibbonComboBox rcb_remoteServer;
+        private System.Windows.Forms.RibbonPanel ribbonPanel2;
+        private System.Windows.Forms.RibbonCheckBox rcb_hidearchiveLogs;
+        private System.Windows.Forms.RibbonCheckBox rcb_openmultiLogs;
+        private System.Windows.Forms.RibbonTab rt_Monitoring;
+        private System.Windows.Forms.RibbonPanel ribbonPanel3;
+        private System.Windows.Forms.RibbonButton rb_Monitor;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator3;
+        private System.Windows.Forms.RibbonUpDown rup_Duration;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator4;
+        private System.Windows.Forms.RibbonColorChooser rcc_Newest;
+        private System.Windows.Forms.RibbonColorChooser rcc_Oldest;
+        private System.Windows.Forms.RibbonPanel ribbonPanel4;
+        private System.Windows.Forms.RibbonButton rb_openLogs;
+        private System.Windows.Forms.RibbonButton rb_refreshLogs;
+        private System.Windows.Forms.RibbonPanel ribbonPanel5;
+        private System.Windows.Forms.RibbonButton rb_Logging;
+        private System.Windows.Forms.RibbonPanel ribbonPanel6;
+        private System.Windows.Forms.RibbonButton rb_debugWindow;
+        private System.Windows.Forms.RibbonButton rb_customPaths;
+        private System.Windows.Forms.RibbonButton rb_Help;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem1;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem2;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem3;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem4;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem5;
+        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem1;
+        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem2;
+        private System.Windows.Forms.RibbonButton ribbonButton1;
+        private System.Windows.Forms.Panel surface_mainPanel;
+        private System.Windows.Forms.Panel surface_lowerPanel;
+        private System.Windows.Forms.RichTextBox rtb_Help;
+        private System.Windows.Forms.Panel surface_customlocationsPanel;
+        private System.Windows.Forms.Button b_deleteLocation;
+        private System.Windows.Forms.Button b_addupdateLocation;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox cb_recurseFolder;
+        private System.Windows.Forms.TextBox tb_logProduct;
+        private System.Windows.Forms.TextBox tb_logCategory;
+        private System.Windows.Forms.TextBox tb_fileMask;
+        private System.Windows.Forms.TextBox tb_customLocation;
+        private System.Windows.Forms.DataGridView dgv_customLocations;
+        private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_customLocation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_fileMask;
+        private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_recurseFolder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_logClass;
+        private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_logProduct;
+        private System.Windows.Forms.RibbonTab rt_Trace;
+        private System.Windows.Forms.RibbonPanel ribbonPanel7;
+        private System.Windows.Forms.RibbonPanel ribbonPanel8;
+        private System.Windows.Forms.RibbonCheckBox rcb_MultiMerge;
+        private System.Windows.Forms.RibbonComboBox rb_selectTracer;
+        private System.Windows.Forms.RibbonTextBox ribbonTextBox1;
+        private System.Windows.Forms.RibbonTextBox ribbonTextBox2;
+        private System.Windows.Forms.RibbonTextBox ribbonTextBox3;
+        private System.Windows.Forms.RibbonTextBox ribbonTextBox4;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator2;
+        private System.Windows.Forms.RibbonTextBox ribbonTextBox5;
     }
 }
 

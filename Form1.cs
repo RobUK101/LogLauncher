@@ -4,6 +4,12 @@
 
 // A fully compiled (release profile) version of the tool can be obtained from the TechNet Gallery - https://gallery.technet.microsoft.com/LogLauncher-61ba5c99
 
+// Implemented a really cool Ribbon sourced from https://www.codeproject.com/Articles/364272/Easily-Add-a-Ribbon-into-a-WinForms-Application-Cs, thanks KoglTH, toATwork, adriancs and Michael Spradlin great work!
+
+// To compile this project you will need to have the System.Windows.Forms.Ribbon35.dll file placed in this compile folder (debug\release) - Use ILMerge and ILMergeGUI to combine DLL and EXE into an EXE containing both
+
+// V 2.3 is not release-ready
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,14 +20,31 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading;
 using System.ServiceProcess;
+using System.Linq;
 
 namespace LogLauncher
 {
     public partial class Form1 : Form
     {
-        private const string c_productVersion = "V2.2 - Robert Marshall";
+        private const string c_productVersion = "V2.3 - Robert Marshall";
 
         public static readonly string[] c_colourWheel = {"FF2D3AF7", "FF3E4AF7", "FF4F5AF7", "FF606BF7", "FF7C84F7", "FF9299F7", "FFC6C9F7", "FFDFE0F7", "FFE6E7F5"};
+
+        // The Help contents
+
+        private const string helpformContent = @"e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcZGVmbGFuZzIwNTd7XGZvbnR0Ymx7XGYwXGZuaWxcZmNoYXJzZXQwIFNlZ29lIFVJO317XGYxXGZuaWxcZmNoYXJzZXQwIENhbGlicmk7fXtcZjJcZm5pbFxmY2hhcnNldDIgU3ltYm9sO319DQpcdmlld2tpbmQ0XHVjMVxwYXJkXHFjXGJcZjBcZnMxOCBMb2cgTGF1bmNoZXIgVjIuMiAtIFRoZSBoYW5keSB3YXkgdG8gY2hlY2sgb3V0IHlvdXIgbG9ncy5ccGFyDQpccGFyZFxiMFxwYXINClxmczE2IFJlcXVpcmVtZW50czogXHBhcg0KXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBBZG1pbmlzdHJhdGl2ZSBTaGFyZXMsIFJlbW90ZSBSZWdpc3RyeSBhbmQgTmV0IDQuMFxwYXINClxwYXJkXHBhcg0KRmVhdHVyZXM6XHBhcg0KXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBFYXNpbHkgdmlzdWFsaXNlIGNoYW5nZXMgdG8gdGhlIGxvZ3Mgb3ZlciB0aW1lIHVzaW5nIHRoZSBtb25pdG9yIGZlYXR1cmUsIHNldCB0aGUgZnJlcXVlbmN5IG1vbml0b3Jpbmcgc2hvdWxkIHRha2UgcGxhY2UsIGNob29zZSB5b3VyIGdyYWRpZW50IHN0YXJ0XFxlbmQgY29sb3VycywgYW5kIHRpY2sgXGIgTW9uaXRvciBMb2dzXGIwXHBhcg0KXHBhcmRccGFyDQpccGFyZHtccG50ZXh0XGYyXCdCN1x0YWJ9e1wqXHBuXHBubHZsYmx0XHBuZjJccG5pbmRlbnQwe1xwbnR4dGJcJ0I3fX1cZmktMzYwXGxpNzIwIE5vdGUgdGhhdCB0aGUgQWNjb3VudCB5b3UgbGF1bmNoIHRoaXMgdG9vbCB1bmRlciBtdXN0IGhhdmUgcmlnaHRzIHRvIHRoZSByZW1vdGUgZGV2aWNlLCBhbmQgbG9nIGxvY2F0aW9ucyBzZWFyY2hlZC5ccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgQ2hhbmdlIGEgQ29uZmlnTWdyXFxTQ0NNIFNpdGUgb3IgYSBDbGllbnRzIExvZyBTZXR0aW5ncyB1c2luZyB0aGUgXGIgTG9nIFNldHRpbmdzXGIwICBmZWF0dXJlLCByZW1lbWJlciB0byBjeWNsZSB0aGUgc2VydmljZSBmb3IgdGhlIFNpdGUgb3IgQWdlbnQgZm9yIGNoYW5nZXMgdG8gdGFrZSBlZmZlY3RccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgSGlkZSBBcmNoaXZlIGxvZ3MgKCoubG9fKSBmcm9tIHZpZXcgYnkgdGlja2luZyBIaWRlIEFyY2hpdmUgTG9nc1xwYXINClxwYXJkXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBUbyBvcGVuIG11bHRpcGxlIGxvZ3MgaW4gaW5kaXZpZHVhbCBpbnN0YW5jZXMgb2YgQ01UcmFjZSAsIHVudGljayBPcGVuIG11bHRpcGxlIGxvZ3MgaW4gb25lIENNVHJhY2VccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgQ3VzdG9tIGxvY2F0aW9ucyBmb3Igc2Nhbm5pbmcgY2FuIGJlIGFkZGVkIGJ5IHNlbGVjdGluZyB0aGUgXGIgQ3VzdG9tIFBhdGhzXGIwICBidXR0b24sIGFuZCBlbnRlcmluZyBhIGZpeGVkIHZvbHVtZSBwYXRoIGFsb25nIHdpdGggYSBmaWxlIG1hc2tccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgTWFrZSBzdXJlIExvZ0xhdW5jaGVyIGhhcyBydW4gYW5kIGZvdW5kIENNVHJhY2UgYmVmb3JlIHJ1bm5pbmcgd2l0aCBhbHRlcm5hdGl2ZSBjcmVkZW50aWFscywgc28gdGhhdCBhIGZhbGwtYmFjayBDTVRyYWNlIGxvY2F0aW9uIGNhbiBiZSByZWNvcmRlZCBhbmQgdXNlZCBieSBMb2dMYXVuY2hlclxwYXINClxwYXJkXGZzMThccGFyDQpcZnMxNiBUaGFuayB5b3UgdGhlIHRvb2wgdGVzdGVycyB3aG8gZ2F2ZSBtZSB0aW1lLCBwb2ludGVkIG91dCBidWdzIGFuZCBpZGVhcyBhbG9uZyB0aGUgd2VlayBhbmQgYSBiaXQgb2YgZGV2ZWxvcG1lbnQgdGltZSBWMS4wIHRvIFYyLjAgdG9vayB0byBjb21wbGV0ZSwgWmVuZyBZaW5naHVhIChTYW5keSksIE1hcmsgQWxkcmlkZ2UsIFNpbW9uIERldHRsaW5nIGFuZCBQYXVsIFdpbnN0YW5sZXkuXHBhcg0KXGZzMThccGFyDQpcZnMxNiBXcml0dGVuIGJ5IFJvYmVydCBNYXJzaGFsbCAtIE5vdmVtYmVyIDIwMTZcZnMxOFxwYXINClxwYXJkXHNhMjAwXHNsMjc2XHNsbXVsdDFcbGFuZzlcZjFcZnMyMlxwYXINCn0NCg==";
+
+        // Images used to populate the Ribbon
+
+        public const string imagetextScan = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QETDgQu3CRWhwAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAEGklEQVRo3u3aW4hVVRgH8N+ZOZo22piWg4VlN0Giy4NlEGlhF6Eo8qEbhWQ3SAghkiJ66UpPQUEF0+2hoqDoBtKLRSbYQ2RIkDllViiNkznZTDPOOHN66DuwO+0z5+rZM+EHmzXsvfZa69vr+3////rOMDUt56gdtdbHWhcW4ngUJuFaC/gdP2N/uU4b0BedJ/v1C65M25FLsBm78Wy0kzUrnI37cAKWYEfy4SYcwnFTBA7nYgCflD4YxVtTCNczYyd24tjizTbk8WeGSSZXYyiPYyzW3lYcI58RUxbK/F33eG3/Fx7JT/DsFHyOWU2crw2fYnWztdZEjozgqwBXM7Gxs8mhWdGRX3F9C6PjGJwUyuLEyKZ9weZ7UnY21buXMg7xh9AT2bOUyfdHZFyX6P92ODerGkdOj1RXr5QYiC9cidx+iP59gckncTvuwYvYhsHo835oQng46chEoXUQL2BGnV/5YCygnK3GGzH+g3gNvSn92nEqHsfNWIrleKIU9FmE1qUxbz9W1BiCxXDrrBbs7SHO6iXLcfwWbdLm4XX8hcsidKq1p7A3du8DXI7D1WBkpAGM/IEFKeM+EM8fbYCLNscHWpbM6wW8jDtLXpiDuzG9zgkH0R2gT1p/fKD5DYTmYnyH95Lk2kqMrIj5NjRhrG1JYpwII9MiW9Srxw7jp1CqRbsi2s+a4Mg7OB8X4YtKWqungYkOBc72Ju4tjPv9TXCkeDqcX2lH+gIj0+qcaChlwblEMmjUxpNyJV9moiKhdTcZI71BgJ1NGGtxtPvSxNeRLgNtivaCJox1bbRbs8haeQxHpaYRWxDr/rh0F15p5iGngj0Wc65vYM6NMcbyUkd+bKHO6grp0o+z6nj/mgD6l3GG+ZcjBXwYh5pW2I0xZy9Oq+G9W4KfxnFy2sGqldfamHd9kOUobqqQybrwSLx/IIhQ1o4MhWqFq0IFFyIBvIo1uDjif12o3H3R5+tQG2vLSYksitFrEpXD5/1TnB4t4/i3oZqXJjTWDaUZZzvOyeCcXsAW3BVKdjYW4YzA6nhg6Ht04GmsTJD4bpwXxA1uk/1PBe9iVTjSGbs0Mw5h4uye9t66UpLqNjl++xiM6siuoIT+BLD3pPQfK4rGJJktwx3xoFGpMjdBVqNRXRyqk2y3R8a6Gh+lEPDG4JYjYhcmvtqBMkfeWm16AujJ6xt0tDUoNyYqXJQe0hq1EdxboqTvj4rMrfka1G+uhmxUSLmXqzGjpdlWPBNYei4c6cHsagZfEnE4t8Yd6UgsaqAG3OUC6CtDk5U7+7+ZqGRuqTTooijrZJHBdkRdrZxwHIp+u6oRn6syTMXDOLPC+uZVG/dzgvXHMmD+8dBWw40OlHP0v3BaZjOKdYf2JvNHqy3nv0XyqW1/A+AfHbvGVD44AAAAAElFTkSuQmCC";
+        public const string imagetextMonitor = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QETDwg3FTjbfAAAA3hJREFUaN7tmktsTkEUx39fW1pNS7U01CORtEKjRdMEISEWQoTYsWgiFmLBxoaErQWxkZAoERKPhY3HgiAWEiJCJJ5Rj9CoVDyr1QfVftfmf5PjGm2/uv36jTjJzcw9M3fm/Oc8ZubkJoIgWMh/yhxKROqLgGwg8ED2bKABaI4C2Q/UAT2eAEkAX4EqoCPHNFQBRZ5Z1DhgTBRISMuAN4MYNIhoeCgpHzgKVIcMF5AGoGkQg48EutMEJA/otIwsR6ecQQy8DzgBFKYJSE5U+zkxDbwFaAdGywHTTlkxjFGrUDgKGDFcXh8HkHnGR7J9BlIT83jDAmQUUG7eS30FUghMi4RFL4EUAVPM+zRfgdSqfG805CWQFSqPmbOPl0CWq7zgM5AiCX4PeC1esQ9AaoCJDm3cAVpUL3F8V6BNMy8TgKwHbgJ7HUDuAm19aGQrcAtYlS7tXNOdIhpCFwOtakuaY8gT4Buw1NxHmh23uKdquxGjrAVanAAoG4hGSoBzOtWGgq0DxgNjpYlXavuiCSzNVF+AhcCsvxB+NJCbimlNACYBU4FHcur7wBJjKmXaM1qBRvHbHftItQB36f3AH+TI1ZiTHE8ZsE1zfdTiBAMxrV6TgAh0YyyVdprE26nyjPn+gWOCg+LtAV6qXu2Ye7PMtMfx9BpZAuCUzPsX0+oLSBJ4Acw16Zfz6vNB5Ubz/XXxxhheCLwEqFe93gHkrdoGDcR1Q1ykfSEBfJfQaMArwGqz8V0y33UZ02wFKoDJMs9PwGFgE7AG6ND9Pqn+E4CrwFqdqKNJjTpptR3Y1V8o/1PUslSmyQMjeEjHxQ/vJ7v1vt30uR1ZXfvMT8HZCwaikb6oWY4/R9qx9F1luGluUHk24gsnpRFLjcDjfuZu6y8bkSrtAC4CpyP8z2blyhUgninSYE4BlY6gkIwjrZIqXQYWSDOuFSsGVppI1hLp1ztU+aFUKSn7jFK7Ma2KiN+lJdEVF4UrP13mg8OPMjqLEnX2mcAM7SHP0wUkTo10yv4rtUBHfMtrWY30mjEP+QqkA/ih+lPgna9Aus1+cNm35EPUR8LD5jWfgXRovE4dFNNKcUatRh2xW9IZdocCSHgo9DJBlzHkAtLjgdy//QvgMq0ZjmxIplG+nj6BXPHRtCyQh8Bs/PuFozV8sQ3e/lTzz1DiX/nx7CeehejkjcLTngAAAABJRU5ErkJggg==";
+        public const string imagetextmonitorStop = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QETDxckXNyUPAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAADuklEQVRo3t2az0sbURDHP/M2gaCmB39cCoGC0F4axENBsQfBQ8FbQQr2L+lR/4CePPVcKHixJw+FCgF7ED1GBAWxUKpoFaFSKanm9bCz7eZlo7sxaXczsGTZvDfvO2/mzZs384QOkEAB6ANKwIyFR0AZqANGmwXvVYFdC2sCX4BLCz87gCEZGUWkncsWngLT4gswlJDdGbAGVAQ+Wai6Y3SVPJgSeAt8BWyHnq8Cbz2Y6hpw81eAgsASUOugAO5TE1jyfHP9M/adTEuUc557csX3CeCdhQctmn8DTnUNbAH7guwJ9geARfot9iEwauGJrqFhYKTF2J+BlznY+AU2wNI25SAPLLaaQYFNYEFg0kAxgZaLApPad/MGDS0aH0PbXkD0930LAQ4F5pKAv0WoOYHDFmOthDEltjWB1RaM3/hLpg23d/OYnvKOGnM1savNQT6kiXqI4ZHAfLe9oo5xFBq3HmgmlpkZXdhRa0JgR2Ccf0QC4wI7UWsmD2JiMJhsIcSA64676eoVy0CUMIrxxo2uIHDgdDz6l5qI0oxjZlbgINhnImdBNztX+nn+MykGF9dSpHVoaFCL8E5dN6eYZuZ6s1pkOKOxU8M+EbjYlJDn7jOKuUGIshsACsyRMlJMbqBZ1i0DNBS/H+qwJfCBmPGNwDQwAVwnD6TZsFCJs2kqpi2N1QDuK/ZqcChadiRdSDBL08A5cNXmc6484tKCg3VZoIDAoPhRa/DHya1+ulGQVwqo3bD9Cp9H3PEmgZNQ/1OBQQOUnJPdqcB2ghm67oDtXydou63HhYCGLJQMMOO0rdbhgpSSYqs6ws0YTRSEP26RcnIxWnhk9KQWpn3STy7GclPCQpC99GukCWPduNFHcMZOtyBNGI2hR6jJtCzSn3bQERibTUtTNikXpAmjZ1yfDIxmwJJcjOtGYNfxyU/Sr5FGjALHxvpJZNcnF1O8qIvu3mfho9HU/lno+7CFxwlmx+vADHsJ2j7GT7UGdCbwxQCXNGplxMKzBOHCBn78c93mc6E84gryjMZ88RpwmdMiSwV4EQI3K/DawoW9nXFF4LmFCUkYCVv/+JrkYFW0MOtgqvwpFGX4qHsobqzYE8mHDKeDxno3QadayXbKNOJwn+0ktl9WoDfKCipQXstd2Sz0BBtP6D3bpTdtHBRDV8hiMTTKzMhAeTrmhQHkyk9SZ/fCQNglpvkKR3tBD4x18VLN2B0dRvK0S/iaE34O+b9dc5IO+f0C0GehJDdfPPOAdYFjCx87efHsN0SbSIvJczy5AAAAAElFTkSuQmCC";
+        public const string imagetextOpenLogs = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QETDg8OBL6vhAAAAx5JREFUaN7tmUtoE1EUhr+ZJH1YS3011AfWhcWlFXRTKiqoGxeuXQkKFdcuVNwo3WoVXIqILkTEfaFuXCmCBgkYqE9QhDa2vlpimtbERU7KdZhkbmbuTJLaH4a55E5m5j/3nP+cMxf+xWbgNlAAShEeb4EhAsBSxjHgIjAK/ATyRAMLSAI5oBso+rlJXBn3ALtkfAkYd8yHgSLQDjwBNgEDwGRQIsgyA3yQIyosytn2ewNbk2AU7qUa0hiRRqHg94/xJiNyFPjkYeAF4Bkw38xExjRUqwS8A04C6WYlkhWLWzWu2QAMAueEjDaR+8Buv/ouL7UEnAJSHtceAj56XHMYeCxyre1a7XLzzoCWtiVzpzSe54WEn2BfEAsMBJBGS9Ro3LAbluoN9tdyNDVsVghWiTQbdGLkJbAzgPy6PXMCGAFmHXP5sIhYQL/0CSYLxF5gjQuRNPANuAA8MEmkBGwHtgWpTF16kCwwV8XVu5S+yKhr5YA3Ebn6iEh9utWr3+fA+5WgWomw+xGTK1esoYB/wiTyyHCwx6QxuiIKpaIP+CWeUinlp3SkX4fIMaAjhETcWcVoiwqJBPAUOANMByWyA9hqWH6nqrxY0uW3Lp1n6xCZ9rKGQewBMuJ+lhD43Yrym/f7JeW/KhoTwDrDnd2cdJ9u8RMKERu4AWwxGOy29O43ge+OuV6R5JhSYH7VyS9xDYU5Aaw37AlJ4JbL79eltlPl94XknNmgrjUMrDW4IpZYPesyt69Kto+biJFMhDF7gPK2gupaOcr7NS0lv1m/OWv140NI8B2HzeZafRIPMYcw5FqNyCjlfQ9n9TsG/PBDpNggIkMuvUtlw7SuFalYohtoC9J61lHStymxelp6dluJ4S9eydBJZB74LONrwGVqb7iYggVslPFD3bK9FpECcFcy+f4GuNV5vyTcXGsSOEh5N6jDo284DlwFZoCzAVcvo3iDMfktVqmDnJhRSvKJVk6IluPc8pk9aqlecjNgPCCBkvQqwxGuzF7TmT0lkt0P3ItwRXrk/MrNz/3iCOW9jMEIicwDd6RVXk6UfwFIPb1xTHHhGwAAAABJRU5ErkJggg==";
+        public const string imagetextLocations = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QETDhUOtJNVXwAAAlBJREFUaN7tmc9LFkEYxz+vr6+okR3KDDxEl1LwUAehU3jpD0gIJEg9dJGueuggnerQTQQvHTp1icBTBNHVQ4kkHbwkKIIk/iBSROh9fbfLI27jOzo7O85OMF8Ydt/dd2afzzzzzDyzC1FR56LSKfeagXY52rT7G6g5svGSHHeBwyyVrwNzwD6QWJSfQIejzn4FVKXdj0DFtOI1S+PTZdIhRLrdGnBHN3xUN76W80R+L8u5qVqADw4gXgATDewrmVSuAOupHugvKHafazw9Zzq0WiRIk4xeUDUCrAJvLOpOaiA+AeUsw2I3J8g9xYDZDHXHNRBfgFYyju+8IG8bzGAmRkxoIOazzFQuQd4phmwYgIxpIL4CF2yMKALkqQZiGWizDVLfIKMaiAXgYp5pzyfIsAZiwyYraCponXikmZqXgB7pTEL3yAONJ7aAy7aG+/bIQ+B9g+trQC+wEzpIFbgv3lJzpV/AALCd5wE+QA6BQUkx0nugRLYJt4EV1w89jxj5I8e6cn0HuOnK8GYPHqlodqN3gR+uHlLE9LsN3HIJ4csjqqZlhuo95T9lyXjXQ4qRPOVx6Cu7qWaKBPnusK3NBvYO+BpaAIuyRhzkKFtAn7TXBTwTm8Z9Bnu/vBsrW9Y/WmeOUpYh4GXqnjeQqmyMXKn+vwd78PuRCBJBIkgEiSARJHiQJHCbExOQBNhTkr8Q9CR1vmaSNNaAb0A3x6/1lwru/atAp2Kfka443Kq6LlNZe+IG8Jnj79tFlxVOfuH9R6Uz7jUFFOB1oqKirPUXvXFYb14CGhYAAAAASUVORK5CYII=";
+        public const string imagetextHelp = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QETDhsQ0B9FsgAAA8dJREFUaN7tmklok0EUx3/WpU0VxX0tboi2BxcUq3UBwV1BRaGoqCD1oELBg0hFqF4KBREvXkQPHtSLiIJaV1RcDipV3EBc0VqLVax2b5rGQ96HryEm35eZpFHyhzAfXzL/ef+ZN2/ezATSSCMh6JYg3uHAGGAw0A/IAoJAA/ANqAbeAS2p1BkZgA/YAFwF/GK0m88H4CAwEehu0rEmIzIA2ASsAhZE+L4aqAV+AAF5lw0MBEbJs8ZHoAI4DdxO1iiUROj5z0A5MNUlRz/piKtARxjXcyAnkQIKgfeqwZfAXiDPkNcHrJXR0IKOA/1tizirGvgJrExQZ/UGzqu22oAZNoj7AveFtAM4BPTxUD8PmCsfn4d6y4EXStBmExE9gBpFtjAOjlaZ7EFxQy/IAm6p9nfEK+KOENQAU+LsDB0USuLkOKY4FnmtvEf5aL7BqNYrI4rj5OgOXBSOX14qTlKNbzecY7WKa6uhm1cJzwW3lW5LhfMWgsUnJaTQkCtPePzAnFg/HgfUySQtsCDktRJiGrJ7ANeE63B4nhSOWbLq1gIPLQhpVc9NhlztwBkVnjOiCVkh5XUZQlM0q+cGC3yOu0/Q61IkIdOlvGFppW4Ji2CmqJGRAZgWTchQKd9bEqJdq80S5wcpc6IJcVLuzAQI6bDEmRlma0Qhn6UcY6nRpgQIGSnl22hCnEi1zPIc8VsSMlbZ/SyaEGfVnOMxW/0b2pQbBC3wrVYi2qMJeQx8l4ODAouulaF92mBurJPni25G2EnQ7loQki2Z81gLXPPErna32fgwlVaUpchpTR+gUWw64aXiTrUrXG5gwBJgi+zwhhm41D2xpzqePUCFVG4B5sdpRMDCxuqK1A/EO2+7AU+VIZsMhezzWHeEBB9HxGbTyXpJudllQodzbqGPdw54qLdNbcoC4qJWcFyihbOxKXJ55rQe2A+USkiPhl5ALnBTia8CJtuOHLOBN6qRL8ApN7s1FxFpN1BJ51PH/R6PnjyjWHpK+38DcAQY4oFnKfAozP1+yRZiULLiel9gMZ2POf2yw3SDsrCOeCUdNLErF6v+hO49Gl34sw84pwRcczF3kobxstbUAaNjhNMnSsQuUgwFYthXiTyRkC+bLCdXWk0KojxGklkq6XyQ0JVbLikKZ+EqCnufBZxUrnSXFMYSZaje38wkdBFkmmclDZVi6FH1bqMSUC+iUhpzZe1olvifI7mYI+JyjCiWMqhQvl9E5+uyUv4R9FSG66uDBxZyry4T0uUT2vQvHGv4c2l5ShbENNL4n/Abo+I5oS02v30AAAAASUVORK5CYII=";
+        public const string imagetextLogging = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QETDiIBtCvo+gAAA0JJREFUaN7l2l2IlFUYB/Df7M5miUhla2mSRR92YYiUlmRlEhpqdBVCC3VhkdBFHyQR0k1BoRKGdCHVTQYJQRSCWWBoRB9WblsQmat9QKF2YbqGVmu+XcxzMU37vjOjjnveemA488457znnf87z9T9nKlmWzUe/csuxKo5UKpVDJQeiq+Tzr+QBORdHkZXg80WUoNoApAfn4Dn8Vo84MZmL+f/4JcuyWXWPvYGyN3GVeqJ+N4pspPJ/MPbuMzBOd6h9V6cGuBTbRrCtIrkGH7fYdirWRfsvsRkPdALIVNzU5nuTMLuFdlfhWyzHUIC5GuvxVjNNaBdI1iEVnxg78Ckuw224L74vxZ1YU4aAuCIczP34uaHudTyFR3BRykC6MQMHQrVGkq1R3pAykErM41hBm+FQ656UgRzHnnAkeYF4dgAeSN1GnsfZYQuNcj5WYTsG8zqoJgJkF+7FK5iJN3AQ0/EwvsGSog5SAQIb8FWAWF3n7l+OoHhitN3vJVFe3ELbAVyOp2Pik8IlnxhNYjUXh/FSrOxP+BDjWnj3j3jn+GgzxMfwAd5HHxbhoVjtfbjytI+Yw0cm5jS/OerPKuhyesSE13Jixq/4qMm0VsZuTDhVPnIqsjBcaV9OrrYEcyJuJH34cC0+L0gwv4/VvjF1IENFyV2d2z+cOpB3MQWzcurviXJz6kDeww94E9c31C3Hs3jydA9a7ZBqzQhb+CT4xWAkfmPxNp5J4fChVTCTI3bswTxsxB1Y3EqkTmFH6qPzukgIbwnqmsxx0Pgox0pMWgVyodpZ66Z4PhhculomIIuxP6L1SiwLorMgDHlaCkCarWgPXsVOXNdQtxbf4cU4vhlOeUf6cF6k5I3yC+6KRLI3ddW6HZ/h95z6LXX5VdJA/gzbaCZHUweyUe0Q+oKc+gej7E8dyDtqp3/9uGIE3vFCuOGh1L1WFmnFrsiXtmM3bg26uhd3468yxJFBtUvSVRijdq3wIx6NXWoGYh92tDmvr4MOH+kUZ2/7JukkU6GK4vuQf3H2dlOMk1WhdrPdrN2xugo6KpXk7cjj0r9nL7SRMv3zYaBoRw6lyDWaOIWsk1T3TEnWac4+KgFx+L8A5G8ylgW12SmdJAAAAABJRU5ErkJggg==";
+        public const string imagetextRefreshLogs = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QETDiw1CxwxwQAAAxRJREFUaN7tmktIVGEUx38zjlmGRfawB1FWBq4KaxGiFoXQIoiIVhG0SS2iTVFBUBRIixZt2gVCiC0iqCCKWrQIH4uEkogCe4hoVBolkYqm02JOdPn47mPu3DlewQMfylzu/3y/+zivmUQ6na4GCpndNsacxcwSedItARYCRUCBfDYJjAO/5G+srQFoBz4CP4EJYFrWGPANeAu0AdVx2/wK4CyQDrE+AXviEGwagKGQEM7VC5TPBEABcDsCAHMd0QZpywPEv9WqBZEERlw28Rt4AjQBm4zzUsAOoBno9oG5rAUzYHHeAiwKGNLnAZXAew+YRg2QbcCoOOwH9uagddUDpkoDZgGwWZJerlbtAtI3G6uMgzP9vkRpJywgo0BxFDVThzLMKwvMqVxFL4rQVkWQUuCPBSa0rXOIjEjI1LJ2C0hNWLFnhtBJRZBVFpBrYYRqXSJIqSJMr+G7P1uBlEcJcl8RpNXiP5WNwDGfOqhSCeSwxXdt0JOXBKhOv+SxRXbaeovvJq9K1qx7/KwM2KcA0ucSSX2tQqgnZU0bV2PKcSwNzM/D5lOOheWO3HAcL3TeiIQR8pY6Jh6PjfbzHnBe8kkC+CDlQ5R2CLjkuHBbjOM/gEH5v1h6Ht9k2WNcjbtKFfVEwE7yQtjs+kIpWtUFBAlcaTwwTpxUHBr2+kDUZyPYbBFYowRT5gExkG34r7eInFHM7G7jplDzL1OkUxEkZfF/J6zYU4tYiSLMcSOPhfZt66OfK3eM4+K3IddWN23J8BsUQbYDw/z/eiK0XbHAfFcESQIroxAqcumhb8Zp/BLkdk1JgVZnfF4FLCYz640iCSZzHTIEtdcucb0lR921wCPRP6cBstwj2w5Lr5DM8mk4YNGq0ICp9amBHsrm/OZWp4GXLhrXwz6b2dpueS/8BgGdQBfwWcrzcmAXsNHnvKPALa0gUeNIVFGu7pmIeKXAm4gAJjTvgtsLu5/MjwDCQnSR+eIoNtYIvJO+2mvj02R+ONAB7IyyG4u6u1stg4wqGeYtE4BBeRR7gK8CM2dzFnf7C4Wn4qUSTG83AAAAAElFTkSuQmCC";
+        public const string imagetextDebugWindow = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QETDjEPMnyEbwAAAqZJREFUaN7t2rlrVFEUwOFvJgvGBRVjIRosRBTBBTSIivgH2KUQjRaKhREVyxRiYydY2SpEEG1tXAoXUEyhsTOiIoiIuBZiFk2cZMYiN/IyzMT3lAw3MQcuA+/deXN/72z3nDvMSlySm+TefDT8YU4tpYSfGEwL0oyDWBdgYgEpoh9P0YW+yUBacBVNkVtSP/biUyWQBbiGxUGNsbvEW+zHd8gnbu7GomkAMe4vLdg2fiGf+FwVkT+kkTq0loOYZhDjWllaCWQ6St1MAfkt9VWuj6IQ6ZobKymgEkgeD3EhUo2dwOY0IDl8xbNI80efKm9/RvtIJdmBFSnnFnAX32IDOYYjGMnw7MNow3AtQNKaVnt4y8UMYzU21kojaUFeJmqTNCMfQvib2EyrE2ewPOX8oRC+P8cG8gVHY45a/2X4nUzmJDdwKWQ4YwSsCch2nMSSDNvv2zgffCkakLOhSVHM8J0DuBUaCdGANIa3nLVEbojNtE7hOBamnD+CbjyPDeQOejI8q4QBY8226KJWzTaHs3nkH15QB3ZK150p4T4u/m1+mSqQ9pBbBjJ8ZxPe4XpMptUakl0pwyhgQ2w+cjnkiboMYxQ3Y/ORJ9gTuh1pfeQRXsQGAr1hzIbfqdBIY6jB0x47jOJ1KMiiAunAoQCUdhvyKuxyB2MC2Re26T8yPHtNyA3dMflIbwin9RnGcDCvqEzrdDCT5gyl7D18iA3kI85Jf6pV83PIaiBzY1lghd9vKivSJvhIKVFzF7EL6yNMF1uxJaw3h/flGimF0rMYJtTjUohSsZxcNRprO5US2ng8fjNXZk5dWJtYfGwnvaVE46In9AqGmNhUK+CBsQ76ypCdY/vzQB7zQm7qTNY7uSqT28LudZlsHcSplJFQeF3BDTNVfgEs0ZsQPm6W4wAAAABJRU5ErkJggg==";
 
         private static readonly List<string> c_Sayings = new List<string>()
         {
@@ -141,6 +164,10 @@ namespace LogLauncher
         private bool clientDetected = false;
 
         private List<Color> colourList = new List<Color>();
+
+        // Define a global for the deviceName
+
+        public static string deviceName = "";
 
         public class servicecycleMessage
         {
@@ -391,7 +418,7 @@ namespace LogLauncher
 
                 if (!anArgument.Contains(".exe"))
                 {
-                    cb_remoteServer.Text = anArgument;
+                    deviceName = anArgument;                    
                 }
             }
         }
@@ -450,24 +477,36 @@ namespace LogLauncher
 
                     try
                     {
-                        cb_remoteServer.Items.Clear();
+                        rcb_remoteServer.DropDownItems.Clear();
 
                         foreach (string recentServer in recentServers)
                         {
-                            cb_remoteServer.Items.Add(recentServer);
+                            RibbonTextBox aribbontextBox = new RibbonTextBox();
+
+                            aribbontextBox.TextBoxText = recentServer;
+                            aribbontextBox.Text = recentServer;
+                            aribbontextBox.Value = recentServer;
+                                
+                            aribbontextBox.AllowTextEdit = false;                            
+
+                            rcb_remoteServer.DropDownItems.Add(aribbontextBox);
+
+                            // rcb_remoteServer.Value = rcb_remoteServer.DropDownItems.Count - 1;
+
+                            rcb_remoteServer.SelectedValue = recentServer;
+
+                            rcb_remoteServer.SelectedItem = aribbontextBox;
+
+                            deviceName = recentServer; // THIS IS GOING TO CAUSE PROBLEMS WITH THE COMMAND LINE SWITCH
+
+                            // rcb_remoteServer.Refresh(); ***
                         }
-
-                        cb_remoteServer.SelectedIndex = cb_remoteServer.Items.Count -1;
-
-                        cb_remoteServer.Refresh();
                     }
 
                     catch (Exception ee)
                     {
 
-                    }
-                    
-                                     
+                    }            
                 }
             }
             catch (Exception ee)
@@ -481,11 +520,13 @@ namespace LogLauncher
             {                
                 if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "MonitoringTimerDuration"))
                 {
-                    nup_Delay.Value = Convert.ToInt16(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "MonitoringTimerDuration"));
+                    rup_Duration.Value = getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "MonitoringTimerDuration").ToString();
+                    rup_Duration.TextBoxText = rup_Duration.Value;
                 }
                 else
                 {
-                    nup_Delay.Value = 5;
+                    rup_Duration.Value = "5";
+                    rup_Duration.TextBoxText = "5";
 
                     updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MonitoringTimerDuration", "5");
                 }
@@ -501,13 +542,13 @@ namespace LogLauncher
             {
                 if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "GradientStartColour"))
                 {
-                    pb_colourpickerStart.BackColor = Color.FromArgb(Convert.ToInt32(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "GradientStartColour")));
+                    rcc_Newest.Color = Color.FromArgb(Convert.ToInt32(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "GradientStartColour")));
                 }
                 else
-                {                    
-                    pb_colourpickerStart.BackColor = Color.FromArgb(Convert.ToInt32("ff1dacf1", 16));                    
+                {
+                    rcc_Newest.Color = Color.FromArgb(Convert.ToInt32("ff1dacf1", 16));
 
-                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientStartColour", pb_colourpickerStart.BackColor.ToArgb().ToString());
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientStartColour", rcc_Newest.Color.ToArgb().ToString());
                 }
             }
             catch (Exception ee)
@@ -521,13 +562,13 @@ namespace LogLauncher
             {
                 if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "GradientEndColour"))
                 {
-                    pb_colourpickerEnd.BackColor = Color.FromArgb(Convert.ToInt32(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "GradientEndColour")));                    
+                    rcc_Oldest.Color = Color.FromArgb(Convert.ToInt32(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "GradientEndColour")));                    
                 }
                 else
                 {
-                    pb_colourpickerEnd.BackColor = Color.FromArgb(Convert.ToInt32("ffeeffff", 16));
+                    rcc_Oldest.Color = Color.FromArgb(Convert.ToInt32("ffeeffff", 16));
 
-                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientEndColour", pb_colourpickerEnd.BackColor.ToArgb().ToString());
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientEndColour", rcc_Oldest.Color.ToArgb().ToString());
                 }
             }
             catch (Exception ee)
@@ -541,13 +582,13 @@ namespace LogLauncher
             {
                 if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "MultipleLogsSingleCMTrace"))
                 {
-                    cb_openLogsMulti.Checked = Convert.ToBoolean(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "MultipleLogsSingleCMTrace"));
+                    rcb_openmultiLogs.Checked = Convert.ToBoolean(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "MultipleLogsSingleCMTrace"));
                 }
                 else
                 {
-                    cb_openLogsMulti.Checked = true;
+                    rcb_openmultiLogs.Checked = true;
 
-                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MultipleLogsSingleCMTrace", cb_openLogsMulti.Checked.ToString());
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MultipleLogsSingleCMTrace", rcb_openmultiLogs.Checked.ToString());
                 }
             }
             catch (Exception ee)
@@ -561,13 +602,13 @@ namespace LogLauncher
             {
                 if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "HideArchiveLogs"))
                 {
-                    cb_hidearchiveLogs.Checked = Convert.ToBoolean(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "HideArchiveLogs"));
+                    rcb_hidearchiveLogs.Checked = Convert.ToBoolean(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "HideArchiveLogs"));
                 }
                 else
                 {
-                    cb_hidearchiveLogs.Checked = true;
+                    rcb_hidearchiveLogs.Checked = true;
 
-                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"HideArchiveLogs", cb_hidearchiveLogs.Checked.ToString());
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"HideArchiveLogs", rcb_hidearchiveLogs.Checked.ToString());
                 }
             }
             catch (Exception ee)
@@ -1425,40 +1466,10 @@ namespace LogLauncher
 
             }
 
-            // 2Pint Software
 
-            try
-            {
-                combinedConfig acombinedConfig = new combinedConfig();
-                controlConfig acontrolConfig = new controlConfig();
-                registrybladeConfig aregistrybladeConfig = new registrybladeConfig();
 
-                acontrolConfig.remoteServer = remoteServer;
-                acontrolConfig.fileextensionOverride = "";
-                acontrolConfig.fileMask = "*.lo*";
-                acontrolConfig.logClass = @"2Pint Stifler";
-                acontrolConfig.logProduct = "2Pint";
-                acontrolConfig.pathAppend = @"";
-                acontrolConfig.pathFilter = "";
-                acontrolConfig.recurseDirectory = true;
 
-                aregistrybladeConfig.registryHive = "HKEY_LOCAL_MACHINE";
 
-                aregistrybladeConfig.registryvalidationPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
-                aregistrybladeConfig.registryvalidationkey = @"Common AppData";
-
-                aregistrybladeConfig.registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
-                aregistrybladeConfig.registryValue = @"Common AppData";
-
-                acombinedConfig.acontrolConfig = acontrolConfig;
-                acombinedConfig.abladeConfig = aregistrybladeConfig;
-
-                acombinedconfigCollection.Add(acombinedConfig);
-            }
-            catch (Exception ee)
-            {
-
-            }
 
             //// 1e Nomad
 
@@ -1495,8 +1506,8 @@ namespace LogLauncher
 
             }
 
-            //// Adaptiva Onesite
-           
+            //// 1e Tachyon
+
             try
             {
                 combinedConfig acombinedConfig = new combinedConfig();
@@ -1506,19 +1517,19 @@ namespace LogLauncher
                 acontrolConfig.remoteServer = remoteServer;
                 acontrolConfig.fileextensionOverride = "";
                 acontrolConfig.fileMask = "*.lo*";
-                acontrolConfig.logClass = @"OneSite";
-                acontrolConfig.logProduct = "Adaptiva";
-                acontrolConfig.pathAppend = @"";
+                acontrolConfig.logClass = @"Tachyon";
+                acontrolConfig.logProduct = "1e";
+                acontrolConfig.pathAppend = @"1e\Tachyon";
                 acontrolConfig.pathFilter = "";
                 acontrolConfig.recurseDirectory = true;
 
                 aregistrybladeConfig.registryHive = "HKEY_LOCAL_MACHINE";
 
-                aregistrybladeConfig.registryvalidationPath = @"Software\Wow6432Node\Adaptiva\client";
-                aregistrybladeConfig.registryvalidationkey = @"LogDirectory";
+                aregistrybladeConfig.registryvalidationPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
+                aregistrybladeConfig.registryvalidationkey = @"Common AppData";
 
-                aregistrybladeConfig.registryPath = @"Software\Wow6432Node\Adaptiva\client";
-                aregistrybladeConfig.registryValue = @"LogDirectory";
+                aregistrybladeConfig.registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
+                aregistrybladeConfig.registryValue = @"Common AppData";
 
                 acombinedConfig.acontrolConfig = acontrolConfig;
                 acombinedConfig.abladeConfig = aregistrybladeConfig;
@@ -1529,6 +1540,15 @@ namespace LogLauncher
             {
 
             }
+
+
+
+
+
+
+
+
+
 
             //// IIS
 
@@ -1563,6 +1583,76 @@ namespace LogLauncher
 
                 acombinedConfig.acontrolConfig = acontrolConfig;
                 acombinedConfig.abladeConfig = axmlbladeConfig;
+
+                acombinedconfigCollection.Add(acombinedConfig);
+            }
+            catch (Exception ee)
+            {
+
+            }
+
+            // 2Pint Software
+
+            try
+            {
+                combinedConfig acombinedConfig = new combinedConfig();
+                controlConfig acontrolConfig = new controlConfig();
+                registrybladeConfig aregistrybladeConfig = new registrybladeConfig();
+
+                acontrolConfig.remoteServer = remoteServer;
+                acontrolConfig.fileextensionOverride = "";
+                acontrolConfig.fileMask = "*.lo*";
+                acontrolConfig.logClass = @"2Pint Stifler";
+                acontrolConfig.logProduct = "2Pint";
+                acontrolConfig.pathAppend = @"2PintSoftware";
+                acontrolConfig.pathFilter = "";
+                acontrolConfig.recurseDirectory = true;
+
+                aregistrybladeConfig.registryHive = "HKEY_LOCAL_MACHINE";
+
+                aregistrybladeConfig.registryvalidationPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
+                aregistrybladeConfig.registryvalidationkey = @"Common AppData";
+
+                aregistrybladeConfig.registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
+                aregistrybladeConfig.registryValue = @"Common AppData";
+
+                acombinedConfig.acontrolConfig = acontrolConfig;
+                acombinedConfig.abladeConfig = aregistrybladeConfig;
+
+                acombinedconfigCollection.Add(acombinedConfig);
+            }
+            catch (Exception ee)
+            {
+
+            }
+
+            //// Adaptiva Onesite
+
+            try
+            {
+                combinedConfig acombinedConfig = new combinedConfig();
+                controlConfig acontrolConfig = new controlConfig();
+                registrybladeConfig aregistrybladeConfig = new registrybladeConfig();
+
+                acontrolConfig.remoteServer = remoteServer;
+                acontrolConfig.fileextensionOverride = "";
+                acontrolConfig.fileMask = "*.lo*";
+                acontrolConfig.logClass = @"OneSite";
+                acontrolConfig.logProduct = "Adaptiva";
+                acontrolConfig.pathAppend = @"";
+                acontrolConfig.pathFilter = "";
+                acontrolConfig.recurseDirectory = true;
+
+                aregistrybladeConfig.registryHive = "HKEY_LOCAL_MACHINE";
+
+                aregistrybladeConfig.registryvalidationPath = @"Software\Wow6432Node\Adaptiva\client";
+                aregistrybladeConfig.registryvalidationkey = @"LogDirectory";
+
+                aregistrybladeConfig.registryPath = @"Software\Wow6432Node\Adaptiva\client";
+                aregistrybladeConfig.registryValue = @"LogDirectory";
+
+                acombinedConfig.acontrolConfig = acontrolConfig;
+                acombinedConfig.abladeConfig = aregistrybladeConfig;
 
                 acombinedconfigCollection.Add(acombinedConfig);
             }
@@ -2220,43 +2310,153 @@ namespace LogLauncher
         {
             colourList.Clear();
 
-            colourList.Add(pb_colourpickerStart.BackColor); // Add the starting Color
+            colourList.Add(rcc_Newest.Color); // Add the starting Color
 
             // Attribution to Steinwolfe on Stackoverflow for the below Color gradient code
 
-            double aStep = (pb_colourpickerEnd.BackColor.A - pb_colourpickerStart.BackColor.A) / 10;
-            double rStep = (pb_colourpickerEnd.BackColor.R - pb_colourpickerStart.BackColor.R) / 10;
-            double gStep = (pb_colourpickerEnd.BackColor.G - pb_colourpickerStart.BackColor.G) / 10;
-            double bStep = (pb_colourpickerEnd.BackColor.B - pb_colourpickerStart.BackColor.B) / 10;
+            double aStep = (rcc_Oldest.Color.A - rcc_Newest.Color.A) / 10;
+            double rStep = (rcc_Oldest.Color.R - rcc_Newest.Color.R) / 10;
+            double gStep = (rcc_Oldest.Color.G - rcc_Newest.Color.G) / 10;
+            double bStep = (rcc_Oldest.Color.B - rcc_Newest.Color.B) / 10;
 
             for (int i = 1; i < 10; i++)
             {
-                var a = pb_colourpickerStart.BackColor.A + (int)(aStep * i);
-                var r = pb_colourpickerStart.BackColor.R + (int)(rStep * i);
-                var g = pb_colourpickerStart.BackColor.G + (int)(gStep * i);
-                var b = pb_colourpickerStart.BackColor.B + (int)(bStep * i);
+                var a = rcc_Newest.Color.A + (int)(aStep * i);
+                var r = rcc_Newest.Color.R + (int)(rStep * i);
+                var g = rcc_Newest.Color.G + (int)(gStep * i);
+                var b = rcc_Newest.Color.B + (int)(bStep * i);
 
                 colourList.Add(Color.FromArgb(a, r, g, b));
 
                 // Attribution to Steinwolfe on Stackoverflow for the above Color gradient code
             }
 
-            colourList.Add(pb_colourpickerEnd.BackColor); // Add the ending Color
+            colourList.Add(rcc_Oldest.Color); // Add the ending Color
         }
+
+        private void checkforconsoleIntegration()
+        {
+            // Check for the Console, if it exists and we're not integrated yet, prompt to perform the integration
+
+            try
+            {                
+                if (regkeyvalueExist("", "HKEY_LOCAL_MACHINE", @"SOFTWARE\Wow6432Node\Microsoft\ConfigMgr10\Setup", "UI Installation Directory"))
+                {
+                    string cmconsolePath = getregkeyValue("", "HKEY_LOCAL_MACHINE", @"SOFTWARE\Wow6432Node\Microsoft\ConfigMgr10\Setup", "UI Installation Directory").ToString();
+
+                    string loglauncherPath = System.IO.Directory.GetCurrentDirectory() + @"\LogLauncher.exe";                    
+
+                    if ((!File.Exists(cmconsolePath + @"xmlstorage\extensions\actions\3fd01cd1-9e01-461e-92cd-94866b8d1f39\LogLauncher.xml")) || (!File.Exists(cmconsolePath + @"xmlstorage\extensions\actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\LogLauncher.xml")))
+                    {
+                        // Prompt to integrate with the CM Console
+
+                        DialogResult dialogResult = MessageBox.Show("Do you want to integrate LogLauncher with the ConfigMgr Console?", "ConfigMgr Console detected", MessageBoxButtons.YesNo);
+
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            // Create Action folders if they do not already exist
+
+                            string[] logLauncherXML = new[] { "<ActionDescription Class=" + (char)34 + "Executable" + (char)34 + " DisplayName=" + (char)34 + "Log Launcher" + (char)34 + " MnemonicDisplayName=" + (char)34 + "Log Launcher" + (char)34 + " Description=" + (char)34 + "Launchers Log Launcher" + (char)34 + " RibbonDisplayType=" + (char)34 + "TextAndSmallImage" + (char)34 + "><ShowOn><string>ContextMenu</string><string>DefaultHomeTab</string></ShowOn><Executable><FilePath>" + (char)34 + loglauncherPath + (char)34 + "</FilePath><Parameters> " + (char)34 + "##SUB:Name##" + (char)34 + "</Parameters></Executable></ActionDescription>" };
+
+                            if (!Directory.Exists(cmconsolePath + @"xmlstorage\extensions\actions\3fd01cd1-9e01-461e-92cd-94866b8d1f39"))
+                            {
+                                Directory.CreateDirectory(cmconsolePath + @"xmlstorage\extensions\actions\3fd01cd1-9e01-461e-92cd-94866b8d1f39");
+                            }
+
+                            if (!Directory.Exists(cmconsolePath + @"xmlstorage\extensions\actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62"))
+                            {
+                                Directory.CreateDirectory(cmconsolePath + @"xmlstorage\extensions\actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62");
+                            }
+
+                            // Create the XML files if they do not already exist
+
+                            if (!File.Exists(cmconsolePath + @"xmlstorage\extensions\actions\3fd01cd1-9e01-461e-92cd-94866b8d1f39\LogLauncher.xml"))
+                            {
+                                System.IO.File.WriteAllLines(cmconsolePath + @"xmlstorage\extensions\actions\3fd01cd1-9e01-461e-92cd-94866b8d1f39\LogLauncher.xml", logLauncherXML);
+                            }
+
+                            if (!File.Exists(cmconsolePath + @"xmlstorage\extensions\actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\LogLauncher.xml"))
+                            {
+                                System.IO.File.WriteAllLines(cmconsolePath + @"xmlstorage\extensions\actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\LogLauncher.xml", logLauncherXML);
+                            }
+
+                            MessageBox.Show("Integrated, restart the ConfigMgr Console for changes to take effect", "ConfigMgr Console Integrated");
+                        }
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Failed to handle integration with ConfigMgr Console");
+            }
+        }
+
+        private Bitmap loadimagefromString(string Image)
+        {
+            try
+            {
+                byte[] imageBytes = Convert.FromBase64String(Image);
+
+                MemoryStream ms = new MemoryStream(imageBytes);
+
+                Bitmap streamImage = (Bitmap)Bitmap.FromStream(ms, true);
+
+                return streamImage;
+            }
+            catch (Exception ee)
+            {
+
+            }
+
+            return null;
+        }        
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Populate Help RichTextBox
+
+            try
+            {
+                byte[] decodedString = System.Convert.FromBase64String(helpformContent);
+
+                rtb_Help.Rtf = System.Text.Encoding.UTF8.GetString(decodedString);
+            }
+            catch (Exception ee)
+            {
+
+            }
+
             switches_startupPhase = true;
 
-            getcommandlineParameters();
+            Bitmap imageScan = new Bitmap(loadimagefromString(imagetextScan));
+            Bitmap imageMonitor = new Bitmap(loadimagefromString(imagetextMonitor));
+            Bitmap imageOpenLogs = new Bitmap(loadimagefromString(imagetextOpenLogs));
+            Bitmap imageLocations = new Bitmap(loadimagefromString(imagetextLocations));
+            Bitmap imageLogging = new Bitmap(loadimagefromString(imagetextLogging));
+            Bitmap imageRefreshLogs = new Bitmap(loadimagefromString(imagetextRefreshLogs));            
+            Bitmap imageHelp = new Bitmap(loadimagefromString(imagetextHelp));
+            Bitmap imageDebugWindow = new Bitmap(loadimagefromString(imagetextDebugWindow));
 
+            rb_scanLogs.Image = imageScan;
+            rb_Monitor.Image = imageMonitor;
+            rb_openLogs.Image = imageOpenLogs;
+            rb_customPaths.Image = imageLocations;
+            rb_Help.Image = imageHelp;
+            rb_Logging.Image = imageLogging;
+            rb_refreshLogs.Image = imageRefreshLogs;
+            rb_debugWindow.Image = imageDebugWindow;
+
+            checkforconsoleIntegration();
+            
             getloglauncherSettings();
+
+            getcommandlineParameters();            
 
             updateGradient();
 
             // Set throttle value
 
-            throttleDelay = Convert.ToInt16(nup_Delay.Value);
+            throttleDelay = Convert.ToInt16(rup_Duration.Value);
 
             // Add context menu strip
 
@@ -2294,7 +2494,7 @@ namespace LogLauncher
                     if (adialogResult == DialogResult.Yes)
                     {
                         openFileDialog1.InitialDirectory = Environment.SystemDirectory;
-                        openFileDialog1.Filter = "CMTrace (CMTrace.exe)|CMTrace.exe";
+                        openFileDialog1.Filter = "Tracer (*.exe)|*.exe";
                         openFileDialog1.FileName = "";
 
                         DialogResult result = openFileDialog1.ShowDialog();
@@ -2341,7 +2541,9 @@ namespace LogLauncher
             bw.RunWorkerCompleted +=
                 new RunWorkerCompletedEventHandler(bw_scan_RunWorkerCompleted);
 
-            bw.RunWorkerAsync(cb_remoteServer.Text);            
+            RibbonTextBox aRibbonTextBox = (RibbonTextBox)rcb_remoteServer.SelectedItem;
+
+            bw.RunWorkerAsync(aRibbonTextBox.Text);
         }
 
         private void launchLogs(DataGridViewSelectedRowCollection dgvRows)
@@ -2485,6 +2687,9 @@ namespace LogLauncher
 
         private void tv_Logs_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            surface_customlocationsPanel.Visible = false;
+            surface_lowerPanel.Visible = false;
+            surface_mainPanel.Visible = true;
             p_Logging.Visible = false;
             dgv_Diagnostics.Visible = false;
             dgv_Logs.Visible = true;
@@ -2495,7 +2700,7 @@ namespace LogLauncher
                 {
                     switches_monitorLogs = false;
 
-                    cb_Monitor.Checked = false;
+                    // cb_Monitor.Checked = false; // Handle the Monitor Button here
 
                     notificationMessage("");
 
@@ -2601,98 +2806,67 @@ namespace LogLauncher
             }
         }
 
-        private void b_scanLogs_Click(object sender, EventArgs e)
+        private void storedevicenameMRU()
         {
-            b_logSettings.Visible = false;
-            p_Logging.Visible = false;
-            dgv_Diagnostics.Visible = false;
-            dgv_Logs.Visible = true;
+            RibbonTextBox aribbontextBox = new RibbonTextBox();
 
-            dgv_Logging.Rows.Clear();
+            aribbontextBox.TextBoxText = rcb_remoteServer.TextBoxText;
+            aribbontextBox.Text = rcb_remoteServer.TextBoxText;
+            aribbontextBox.Value = rcb_remoteServer.TextBoxText;
+
+            aribbontextBox.AllowTextEdit = false;
+
+            bool textwasFound = false;
 
             try
             {
-                if (!switches_scan_threadRunning && !switches_threadRunning)
+
+                foreach (RibbonTextBox aRibbonTextBox in rcb_remoteServer.DropDownItems)
                 {
-                    // Check if destination exists, query a basic registry key
-
-                    if (regkeyExist(cb_remoteServer.Text, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\Windows\CurrentVersion\Setup"))
+                    if (aRibbonTextBox.TextBoxText == rcb_remoteServer.TextBoxText)
                     {
-                        BackgroundWorker bw = new BackgroundWorker();
-                        bw.WorkerSupportsCancellation = true;
-                        bw.WorkerReportsProgress = true;
-                        bw.DoWork +=
-                            new DoWorkEventHandler(bw_scan_DoWork);
-                        bw.ProgressChanged +=
-                            new ProgressChangedEventHandler(bw_scan_ProgressChanged);
-                        bw.RunWorkerCompleted +=
-                            new RunWorkerCompletedEventHandler(bw_scan_RunWorkerCompleted);
-
-                        bw.RunWorkerAsync(cb_remoteServer.Text);
-
-
-                        // Manage the Recent Server entries
-
-                        if (!cb_remoteServer.Items.Contains(cb_remoteServer.Text))
-                        {
-                            try
-                            {
-                                cb_remoteServer.Items.Remove(cb_remoteServer.Items.Count);
-
-                                cb_remoteServer.Items.Add(cb_remoteServer.Text);
-
-                                // Store recent servers back to registry
-
-                                String[] recentserverArray = new String[cb_remoteServer.Items.Count];
-
-                                cb_remoteServer.Items.CopyTo(recentserverArray, 0);
-
-                                setregkeyValues("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers", recentserverArray);
-
-                                if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers"))
-                                {
-                                    string[] recentServers = (string[])getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers");
-
-                                    cb_remoteServer.Items.Clear();
-
-                                    foreach (string recentServer in recentServers)
-                                    {
-                                        cb_remoteServer.Items.Add(recentServer);
-                                    }
-                                }
-                            }
-                            catch (Exception ee)
-                            {
-
-                            }
-
-                        }
-                    }
-                    else
-                    {
-                        notificationMessage("Destination does not respond");
-
-                        diagnosticMessage("Destination does not respond");
-                    }
-                }
-                else
-                {
-                    if (switches_scan_threadRunning)
-                    {
-                        diagnosticMessage("Scan thread is already running");
-                    }
-
-                    if (switches_threadRunning)
-                    {
-                        diagnosticMessage("Turn off monitoring before scanning for logs again");
+                        textwasFound = true;
                     }
                 }
             }
             catch (Exception ee)
             {
-                diagnosticMessage("Error during scanning of logs - " + ee.Message);
-            }            
+
+            }
+
+            if (!textwasFound && deviceName != "")
+            { 
+                try
+                {
+                    if (rcb_remoteServer.DropDownItems.Count > 9)
+                    {
+                        rcb_remoteServer.DropDownItems.RemoveAt(0);                           
+                    }
+
+                    rcb_remoteServer.DropDownItems.Add(aribbontextBox); // ***
+
+                    // Store recent servers back to registry
+
+                    string[] recentserverArray = new string[rcb_remoteServer.DropDownItems.Count]; //rcb_remoteServer.Items.Count];                    
+
+                    int i = 0;
+
+                    foreach(RibbonItem aribbonItem in rcb_remoteServer.DropDownItems)
+                    {
+                        recentserverArray[i] = aribbonItem.Text;
+
+                        i++;
+                    }
+
+                    setregkeyValues("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers", recentserverArray);
+                }
+                catch (Exception ee)
+                {
+
+                }
+            }
         }
+
         private string getSaying()
         {
             try
@@ -2815,7 +2989,7 @@ namespace LogLauncher
 
                     try
                     {
-                        // componentKey.Close();
+
                     }
                     catch (Exception)
                     {
@@ -2973,6 +3147,8 @@ namespace LogLauncher
 
         private void bw_scan_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            storedevicenameMRU(); // Store this device in the device MRU
+
             if (e.Cancelled == false)
             {
                 renderLogs((logitemCollection)e.Result, false);
@@ -2984,7 +3160,7 @@ namespace LogLauncher
 
             if (siteserverDetected) // Populate dgv_Logging
             {
-                populateserverPanel(cb_remoteServer.Text);
+                populateserverPanel(deviceName);
 
                 BackgroundWorker bw = new BackgroundWorker();
                 bw.WorkerSupportsCancellation = true;
@@ -2996,13 +3172,13 @@ namespace LogLauncher
                 bw.RunWorkerCompleted +=
                     new RunWorkerCompletedEventHandler(bw_logging_RunWorkerCompleted);
 
-                bw.RunWorkerAsync(cb_remoteServer.Text);
+                bw.RunWorkerAsync(deviceName);
 
                 dgv_Logging.Visible = true;
 
                 p_Site.Visible = true;
 
-                b_logSettings.Visible = true;
+                rb_Logging.Visible = true;
 
                 // Get those site logging details
             }
@@ -3011,9 +3187,9 @@ namespace LogLauncher
             {
                 // Populate the elements on the p_Client panel
 
-                populateclientPanel(cb_remoteServer.Text);
+                populateclientPanel(deviceName);
 
-                b_logSettings.Visible = true;
+                rb_Logging.Visible = true;
                 p_Client.Visible = true;
             }
 
@@ -3107,17 +3283,26 @@ namespace LogLauncher
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Cancelled == false)
+            try
             {
-                switches_monitorLogs = false;
+                if (e.Cancelled == false)
+                {
+                    switches_monitorLogs = false;
 
-                cb_Monitor.Checked = false;
+                    Bitmap imagemonitorLogs = new Bitmap(loadimagefromString(imagetextMonitor));
 
-                notificationMessage("");
+                    rb_Monitor.Image = imagemonitorLogs;
 
-                switches_threadRunning = false;
+                    notificationMessage("");
 
-                diagnosticMessage("Stopped monitoring logs thread");
+                    switches_threadRunning = false;
+
+                    diagnosticMessage("Stopped monitoring logs thread");
+                }
+            }
+            catch (Exception ee)
+            {
+
             }
         }
 
@@ -3219,110 +3404,6 @@ namespace LogLauncher
             return alogitemCollection;
         }
 
-        private void cb_Monitor_CheckedChanged(object sender, EventArgs e)
-        {
-            // Update the cached data with the row data
-
-            try
-            {
-                if (cb_Monitor.Checked)
-                {
-                    if (!switches_threadRunning)
-                    {
-                        if (!switches_monitorLogs)
-                        {
-                            // Run the timer thread
-
-                            switches_monitorLogs = true;
-
-                            // Refresh the stale view in dgv_Logs
-
-                            logitemCollection alogitemCollection = refreshlogsinView(convertdgvtologItems(dgv_Logs.Rows));
-
-                            renderLogs(alogitemCollection, true);
-
-                            thelogitemCollection = alogitemCollection;
-
-                            // Start the monitoring thread
-
-                            BackgroundWorker bw = new BackgroundWorker();
-                            bw.WorkerSupportsCancellation = true;
-                            bw.WorkerReportsProgress = true;
-                            bw.DoWork +=
-                                new DoWorkEventHandler(bw_DoWork);
-                            bw.ProgressChanged +=
-                                new ProgressChangedEventHandler(bw_ProgressChanged);
-                            bw.RunWorkerCompleted +=
-                                new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
-                            
-                            logitemCollection tosendlogitemCollection = convertdgvtologItems(dgv_Logs.Rows);                            
-
-                            bw.RunWorkerAsync(tosendlogitemCollection);
-
-                            diagnosticMessage("Monitoring thread started");
-                        }
-                    }
-                }
-                else
-                {
-                    switches_monitorLogs = false; // Tell the thread to terminate
-
-                    diagnosticMessage("Closing thread");
-
-                    Thread.Sleep(100);
-                }
-            }
-            catch (Exception ee)
-            {
-                diagnosticMessage("Could not spawn the timer thread - " + ee.Message);
-            }
-        }
-
-        private void cb_hidearchiveLogs_CheckedChanged(object sender, EventArgs e)
-        {
-            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"HideArchiveLogs", Convert.ToString(cb_hidearchiveLogs.Checked)); 
-
-            if (cb_hidearchiveLogs.Checked)
-            {
-                switches_hide_archiveLogs = true;
-
-                dgv_Logs.Columns["dgv_c_Type"].Visible = false;
-
-                renderLogs(thelogitemCollection, true);
-            }
-            else
-            {
-                switches_hide_archiveLogs = false;
-
-                dgv_Logs.Columns["dgv_c_Type"].Visible = true;
-
-                renderLogs(thelogitemCollection, true);
-            }
-        }
-
-        private void cb_openLogsMulti_CheckedChanged(object sender, EventArgs e)
-        {
-            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MultipleLogsSingleCMTrace", Convert.ToString(cb_openLogsMulti.Checked));
-
-            if (cb_openLogsMulti.Checked)
-            {
-                switches_open_multipleLogs = true;
-            }
-            else
-            {
-                switches_open_multipleLogs = false;
-            }            
-        }
-
-        private void b_About_Click(object sender, EventArgs e)
-        {
-            // Launch about dialog
-
-            Form newaboutForm = new aboutForm();
-
-            newaboutForm.ShowDialog(this);
-        }
-
         private void openLogFolderToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             // Open log folder
@@ -3366,120 +3447,16 @@ namespace LogLauncher
             }            
         }
 
-        private void b_debugWindow_Click(object sender, EventArgs e)
-        {
-            if (dgv_Diagnostics.Visible)
-            {
-                dgv_Diagnostics.Visible = false;
-                p_Logging.Visible = false;
-                dgv_Logs.Visible = true;                
-            }
-            else
-            {
-                dgv_Diagnostics.Visible = true;
-                p_Logging.Visible = false;
-                dgv_Logs.Visible = false;
-            }
-        }
-
-        private void b_refreshLogs_Click(object sender, EventArgs e)
-        {
-            if (!switches_scan_threadRunning && !switches_threadRunning)
-            {
-                logitemCollection tosendlogitemCollection = convertdgvtologItems(dgv_Logs.Rows);
-
-                tosendlogitemCollection = refreshlogsinView(tosendlogitemCollection);
-
-                updatedgvRows(tosendlogitemCollection); // Render the updated logitem Collection
-            }
-            else
-            {
-                if (switches_scan_threadRunning)
-                {
-                    diagnosticMessage("Scan thread is already running");
-                }
-
-                if (switches_threadRunning)
-                {
-                    diagnosticMessage("Turn off monitoring before refreshing the view");
-                }
-            }
-        }
-
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            throttleDelay = Convert.ToInt16(nup_Delay.Value);
+            throttleDelay = Convert.ToInt16(rup_Duration.Value);
 
-            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MonitoringTimerDuration", Convert.ToString(nup_Delay.Value));
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"MonitoringTimerDuration", Convert.ToString(rup_Duration.Value));
         }
-
-        private void pb_colourpickerStart_Click(object sender, EventArgs e)
-        {
-            ColorDialog colourDialog = new ColorDialog();
-
-            colourDialog.Color = pb_colourpickerStart.BackColor;
-
-            if (colourDialog.ShowDialog() == DialogResult.OK)
-            {
-                pb_colourpickerStart.BackColor = colourDialog.Color;
-
-                gradientcolourStart = colourDialog.Color;
-            }
-
-            updateGradient();
-
-            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientStartColour", Convert.ToString(pb_colourpickerStart.BackColor.ToArgb()));
-        }
-
-        private void pb_colourpickerEnd_Click(object sender, EventArgs e)
-        {
-            ColorDialog colourDialog = new ColorDialog();
-
-            colourDialog.Color = pb_colourpickerEnd.BackColor;
-
-            if (colourDialog.ShowDialog() == DialogResult.OK)
-            {
-                pb_colourpickerEnd.BackColor = colourDialog.Color;
-
-                gradientcolourEnd = colourDialog.Color;
-            }
-
-            updateGradient();
-
-            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"),"GradientEndColour", Convert.ToString(pb_colourpickerEnd.BackColor.ToArgb()));
-        }
-
+        
         private void openLogFolderToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             launchLogs(dgv_Logs.SelectedRows);
-        }
-
-        private void b_launchconfigcustomLocations_Click(object sender, EventArgs e)
-        {
-            Form newconfigForm = new configurecustomLocations();
-
-            newconfigForm.ShowDialog(this);
-        }
-
-        private void b_launchLogs_Click(object sender, EventArgs e)
-        {
-            launchLogs(dgv_Logs.SelectedRows);
-        }
-
-        private void b_logSettings_Click(object sender, EventArgs e)
-        {
-            if (p_Logging.Visible)
-            {
-                dgv_Diagnostics.Visible = false;
-                dgv_Logs.Visible = true;
-                p_Logging.Visible = false;
-            }
-            else
-            {
-                dgv_Diagnostics.Visible = false;
-                dgv_Logs.Visible = false;
-                p_Logging.Visible = true;
-            }
         }
 
         private void dgv_Logging_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -3490,7 +3467,7 @@ namespace LogLauncher
                 {
                     string componentName = dgv_Logging.Rows[e.RowIndex].Cells["c_dgv_logging_componentName"].Value.ToString();
 
-                    RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                    RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                     remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Tracing\" + componentName, true);
 
@@ -3571,7 +3548,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Tracing", true);
 
@@ -3594,7 +3571,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Tracing", true);
 
@@ -3617,7 +3594,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Tracing", true);
 
@@ -3640,7 +3617,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Providers", true);
 
@@ -3656,7 +3633,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Providers", true);
 
@@ -3672,7 +3649,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\SMS\Providers", true);
 
@@ -3688,7 +3665,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
 
@@ -3714,9 +3691,9 @@ namespace LogLauncher
                 if (cb_client_debugLogging.Checked)
                 {
 
-                    if (!regkeyExist(cb_remoteServer.Text, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\CCM\Logging\@Global\DebugLogging"))
+                    if (!regkeyExist(deviceName, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\CCM\Logging\@Global\DebugLogging"))
                     {
-                        RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                        RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                         remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
 
@@ -3727,9 +3704,9 @@ namespace LogLauncher
                 }
                 else
                 {
-                    if (regkeyExist(cb_remoteServer.Text, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\CCM\Logging\@Global\DebugLogging"))
+                    if (regkeyExist(deviceName, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\CCM\Logging\@Global\DebugLogging"))
                     {
-                        RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                        RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                         remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
 
@@ -3749,7 +3726,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
 
@@ -3765,7 +3742,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
 
@@ -3781,7 +3758,7 @@ namespace LogLauncher
         {
             try
             {
-                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), cb_remoteServer.Text);
+                RegistryKey remoteHK = RegistryKey.OpenRemoteBaseKey(returnregistryHive("HKEY_LOCAL_MACHINE"), deviceName);
 
                 remoteHK = remoteHK.OpenSubKey(@"Software\Microsoft\CCM\Logging\@Global", true);
 
@@ -3797,7 +3774,7 @@ namespace LogLauncher
         {
             servicecycleMessage aservicecycleMessage = new servicecycleMessage();
 
-            aservicecycleMessage.remoteServer = cb_remoteServer.Text;
+            aservicecycleMessage.remoteServer = deviceName;
             aservicecycleMessage.serviceName = "CCMEXEC";
 
             BackgroundWorker bw = new BackgroundWorker();
@@ -3812,15 +3789,14 @@ namespace LogLauncher
 
             b_cycleCCMEXEC.Enabled = false;
 
-            bw.RunWorkerAsync(aservicecycleMessage);
-                                   
+            bw.RunWorkerAsync(aservicecycleMessage);                                   
         }
 
         private void b_cycleSMSEXEC_Click(object sender, EventArgs e)
         {
             servicecycleMessage aservicecycleMessage = new servicecycleMessage();
 
-            aservicecycleMessage.remoteServer = cb_remoteServer.Text;
+            aservicecycleMessage.remoteServer = deviceName;
             aservicecycleMessage.serviceName = "SMS_EXECUTIVE";
 
             BackgroundWorker bw = new BackgroundWorker();
@@ -3836,6 +3812,646 @@ namespace LogLauncher
             b_cycleSMSEXEC.Enabled = false;
 
             bw.RunWorkerAsync(aservicecycleMessage);
+        }
+
+        private void rb_scanLogs_Click(object sender, EventArgs e)
+        {
+            surface_customlocationsPanel.Visible = false;
+            surface_lowerPanel.Visible = false;
+            surface_mainPanel.Visible = true;
+
+            rb_Logging.Visible = false;
+            p_Logging.Visible = false;
+            dgv_Diagnostics.Visible = false;
+            dgv_Logs.Visible = true;
+
+            dgv_Logging.Rows.Clear();
+
+            try
+            {
+                if (!switches_scan_threadRunning && !switches_threadRunning)
+                {
+                    // Check if destination exists, query a basic Windows Operating System registry key
+
+                    if (regkeyExist(deviceName, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\Windows\CurrentVersion\Setup"))
+                    {
+                        BackgroundWorker bw = new BackgroundWorker();
+                        bw.WorkerSupportsCancellation = true;
+                        bw.WorkerReportsProgress = true;
+                        bw.DoWork +=
+                            new DoWorkEventHandler(bw_scan_DoWork);
+                        bw.ProgressChanged +=
+                            new ProgressChangedEventHandler(bw_scan_ProgressChanged);
+                        bw.RunWorkerCompleted +=
+                            new RunWorkerCompletedEventHandler(bw_scan_RunWorkerCompleted);
+
+                        bw.RunWorkerAsync(deviceName);
+                    }
+                    else
+                    {
+                        notificationMessage("Destination does not respond");
+
+                        diagnosticMessage("Destination does not respond");
+                    }
+                }
+                else
+                {
+                    if (switches_scan_threadRunning)
+                    {
+                        diagnosticMessage("Scan thread is already running");
+                    }
+
+                    if (switches_threadRunning)
+                    {
+                        diagnosticMessage("Turn off monitoring before scanning for logs again");
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Error during scanning of logs - " + ee.Message);
+            }
+        }
+
+        private void rcb_remoteServer_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            if (!switches_startupPhase)
+            {
+                if (rcb_remoteServer.TextBoxText != deviceName)
+                {
+                    deviceName = rcb_remoteServer.TextBoxText;
+                }
+            }
+        }
+
+        private void rcc_Oldest_Click(object sender, EventArgs e)
+        {
+            ColorDialog colourDialog = new ColorDialog();
+
+            colourDialog.Color = rcc_Oldest.Color;
+
+            if (colourDialog.ShowDialog() == DialogResult.OK)
+            {
+                rcc_Oldest.Color = colourDialog.Color;
+
+                gradientcolourEnd = colourDialog.Color;
+            }
+
+            updateGradient();
+
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "GradientEndColour", Convert.ToString(rcc_Oldest.Color.ToArgb()));
+        }
+
+        private void rcc_Newest_Click(object sender, EventArgs e)
+        {
+            ColorDialog colourDialog = new ColorDialog();
+
+            colourDialog.Color = rcc_Newest.Color;
+
+            if (colourDialog.ShowDialog() == DialogResult.OK)
+            {
+                rcc_Newest.Color = colourDialog.Color;
+
+                gradientcolourStart = colourDialog.Color;
+            }
+
+            updateGradient();
+
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "GradientEndColour", Convert.ToString(rcc_Newest.Color.ToArgb()));
+        }
+
+        private void rcb_hidearchiveLogs_CheckBoxCheckChanged(object sender, EventArgs e)
+        {
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "HideArchiveLogs", Convert.ToString(rcb_hidearchiveLogs.Checked));
+
+            if (rcb_hidearchiveLogs.Checked)
+            {
+                switches_hide_archiveLogs = true;
+
+                dgv_Logs.Columns["dgv_c_Type"].Visible = false;
+
+                renderLogs(thelogitemCollection, true);
+            }
+            else
+            {
+                switches_hide_archiveLogs = false;
+
+                dgv_Logs.Columns["dgv_c_Type"].Visible = true;
+
+                renderLogs(thelogitemCollection, true);
+            }
+        }
+
+        private void rcb_openmultiLogs_CheckBoxCheckChanged(object sender, EventArgs e)
+        {
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "MultipleLogsSingleCMTrace", Convert.ToString(rcb_openmultiLogs.Checked));
+
+            if (rcb_openmultiLogs.Checked)
+            {
+                switches_open_multipleLogs = true;
+            }
+            else
+            {
+                switches_open_multipleLogs = false;
+            }
+        }
+
+        private void rb_Monitor_Click(object sender, EventArgs e)
+        {
+            // Update the cached data with the row data
+
+            try
+            {
+                if (!switches_threadRunning)
+                {
+                    if (!switches_monitorLogs)
+                    {
+                        // Run the timer thread
+
+                        switches_monitorLogs = true;
+
+                        try
+                        {
+
+                            Bitmap imagemonitorlogsStop = new Bitmap(loadimagefromString(imagetextmonitorStop));
+
+                            rb_Monitor.Image = imagemonitorlogsStop;
+                        }
+                        catch (Exception ee)
+                        {
+
+                        }
+
+                        // Refresh the stale state data for the rows in dgv_Logs
+
+                        logitemCollection alogitemCollection = refreshlogsinView(convertdgvtologItems(dgv_Logs.Rows));
+
+                        // Refresh dgv_Logs with the updated state data
+
+                        renderLogs(alogitemCollection, true);
+
+                        // Store the updated state data for later use
+
+                        thelogitemCollection = alogitemCollection;
+
+                        // Start the monitoring thread
+
+                        BackgroundWorker bw = new BackgroundWorker();
+                        bw.WorkerSupportsCancellation = true;
+                        bw.WorkerReportsProgress = true;
+                        bw.DoWork +=
+                            new DoWorkEventHandler(bw_DoWork);
+                        bw.ProgressChanged +=
+                            new ProgressChangedEventHandler(bw_ProgressChanged);
+                        bw.RunWorkerCompleted +=
+                            new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+
+                        logitemCollection tosendlogitemCollection = convertdgvtologItems(dgv_Logs.Rows);
+
+                        bw.RunWorkerAsync(tosendlogitemCollection);
+
+                        diagnosticMessage("Monitoring thread started");
+                    }
+                }
+                else
+                {
+                    switches_monitorLogs = false; // *** clean this up
+                    diagnosticMessage("Closing thread");
+
+                    Thread.Sleep(100);
+                }
+            }
+            catch (Exception ee)
+            {
+                switches_monitorLogs = false; // Tell the thread to terminate
+
+                diagnosticMessage("Could not spawn the timer thread - " + ee.Message);
+            }
+        }
+
+        private void rb_refreshLogs_Click(object sender, EventArgs e)
+        {
+            if (!switches_scan_threadRunning && !switches_threadRunning)
+            {
+                logitemCollection tosendlogitemCollection = convertdgvtologItems(dgv_Logs.Rows);
+
+                tosendlogitemCollection = refreshlogsinView(tosendlogitemCollection);
+
+                updatedgvRows(tosendlogitemCollection); // Render the updated logitem Collection
+            }
+            else
+            {
+                if (switches_scan_threadRunning)
+                {
+                    diagnosticMessage("Scan thread is already running");
+                }
+
+                if (switches_threadRunning)
+                {
+                    diagnosticMessage("Turn off monitoring before refreshing the view");
+                }
+            }
+        }
+
+        private void rb_openLogs_Click(object sender, EventArgs e)
+        {
+            launchLogs(dgv_Logs.SelectedRows);
+        }
+
+        private void rb_Logging_Click(object sender, EventArgs e)
+        {
+            surface_customlocationsPanel.Visible = false;
+            surface_lowerPanel.Visible = false;
+            surface_mainPanel.Visible = true;
+
+            if (p_Logging.Visible)
+            {
+                dgv_Diagnostics.Visible = false;
+                dgv_Logs.Visible = true;
+                p_Logging.Visible = false;
+            }
+            else
+            {
+                dgv_Diagnostics.Visible = false;
+                dgv_Logs.Visible = false;
+                p_Logging.Visible = true;
+            }
+        }
+
+        private void rup_Duration_DownButtonClicked(object sender, MouseEventArgs e)
+        {
+            int currentValue = Convert.ToInt16(rup_Duration.Value);
+
+            if (currentValue > 3)
+            {
+                currentValue--;
+            }
+
+            if (Convert.ToInt16(rup_Duration.Value) != currentValue)
+            {
+                rup_Duration.Value = currentValue.ToString();
+                rup_Duration.TextBoxText = currentValue.ToString();
+
+                throttleDelay = Convert.ToInt16(rup_Duration.Value);
+
+                updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "MonitoringTimerDuration", Convert.ToString(rup_Duration.Value));
+            }
+        }
+
+        private void rup_Duration_UpButtonClicked(object sender, MouseEventArgs e)
+        {
+            int currentValue = Convert.ToInt16(rup_Duration.Value);
+
+            if (currentValue < 60)
+            {
+                currentValue++;
+            }
+
+            if (Convert.ToInt16(rup_Duration.Value) != currentValue)
+            {
+                rup_Duration.Value = currentValue.ToString();
+                rup_Duration.TextBoxText = currentValue.ToString();
+
+                throttleDelay = Convert.ToInt16(rup_Duration.Value);
+
+                updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "MonitoringTimerDuration", Convert.ToString(rup_Duration.Value));
+            }
+        }
+
+        private void rup_Duration_TextBoxValidated(object sender, EventArgs e)
+        {
+            if (!switches_startupPhase)
+            {
+                if (rup_Duration.TextBoxText != "")
+                {
+
+                    if (Convert.ToInt16(rup_Duration.TextBoxText) > 2)
+                    {
+                        rup_Duration.Value = rup_Duration.TextBoxText;
+                    }
+                    else
+                    {
+                        rup_Duration.Value = "3";
+                        rup_Duration.TextBoxText = "3";
+                    }
+                }
+                else
+                {
+                    rup_Duration.Value = "3";
+                    rup_Duration.TextBoxText = "3";
+                }
+            }
+        }
+
+        private void rb_debugWindow_Click(object sender, EventArgs e)
+        {
+            surface_customlocationsPanel.Visible = false;
+            surface_lowerPanel.Visible = false;
+            surface_mainPanel.Visible = true;
+
+            if (dgv_Diagnostics.Visible)
+            {
+                dgv_Diagnostics.Visible = false;
+                p_Logging.Visible = false;
+                dgv_Logs.Visible = true;
+            }
+            else
+            {
+                dgv_Diagnostics.Visible = true;
+                p_Logging.Visible = false;
+                dgv_Logs.Visible = false;
+            }
+        }
+
+        private void renderlocationsDGV()
+        {
+            try
+            {
+                // Get custom log locations and populate the datagridview
+
+                string[] customlogLocations = (string[])getregkeyValue("", "HKEY_CURRENT_USER", @"SOFTWARE\SMSMarshall\LogLauncher", "CustomLogLocations");
+
+                dgv_customLocations.Rows.Clear();
+
+                if (customlogLocations != null)
+                {
+                    foreach (string customlogLocation in customlogLocations)
+                    {
+                        try
+                        {
+                            string[] splitElements = customlogLocation.Split('|');
+
+                            try
+                            {
+                                if (splitElements.Count() == 5)
+                                {
+                                    DataGridViewRow newRow = (DataGridViewRow)dgv_customLocations.Rows[0].Clone();
+
+                                    newRow.Cells[0].Value = splitElements[0];
+                                    newRow.Cells[1].Value = splitElements[1];
+                                    newRow.Cells[2].Value = splitElements[2];
+                                    newRow.Cells[3].Value = splitElements[3];
+                                    newRow.Cells[4].Value = splitElements[4];
+
+                                    newRow.Visible = true;
+
+                                    dgv_customLocations.Rows.Add(newRow);
+                                }
+                            }
+                            catch (Exception ee) // Handle this being the first row in the DGV
+                            {
+                                // Create a row so we can clone it then alter its properties, before clearing the rows and adding it again
+
+                                if (splitElements.Count() == 5)
+                                {
+                                    dgv_customLocations.Rows.Add("", "", "", "");
+
+                                    DataGridViewRow newRow = (DataGridViewRow)dgv_customLocations.Rows[0].Clone();
+
+                                    dgv_customLocations.Rows.Clear();
+
+                                    newRow.Cells[0].Value = splitElements[0];
+                                    newRow.Cells[1].Value = splitElements[1];
+                                    newRow.Cells[2].Value = splitElements[2];
+                                    newRow.Cells[3].Value = splitElements[3];
+                                    newRow.Cells[4].Value = splitElements[4];
+
+                                    newRow.Visible = true;
+
+                                    dgv_customLocations.Rows.Add(newRow);
+                                }
+                            }
+                        }
+                        catch (Exception ee)
+                        {
+                        }
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+
+            }
+        }
+
+        private void rb_customPaths_Click(object sender, EventArgs e)
+        {
+            renderlocationsDGV();
+
+            if (surface_customlocationsPanel.Visible)
+            {
+                surface_lowerPanel.Visible = false;
+                surface_mainPanel.Visible = true;
+                surface_customlocationsPanel.Visible = false;
+                dgv_Logging.Visible = false;
+                dgv_Diagnostics.Visible = false;
+                dgv_Logs.Visible = true;
+            }
+            else
+            {
+                surface_lowerPanel.Visible = false;
+                surface_mainPanel.Visible = true;
+
+                surface_customlocationsPanel.Visible = true;
+
+                dgv_Logs.Visible = false;
+                dgv_Logging.Visible = false;
+                dgv_Diagnostics.Visible = false;
+            }
+
+            //Form newconfigForm = new configurecustomLocations();
+
+            //newconfigForm.ShowDialog(this);
+        }
+
+        private void rb_Help_Click(object sender, EventArgs e)
+        {
+            if (surface_mainPanel.Visible)
+            {
+                surface_customlocationsPanel.Visible = false;
+                surface_mainPanel.Visible = false;
+                surface_lowerPanel.Visible = true;
+            }
+            else
+            {
+                surface_lowerPanel.Visible = false;
+                surface_mainPanel.Visible = true;
+            }
+
+            // Used to consume an RTF file and produce a Base64 string
+
+            //this.rtb_helpContent.LoadFile(@"D:\OneDriveBusiness\SharePoint\SharePoint\SMSMarshallTeam - Documents\Products\LogLauncher\Help-Form-Contents.rtf");
+            //System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
+            //string StoreMe =
+            //System.Convert.ToBase64String(enc.GetBytes(this.rtb_helpContent.Rtf));
+            //System.Windows.Forms.MessageBox.Show(StoreMe);
+        }
+
+        private void b_addupdateLocation_Click(object sender, EventArgs e)
+        {
+            if (tb_customLocation.Text != "" && tb_fileMask.Text != "" && tb_logCategory.Text != "" && tb_logProduct.Text != "")
+            {
+                try
+                {
+                    string[] customlogLocations = (string[])getregkeyValue("", "HKEY_CURRENT_USER", @"SOFTWARE\SMSMarshall\LogLauncher", "CustomLogLocations");
+
+                    bool updatedTrigger = false;
+
+                    // Does entry already exist, update it
+
+                    List<string> writebackList = new List<string>();
+
+                    if (customlogLocations != null)
+                    {
+                        foreach (string customlogLocation in customlogLocations)
+                        {
+                            try
+                            {
+                                string[] splitElements = customlogLocation.Split('|');
+
+                                string newcustomlogLocation = customlogLocation;
+
+                                if (splitElements[0] == tb_customLocation.Text) // Found a match
+                                {
+                                    updatedTrigger = true;
+
+                                    newcustomlogLocation = tb_customLocation.Text + "|" + tb_fileMask.Text + "|" + Convert.ToString(cb_recurseFolder.Text) + "|" + tb_logCategory.Text + "|" + tb_logProduct.Text;
+                                }
+
+                                if (newcustomlogLocation != "" || newcustomlogLocation != null)
+                                {
+                                    writebackList.Add(newcustomlogLocation);
+                                }
+                            }
+                            catch (Exception ee)
+                            {
+
+                            }
+                        }
+
+
+                        // Put the customLogLocations value back
+
+                        if (!updatedTrigger)
+                        {
+                            writebackList.Add(tb_customLocation.Text + "|" + tb_fileMask.Text + "|" + Convert.ToString(cb_recurseFolder.Text) + "|" + tb_logCategory.Text + "|" + tb_logProduct.Text);
+                        }
+                    }
+                    else
+                    {
+                        writebackList.Add(tb_customLocation.Text + "|" + tb_fileMask.Text + "|" + Convert.ToString(cb_recurseFolder.Text) + "|" + tb_logCategory.Text + "|" + tb_logProduct.Text);
+                    }
+
+                    try
+                    {
+                        RegistryKey hkcucustomLocations = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\SMSMarshall\LogLauncher", true);
+
+                        if (hkcucustomLocations != null)
+                        {
+                            hkcucustomLocations.SetValue("CustomLogLocations", writebackList.ToArray());
+                        }
+                    }
+                    catch (Exception ee)
+                    {
+
+                    }
+
+                    renderlocationsDGV();
+                }
+                catch (Exception ee)
+                {
+
+                }
+            }
+            else
+            {
+                notificationMessage("All fields must be populated");
+            }
+        }
+
+        private void b_deleteLocation_Click(object sender, EventArgs e)
+        {
+            if (tb_customLocation.Text != "")
+            {
+                try
+                {
+                    string[] customlogLocations = (string[])getregkeyValue("", "HKEY_CURRENT_USER", @"SOFTWARE\SMSMarshall\LogLauncher", "CustomLogLocations");
+
+                    List<string> writebackList = new List<string>();
+
+                    foreach (DataGridViewRow theRows in dgv_customLocations.SelectedRows)
+                    {
+                        foreach (string customlogLocation in customlogLocations)
+                        {
+                            string[] splitElements = customlogLocation.Split('|');
+
+                            if (splitElements[0].ToLower() != theRows.Cells[0].Value.ToString().ToLower())
+                            {
+                                writebackList.Add(splitElements[0] + "|" + splitElements[1] + "|" + Convert.ToString(splitElements[2]) + "|" + splitElements[3] + "|" + splitElements[4]);
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                        RegistryKey hkcucustomLocations = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\SMSMarshall\LogLauncher", true);
+
+                        if (hkcucustomLocations != null)
+                        {
+                            hkcucustomLocations.SetValue("CustomLogLocations", writebackList.ToArray());
+                        }
+                    }
+                    catch (Exception ee)
+                    {
+
+                    }
+
+                    renderlocationsDGV();
+                }
+                catch (Exception ee)
+                {
+
+                }
+            }
+            else
+            {
+                notificationMessage("Custom Location field has to be populated");
+            }
+        }
+
+        private void dgv_customLocations_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                DataGridViewSelectedRowCollection selectedRows = dgv_customLocations.SelectedRows;
+
+                foreach (DataGridViewRow theRow in selectedRows)
+                {
+                    tb_customLocation.Text = (string)theRow.Cells[0].Value;
+                    tb_fileMask.Text = (string)theRow.Cells[1].Value;
+                    cb_recurseFolder.Text = (string)theRow.Cells[2].Value;
+                    tb_logCategory.Text = (string)theRow.Cells[3].Value; ;
+                    tb_logProduct.Text = (string)theRow.Cells[4].Value;
+                }
+            }
+            catch (Exception ee)
+            {
+
+            }
+        }
+
+        private void rcb_MultiMerge_CheckBoxCheckChanged(object sender, EventArgs e)
+        {
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "MultipleLogsSingleCMTrace", Convert.ToString(rcb_openmultiLogs.Checked));
+
+            if (rcb_openmultiLogs.Checked)
+            {
+                switches_open_multipleLogs = true;
+            }
+            else
+            {
+                switches_open_multipleLogs = false;
+            }
         }
     }
 }
