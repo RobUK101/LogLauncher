@@ -53,7 +53,14 @@
             this.dgv_Diagnostics = new System.Windows.Forms.DataGridView();
             this.c_dgvDiag_Diagnostics = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.p_Logging = new System.Windows.Forms.Panel();
+            this.panel_Logging = new System.Windows.Forms.Panel();
+            this.dgv_Logging = new System.Windows.Forms.DataGridView();
+            this.c_dgv_logging_componentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.c_dgv_logging_debugLogging = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.c_dgv_logging_Enabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.c_dgv_logging_loggingLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.c_dgv_logging_logmaxHistory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.c_dgv_logging_maxfileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.p_Client = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.b_cycleCCMEXEC = new System.Windows.Forms.Button();
@@ -68,22 +75,15 @@
             this.p_Site = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.b_cycleSMSEXEC = new System.Windows.Forms.Button();
-            this.cb_site_siteLogging = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.cb_site_sqlLogging = new System.Windows.Forms.CheckBox();
+            this.cb_site_siteLogging = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.cb_site_archiveLogs = new System.Windows.Forms.CheckBox();
             this.num_provider_logsizeMb = new System.Windows.Forms.NumericUpDown();
             this.num_provider_sqlcacheloggingLevel = new System.Windows.Forms.NumericUpDown();
             this.num_provider_loggingLevel = new System.Windows.Forms.NumericUpDown();
-            this.cb_site_sqlLogging = new System.Windows.Forms.CheckBox();
-            this.cb_site_archiveLogs = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.dgv_Logging = new System.Windows.Forms.DataGridView();
-            this.c_dgv_logging_componentName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.c_dgv_logging_debugLogging = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.c_dgv_logging_Enabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.c_dgv_logging_loggingLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.c_dgv_logging_logmaxHistory = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.c_dgv_logging_maxfileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ribbon1 = new System.Windows.Forms.Ribbon();
             this.rt_Home = new System.Windows.Forms.RibbonTab();
             this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
@@ -92,13 +92,13 @@
             this.rcb_remoteServer = new System.Windows.Forms.RibbonComboBox();
             this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
             this.rcb_hidearchiveLogs = new System.Windows.Forms.RibbonCheckBox();
-            this.rcb_openmultiLogs = new System.Windows.Forms.RibbonCheckBox();
             this.ribbonPanel4 = new System.Windows.Forms.RibbonPanel();
             this.rb_openLogs = new System.Windows.Forms.RibbonButton();
             this.rb_refreshLogs = new System.Windows.Forms.RibbonButton();
-            this.ribbonPanel5 = new System.Windows.Forms.RibbonPanel();
-            this.rb_Logging = new System.Windows.Forms.RibbonButton();
             this.ribbonPanel6 = new System.Windows.Forms.RibbonPanel();
+            this.rb_Logging = new System.Windows.Forms.RibbonButton();
+            this.rb_supportCenter = new System.Windows.Forms.RibbonButton();
+            this.rb_showLogs = new System.Windows.Forms.RibbonButton();
             this.rb_customPaths = new System.Windows.Forms.RibbonButton();
             this.rb_debugWindow = new System.Windows.Forms.RibbonButton();
             this.rb_Help = new System.Windows.Forms.RibbonButton();
@@ -110,6 +110,12 @@
             this.ribbonSeparator4 = new System.Windows.Forms.RibbonSeparator();
             this.rcc_Newest = new System.Windows.Forms.RibbonColorChooser();
             this.rcc_Oldest = new System.Windows.Forms.RibbonColorChooser();
+            this.rt_Trace = new System.Windows.Forms.RibbonTab();
+            this.ribbonPanel7 = new System.Windows.Forms.RibbonPanel();
+            this.rtb_tracerPath = new System.Windows.Forms.RibbonTextBox();
+            this.rb_tracerFind = new System.Windows.Forms.RibbonButton();
+            this.ribbonPanel8 = new System.Windows.Forms.RibbonPanel();
+            this.rcb_MultiMerge = new System.Windows.Forms.RibbonCheckBox();
             this.ribbonOrbRecentItem1 = new System.Windows.Forms.RibbonOrbRecentItem();
             this.ribbonOrbRecentItem2 = new System.Windows.Forms.RibbonOrbRecentItem();
             this.ribbonOrbRecentItem3 = new System.Windows.Forms.RibbonOrbRecentItem();
@@ -118,10 +124,8 @@
             this.ribbonOrbMenuItem1 = new System.Windows.Forms.RibbonOrbMenuItem();
             this.ribbonButton1 = new System.Windows.Forms.RibbonButton();
             this.ribbonOrbMenuItem2 = new System.Windows.Forms.RibbonOrbMenuItem();
-            this.surface_mainPanel = new System.Windows.Forms.Panel();
-            this.surface_lowerPanel = new System.Windows.Forms.Panel();
+            this.panel_Logs = new System.Windows.Forms.Panel();
             this.rtb_Help = new System.Windows.Forms.RichTextBox();
-            this.surface_customlocationsPanel = new System.Windows.Forms.Panel();
             this.b_deleteLocation = new System.Windows.Forms.Button();
             this.b_addupdateLocation = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -140,22 +144,15 @@
             this.c_cust_recurseFolder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.c_cust_logClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.c_cust_logProduct = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rt_Trace = new System.Windows.Forms.RibbonTab();
-            this.ribbonPanel7 = new System.Windows.Forms.RibbonPanel();
-            this.ribbonPanel8 = new System.Windows.Forms.RibbonPanel();
-            this.rcb_MultiMerge = new System.Windows.Forms.RibbonCheckBox();
-            this.rb_selectTracer = new System.Windows.Forms.RibbonComboBox();
-            this.ribbonTextBox1 = new System.Windows.Forms.RibbonTextBox();
-            this.ribbonTextBox2 = new System.Windows.Forms.RibbonTextBox();
-            this.ribbonTextBox3 = new System.Windows.Forms.RibbonTextBox();
-            this.ribbonTextBox4 = new System.Windows.Forms.RibbonTextBox();
-            this.ribbonTextBox5 = new System.Windows.Forms.RibbonTextBox();
-            this.ribbonSeparator2 = new System.Windows.Forms.RibbonSeparator();
+            this.panel_Help = new System.Windows.Forms.Panel();
+            this.panel_customLocations = new System.Windows.Forms.Panel();
+            this.panel_Diagnostics = new System.Windows.Forms.Panel();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Diagnostics)).BeginInit();
-            this.p_Logging.SuspendLayout();
+            this.panel_Logging.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Logging)).BeginInit();
             this.p_Client.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_client_logLevel)).BeginInit();
@@ -166,11 +163,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_logsizeMb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_sqlcacheloggingLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_loggingLevel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Logging)).BeginInit();
-            this.surface_mainPanel.SuspendLayout();
-            this.surface_lowerPanel.SuspendLayout();
-            this.surface_customlocationsPanel.SuspendLayout();
+            this.panel_Logs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_customLocations)).BeginInit();
+            this.panel_Help.SuspendLayout();
+            this.panel_customLocations.SuspendLayout();
+            this.panel_Diagnostics.SuspendLayout();
             this.SuspendLayout();
             // 
             // tv_Logs
@@ -178,9 +175,10 @@
             this.tv_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tv_Logs.BackColor = System.Drawing.SystemColors.Info;
-            this.tv_Logs.Location = new System.Drawing.Point(0, 0);
+            this.tv_Logs.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tv_Logs.Location = new System.Drawing.Point(3, 3);
             this.tv_Logs.Name = "tv_Logs";
-            this.tv_Logs.Size = new System.Drawing.Size(204, 463);
+            this.tv_Logs.Size = new System.Drawing.Size(187, 479);
             this.tv_Logs.TabIndex = 0;
             this.tv_Logs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv_Logs_AfterSelect);
             // 
@@ -189,9 +187,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 579);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 596);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(892, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(903, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "ss_Output";
             // 
@@ -199,7 +197,7 @@
             // 
             this.toolStripStatusLabel1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(438, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(444, 17);
             this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -207,13 +205,14 @@
             // 
             this.toolStripStatusLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(438, 17);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(444, 17);
             this.toolStripStatusLabel2.Spring = true;
             // 
             // dgv_Logs
             // 
             this.dgv_Logs.AllowUserToAddRows = false;
             this.dgv_Logs.AllowUserToDeleteRows = false;
+            this.dgv_Logs.AllowUserToOrderColumns = true;
             this.dgv_Logs.AllowUserToResizeRows = false;
             this.dgv_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -233,15 +232,16 @@
             this.dgv_v_Product});
             this.dgv_Logs.ContextMenuStrip = this.contextMenuStrip1;
             this.dgv_Logs.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgv_Logs.Location = new System.Drawing.Point(210, 0);
+            this.dgv_Logs.Location = new System.Drawing.Point(196, 4);
             this.dgv_Logs.Name = "dgv_Logs";
             this.dgv_Logs.ReadOnly = true;
             this.dgv_Logs.RowHeadersVisible = false;
             this.dgv_Logs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgv_Logs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_Logs.Size = new System.Drawing.Size(658, 463);
+            this.dgv_Logs.Size = new System.Drawing.Size(702, 478);
             this.dgv_Logs.StandardTab = true;
             this.dgv_Logs.TabIndex = 10;
+            this.dgv_Logs.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgv_Logs_ColumnDisplayIndexChanged);
             this.dgv_Logs.DoubleClick += new System.EventHandler(this.dgv_Logs_DoubleClick);
             this.dgv_Logs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_Logs_KeyDown);
             // 
@@ -356,16 +356,15 @@
             this.dgv_Diagnostics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_Diagnostics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.c_dgvDiag_Diagnostics});
-            this.dgv_Diagnostics.Location = new System.Drawing.Point(210, 0);
+            this.dgv_Diagnostics.Location = new System.Drawing.Point(5, 3);
             this.dgv_Diagnostics.Name = "dgv_Diagnostics";
             this.dgv_Diagnostics.ReadOnly = true;
             this.dgv_Diagnostics.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgv_Diagnostics.RowHeadersVisible = false;
             this.dgv_Diagnostics.ShowEditingIcon = false;
-            this.dgv_Diagnostics.Size = new System.Drawing.Size(658, 463);
+            this.dgv_Diagnostics.Size = new System.Drawing.Size(893, 476);
             this.dgv_Diagnostics.TabIndex = 11;
             this.dgv_Diagnostics.TabStop = false;
-            this.dgv_Diagnostics.Visible = false;
             // 
             // c_dgvDiag_Diagnostics
             // 
@@ -376,30 +375,104 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileName = "6";
             // 
-            // p_Logging
+            // panel_Logging
             // 
-            this.p_Logging.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panel_Logging.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.p_Logging.Controls.Add(this.p_Client);
-            this.p_Logging.Controls.Add(this.p_Site);
-            this.p_Logging.Controls.Add(this.dgv_Logging);
-            this.p_Logging.Location = new System.Drawing.Point(210, 0);
-            this.p_Logging.Name = "p_Logging";
-            this.p_Logging.Size = new System.Drawing.Size(658, 460);
-            this.p_Logging.TabIndex = 19;
-            this.p_Logging.Visible = false;
+            this.panel_Logging.Controls.Add(this.dgv_Logging);
+            this.panel_Logging.Controls.Add(this.p_Client);
+            this.panel_Logging.Controls.Add(this.p_Site);
+            this.panel_Logging.Location = new System.Drawing.Point(2, 108);
+            this.panel_Logging.Name = "panel_Logging";
+            this.panel_Logging.Size = new System.Drawing.Size(901, 485);
+            this.panel_Logging.TabIndex = 19;
+            this.panel_Logging.Visible = false;
+            // 
+            // dgv_Logging
+            // 
+            this.dgv_Logging.AllowUserToAddRows = false;
+            this.dgv_Logging.AllowUserToDeleteRows = false;
+            this.dgv_Logging.AllowUserToOrderColumns = true;
+            this.dgv_Logging.AllowUserToResizeRows = false;
+            this.dgv_Logging.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_Logging.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgv_Logging.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_Logging.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.c_dgv_logging_componentName,
+            this.c_dgv_logging_debugLogging,
+            this.c_dgv_logging_Enabled,
+            this.c_dgv_logging_loggingLevel,
+            this.c_dgv_logging_logmaxHistory,
+            this.c_dgv_logging_maxfileSize});
+            this.dgv_Logging.Location = new System.Drawing.Point(3, 3);
+            this.dgv_Logging.MultiSelect = false;
+            this.dgv_Logging.Name = "dgv_Logging";
+            this.dgv_Logging.RowHeadersVisible = false;
+            this.dgv_Logging.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgv_Logging.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_Logging.ShowEditingIcon = false;
+            this.dgv_Logging.Size = new System.Drawing.Size(887, 328);
+            this.dgv_Logging.TabIndex = 11;
+            this.dgv_Logging.Visible = false;
+            this.dgv_Logging.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Logging_CellValueChanged);
+            // 
+            // c_dgv_logging_componentName
+            // 
+            this.c_dgv_logging_componentName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.c_dgv_logging_componentName.HeaderText = "Component";
+            this.c_dgv_logging_componentName.Name = "c_dgv_logging_componentName";
+            this.c_dgv_logging_componentName.ReadOnly = true;
+            this.c_dgv_logging_componentName.Width = 86;
+            // 
+            // c_dgv_logging_debugLogging
+            // 
+            this.c_dgv_logging_debugLogging.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.c_dgv_logging_debugLogging.HeaderText = "Debug";
+            this.c_dgv_logging_debugLogging.Name = "c_dgv_logging_debugLogging";
+            this.c_dgv_logging_debugLogging.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.c_dgv_logging_debugLogging.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.c_dgv_logging_debugLogging.Width = 64;
+            // 
+            // c_dgv_logging_Enabled
+            // 
+            this.c_dgv_logging_Enabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.c_dgv_logging_Enabled.HeaderText = "Enabled";
+            this.c_dgv_logging_Enabled.Name = "c_dgv_logging_Enabled";
+            this.c_dgv_logging_Enabled.Width = 52;
+            // 
+            // c_dgv_logging_loggingLevel
+            // 
+            this.c_dgv_logging_loggingLevel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.c_dgv_logging_loggingLevel.HeaderText = "Log Level";
+            this.c_dgv_logging_loggingLevel.Name = "c_dgv_logging_loggingLevel";
+            this.c_dgv_logging_loggingLevel.Width = 79;
+            // 
+            // c_dgv_logging_logmaxHistory
+            // 
+            this.c_dgv_logging_logmaxHistory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.c_dgv_logging_logmaxHistory.HeaderText = "Max History";
+            this.c_dgv_logging_logmaxHistory.Name = "c_dgv_logging_logmaxHistory";
+            this.c_dgv_logging_logmaxHistory.Width = 87;
+            // 
+            // c_dgv_logging_maxfileSize
+            // 
+            this.c_dgv_logging_maxfileSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.c_dgv_logging_maxfileSize.HeaderText = "Max File Size";
+            this.c_dgv_logging_maxfileSize.Name = "c_dgv_logging_maxfileSize";
             // 
             // p_Client
             // 
             this.p_Client.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.p_Client.Controls.Add(this.groupBox2);
-            this.p_Client.Location = new System.Drawing.Point(304, 345);
+            this.p_Client.Location = new System.Drawing.Point(388, 337);
             this.p_Client.Name = "p_Client";
-            this.p_Client.Size = new System.Drawing.Size(351, 115);
+            this.p_Client.Size = new System.Drawing.Size(502, 127);
             this.p_Client.TabIndex = 24;
             this.p_Client.Visible = false;
             // 
@@ -414,9 +487,9 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.nud_client_logmaxSize);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(3, 0);
+            this.groupBox2.Location = new System.Drawing.Point(3, 5);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(351, 115);
+            this.groupBox2.Size = new System.Drawing.Size(376, 115);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Client Logging";
@@ -434,7 +507,7 @@
             // cb_client_Logging
             // 
             this.cb_client_Logging.AutoSize = true;
-            this.cb_client_Logging.Location = new System.Drawing.Point(20, 20);
+            this.cb_client_Logging.Location = new System.Drawing.Point(20, 22);
             this.cb_client_Logging.Name = "cb_client_Logging";
             this.cb_client_Logging.Size = new System.Drawing.Size(64, 17);
             this.cb_client_Logging.TabIndex = 4;
@@ -523,51 +596,40 @@
             // 
             this.p_Site.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.p_Site.Controls.Add(this.groupBox1);
-            this.p_Site.Location = new System.Drawing.Point(3, 344);
+            this.p_Site.Location = new System.Drawing.Point(3, 337);
             this.p_Site.Name = "p_Site";
-            this.p_Site.Size = new System.Drawing.Size(298, 116);
+            this.p_Site.Size = new System.Drawing.Size(379, 128);
             this.p_Site.TabIndex = 23;
             this.p_Site.Visible = false;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.b_cycleSMSEXEC);
-            this.groupBox1.Controls.Add(this.cb_site_siteLogging);
             this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.cb_site_sqlLogging);
+            this.groupBox1.Controls.Add(this.cb_site_siteLogging);
             this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.cb_site_archiveLogs);
             this.groupBox1.Controls.Add(this.num_provider_logsizeMb);
             this.groupBox1.Controls.Add(this.num_provider_sqlcacheloggingLevel);
             this.groupBox1.Controls.Add(this.num_provider_loggingLevel);
-            this.groupBox1.Controls.Add(this.cb_site_sqlLogging);
-            this.groupBox1.Controls.Add(this.cb_site_archiveLogs);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Location = new System.Drawing.Point(0, 1);
+            this.groupBox1.Location = new System.Drawing.Point(3, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(295, 115);
+            this.groupBox1.Size = new System.Drawing.Size(373, 115);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Site and Site Provider Logging";
             // 
             // b_cycleSMSEXEC
             // 
-            this.b_cycleSMSEXEC.Location = new System.Drawing.Point(6, 82);
+            this.b_cycleSMSEXEC.Location = new System.Drawing.Point(7, 82);
             this.b_cycleSMSEXEC.Name = "b_cycleSMSEXEC";
             this.b_cycleSMSEXEC.Size = new System.Drawing.Size(103, 23);
             this.b_cycleSMSEXEC.TabIndex = 10;
             this.b_cycleSMSEXEC.Text = "Cycle SMSEXEC";
             this.b_cycleSMSEXEC.UseVisualStyleBackColor = true;
             this.b_cycleSMSEXEC.Click += new System.EventHandler(this.b_cycleSMSEXEC_Click);
-            // 
-            // cb_site_siteLogging
-            // 
-            this.cb_site_siteLogging.AutoSize = true;
-            this.cb_site_siteLogging.Location = new System.Drawing.Point(6, 20);
-            this.cb_site_siteLogging.Name = "cb_site_siteLogging";
-            this.cb_site_siteLogging.Size = new System.Drawing.Size(85, 17);
-            this.cb_site_siteLogging.TabIndex = 13;
-            this.cb_site_siteLogging.Text = "Site Logging";
-            this.cb_site_siteLogging.UseVisualStyleBackColor = true;
-            this.cb_site_siteLogging.CheckedChanged += new System.EventHandler(this.cb_site_siteLogging_CheckedChanged);
             // 
             // label6
             // 
@@ -578,6 +640,28 @@
             this.label6.TabIndex = 18;
             this.label6.Text = "Provider Logging Level";
             // 
+            // cb_site_sqlLogging
+            // 
+            this.cb_site_sqlLogging.AutoSize = true;
+            this.cb_site_sqlLogging.Location = new System.Drawing.Point(7, 20);
+            this.cb_site_sqlLogging.Name = "cb_site_sqlLogging";
+            this.cb_site_sqlLogging.Size = new System.Drawing.Size(88, 17);
+            this.cb_site_sqlLogging.TabIndex = 14;
+            this.cb_site_sqlLogging.Text = "SQL Logging";
+            this.cb_site_sqlLogging.UseVisualStyleBackColor = true;
+            this.cb_site_sqlLogging.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            // 
+            // cb_site_siteLogging
+            // 
+            this.cb_site_siteLogging.AutoSize = true;
+            this.cb_site_siteLogging.Location = new System.Drawing.Point(7, 56);
+            this.cb_site_siteLogging.Name = "cb_site_siteLogging";
+            this.cb_site_siteLogging.Size = new System.Drawing.Size(85, 17);
+            this.cb_site_siteLogging.TabIndex = 13;
+            this.cb_site_siteLogging.Text = "Site Logging";
+            this.cb_site_siteLogging.UseVisualStyleBackColor = true;
+            this.cb_site_siteLogging.CheckedChanged += new System.EventHandler(this.cb_site_siteLogging_CheckedChanged);
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -587,14 +671,20 @@
             this.label7.TabIndex = 19;
             this.label7.Text = "SQL Cache Logging Level";
             // 
+            // cb_site_archiveLogs
+            // 
+            this.cb_site_archiveLogs.AutoSize = true;
+            this.cb_site_archiveLogs.Location = new System.Drawing.Point(7, 38);
+            this.cb_site_archiveLogs.Name = "cb_site_archiveLogs";
+            this.cb_site_archiveLogs.Size = new System.Drawing.Size(88, 17);
+            this.cb_site_archiveLogs.TabIndex = 15;
+            this.cb_site_archiveLogs.Text = "Archive Logs";
+            this.cb_site_archiveLogs.UseVisualStyleBackColor = true;
+            this.cb_site_archiveLogs.CheckedChanged += new System.EventHandler(this.cb_site_archiveLogs_CheckedChanged);
+            // 
             // num_provider_logsizeMb
             // 
             this.num_provider_logsizeMb.Location = new System.Drawing.Point(249, 82);
-            this.num_provider_logsizeMb.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.num_provider_logsizeMb.Name = "num_provider_logsizeMb";
             this.num_provider_logsizeMb.Size = new System.Drawing.Size(42, 20);
             this.num_provider_logsizeMb.TabIndex = 22;
@@ -631,28 +721,6 @@
             this.num_provider_loggingLevel.TabIndex = 17;
             this.num_provider_loggingLevel.ValueChanged += new System.EventHandler(this.num_provider_loggingLevel_ValueChanged);
             // 
-            // cb_site_sqlLogging
-            // 
-            this.cb_site_sqlLogging.AutoSize = true;
-            this.cb_site_sqlLogging.Location = new System.Drawing.Point(6, 39);
-            this.cb_site_sqlLogging.Name = "cb_site_sqlLogging";
-            this.cb_site_sqlLogging.Size = new System.Drawing.Size(88, 17);
-            this.cb_site_sqlLogging.TabIndex = 14;
-            this.cb_site_sqlLogging.Text = "SQL Logging";
-            this.cb_site_sqlLogging.UseVisualStyleBackColor = true;
-            this.cb_site_sqlLogging.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
-            // 
-            // cb_site_archiveLogs
-            // 
-            this.cb_site_archiveLogs.AutoSize = true;
-            this.cb_site_archiveLogs.Location = new System.Drawing.Point(6, 59);
-            this.cb_site_archiveLogs.Name = "cb_site_archiveLogs";
-            this.cb_site_archiveLogs.Size = new System.Drawing.Size(88, 17);
-            this.cb_site_archiveLogs.TabIndex = 15;
-            this.cb_site_archiveLogs.Text = "Archive Logs";
-            this.cb_site_archiveLogs.UseVisualStyleBackColor = true;
-            this.cb_site_archiveLogs.CheckedChanged += new System.EventHandler(this.cb_site_archiveLogs_CheckedChanged);
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -661,80 +729,6 @@
             this.label8.Size = new System.Drawing.Size(114, 13);
             this.label8.TabIndex = 21;
             this.label8.Text = "Provider Log Size (Mb)";
-            // 
-            // dgv_Logging
-            // 
-            this.dgv_Logging.AllowUserToAddRows = false;
-            this.dgv_Logging.AllowUserToDeleteRows = false;
-            this.dgv_Logging.AllowUserToOrderColumns = true;
-            this.dgv_Logging.AllowUserToResizeRows = false;
-            this.dgv_Logging.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgv_Logging.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
-            this.dgv_Logging.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_Logging.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.c_dgv_logging_componentName,
-            this.c_dgv_logging_debugLogging,
-            this.c_dgv_logging_Enabled,
-            this.c_dgv_logging_loggingLevel,
-            this.c_dgv_logging_logmaxHistory,
-            this.c_dgv_logging_maxfileSize});
-            this.dgv_Logging.Location = new System.Drawing.Point(0, 0);
-            this.dgv_Logging.MultiSelect = false;
-            this.dgv_Logging.Name = "dgv_Logging";
-            this.dgv_Logging.RowHeadersVisible = false;
-            this.dgv_Logging.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgv_Logging.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_Logging.ShowEditingIcon = false;
-            this.dgv_Logging.Size = new System.Drawing.Size(657, 338);
-            this.dgv_Logging.TabIndex = 11;
-            this.dgv_Logging.Visible = false;
-            this.dgv_Logging.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Logging_CellValueChanged);
-            // 
-            // c_dgv_logging_componentName
-            // 
-            this.c_dgv_logging_componentName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.c_dgv_logging_componentName.HeaderText = "Component";
-            this.c_dgv_logging_componentName.Name = "c_dgv_logging_componentName";
-            this.c_dgv_logging_componentName.ReadOnly = true;
-            this.c_dgv_logging_componentName.Width = 86;
-            // 
-            // c_dgv_logging_debugLogging
-            // 
-            this.c_dgv_logging_debugLogging.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.c_dgv_logging_debugLogging.HeaderText = "Debug";
-            this.c_dgv_logging_debugLogging.Name = "c_dgv_logging_debugLogging";
-            this.c_dgv_logging_debugLogging.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.c_dgv_logging_debugLogging.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.c_dgv_logging_debugLogging.Width = 64;
-            // 
-            // c_dgv_logging_Enabled
-            // 
-            this.c_dgv_logging_Enabled.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.c_dgv_logging_Enabled.HeaderText = "Enabled";
-            this.c_dgv_logging_Enabled.Name = "c_dgv_logging_Enabled";
-            this.c_dgv_logging_Enabled.Width = 52;
-            // 
-            // c_dgv_logging_loggingLevel
-            // 
-            this.c_dgv_logging_loggingLevel.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.c_dgv_logging_loggingLevel.HeaderText = "Log Level";
-            this.c_dgv_logging_loggingLevel.Name = "c_dgv_logging_loggingLevel";
-            this.c_dgv_logging_loggingLevel.Width = 79;
-            // 
-            // c_dgv_logging_logmaxHistory
-            // 
-            this.c_dgv_logging_logmaxHistory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.c_dgv_logging_logmaxHistory.HeaderText = "Max History";
-            this.c_dgv_logging_logmaxHistory.Name = "c_dgv_logging_logmaxHistory";
-            this.c_dgv_logging_logmaxHistory.Width = 87;
-            // 
-            // c_dgv_logging_maxfileSize
-            // 
-            this.c_dgv_logging_maxfileSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.c_dgv_logging_maxfileSize.HeaderText = "Max File Size";
-            this.c_dgv_logging_maxfileSize.Name = "c_dgv_logging_maxfileSize";
             // 
             // ribbon1
             // 
@@ -754,7 +748,7 @@
             this.ribbon1.OrbImage = null;
             this.ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010;
             this.ribbon1.RibbonTabFont = new System.Drawing.Font("Trebuchet MS", 9F);
-            this.ribbon1.Size = new System.Drawing.Size(892, 107);
+            this.ribbon1.Size = new System.Drawing.Size(903, 107);
             this.ribbon1.TabIndex = 22;
             this.ribbon1.Tabs.Add(this.rt_Home);
             this.ribbon1.Tabs.Add(this.rt_Monitoring);
@@ -767,7 +761,6 @@
             this.rt_Home.Panels.Add(this.ribbonPanel1);
             this.rt_Home.Panels.Add(this.ribbonPanel2);
             this.rt_Home.Panels.Add(this.ribbonPanel4);
-            this.rt_Home.Panels.Add(this.ribbonPanel5);
             this.rt_Home.Panels.Add(this.ribbonPanel6);
             this.rt_Home.Text = "Home";
             // 
@@ -799,21 +792,13 @@
             // ribbonPanel2
             // 
             this.ribbonPanel2.Items.Add(this.rcb_hidearchiveLogs);
-            this.ribbonPanel2.Items.Add(this.rcb_openmultiLogs);
             this.ribbonPanel2.Text = "";
             // 
             // rcb_hidearchiveLogs
             // 
+            this.rcb_hidearchiveLogs.Checked = true;
             this.rcb_hidearchiveLogs.Text = "Hide Archive Logs";
             this.rcb_hidearchiveLogs.CheckBoxCheckChanged += new System.EventHandler(this.rcb_hidearchiveLogs_CheckBoxCheckChanged);
-            // 
-            // rcb_openmultiLogs
-            // 
-            this.rcb_openmultiLogs.Checked = true;
-            this.rcb_openmultiLogs.Text = "Merge or Multiple Logs";
-            this.rcb_openmultiLogs.ToolTip = "Open multiple log files in Trace as either merged, if supported, or as multiple w" +
-    "indows";
-            this.rcb_openmultiLogs.CheckBoxCheckChanged += new System.EventHandler(this.rcb_openmultiLogs_CheckBoxCheckChanged);
             // 
             // ribbonPanel4
             // 
@@ -825,7 +810,7 @@
             // 
             this.rb_openLogs.Image = ((System.Drawing.Image)(resources.GetObject("rb_openLogs.Image")));
             this.rb_openLogs.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_openLogs.SmallImage")));
-            this.rb_openLogs.Text = "Open Logs";
+            this.rb_openLogs.Text = "Open";
             this.rb_openLogs.ToolTip = "Open the selected log(s)";
             this.rb_openLogs.ToolTipTitle = "Open Logs";
             this.rb_openLogs.Click += new System.EventHandler(this.rb_openLogs_Click);
@@ -839,27 +824,46 @@
             this.rb_refreshLogs.ToolTipTitle = "Refresh Logs";
             this.rb_refreshLogs.Click += new System.EventHandler(this.rb_refreshLogs_Click);
             // 
-            // ribbonPanel5
+            // ribbonPanel6
             // 
-            this.ribbonPanel5.Items.Add(this.rb_Logging);
-            this.ribbonPanel5.Text = "";
+            this.ribbonPanel6.Items.Add(this.rb_Logging);
+            this.ribbonPanel6.Items.Add(this.rb_supportCenter);
+            this.ribbonPanel6.Items.Add(this.rb_showLogs);
+            this.ribbonPanel6.Items.Add(this.rb_customPaths);
+            this.ribbonPanel6.Items.Add(this.rb_debugWindow);
+            this.ribbonPanel6.Items.Add(this.rb_Help);
+            this.ribbonPanel6.Text = "";
             // 
             // rb_Logging
             // 
             this.rb_Logging.Image = ((System.Drawing.Image)(resources.GetObject("rb_Logging.Image")));
             this.rb_Logging.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_Logging.SmallImage")));
             this.rb_Logging.Text = "Logging";
-            this.rb_Logging.ToolTip = "Show ConfigMgr Site\\Client Logging Panel";
-            this.rb_Logging.ToolTipTitle = "Logging";
+            this.rb_Logging.ToolTip = "Change Site and Client log settings";
+            this.rb_Logging.ToolTipTitle = "Log Settings";
             this.rb_Logging.Value = "Logging";
+            this.rb_Logging.Visible = false;
             this.rb_Logging.Click += new System.EventHandler(this.rb_Logging_Click);
             // 
-            // ribbonPanel6
+            // rb_supportCenter
             // 
-            this.ribbonPanel6.Items.Add(this.rb_customPaths);
-            this.ribbonPanel6.Items.Add(this.rb_debugWindow);
-            this.ribbonPanel6.Items.Add(this.rb_Help);
-            this.ribbonPanel6.Text = "";
+            this.rb_supportCenter.Image = ((System.Drawing.Image)(resources.GetObject("rb_supportCenter.Image")));
+            this.rb_supportCenter.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_supportCenter.SmallImage")));
+            this.rb_supportCenter.Text = "CMSC";
+            this.rb_supportCenter.ToolTip = "Open Support Center";
+            this.rb_supportCenter.ToolTipTitle = "Configuration Manager Support Center";
+            this.rb_supportCenter.Visible = false;
+            this.rb_supportCenter.Click += new System.EventHandler(this.rb_supportCenter_Click);
+            // 
+            // rb_showLogs
+            // 
+            this.rb_showLogs.Image = ((System.Drawing.Image)(resources.GetObject("rb_showLogs.Image")));
+            this.rb_showLogs.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_showLogs.SmallImage")));
+            this.rb_showLogs.Text = "Logs";
+            this.rb_showLogs.ToolTip = "View scanned Logs";
+            this.rb_showLogs.ToolTipTitle = "Show the Log View";
+            this.rb_showLogs.Value = "Logs";
+            this.rb_showLogs.Click += new System.EventHandler(this.rb_showLogs_Click);
             // 
             // rb_customPaths
             // 
@@ -938,6 +942,44 @@
             this.rcc_Oldest.Text = "Oldest";
             this.rcc_Oldest.Click += new System.EventHandler(this.rcc_Oldest_Click);
             // 
+            // rt_Trace
+            // 
+            this.rt_Trace.Panels.Add(this.ribbonPanel7);
+            this.rt_Trace.Panels.Add(this.ribbonPanel8);
+            this.rt_Trace.Text = "Trace Configuration";
+            // 
+            // ribbonPanel7
+            // 
+            this.ribbonPanel7.Items.Add(this.rtb_tracerPath);
+            this.ribbonPanel7.Items.Add(this.rb_tracerFind);
+            this.ribbonPanel7.Text = "Tracer";
+            // 
+            // rtb_tracerPath
+            // 
+            this.rtb_tracerPath.Text = "Path";
+            this.rtb_tracerPath.TextBoxText = "";
+            this.rtb_tracerPath.TextBoxWidth = 400;
+            // 
+            // rb_tracerFind
+            // 
+            this.rb_tracerFind.Image = ((System.Drawing.Image)(resources.GetObject("rb_tracerFind.Image")));
+            this.rb_tracerFind.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_tracerFind.SmallImage")));
+            this.rb_tracerFind.Text = "Find";
+            this.rb_tracerFind.Value = "...";
+            this.rb_tracerFind.Click += new System.EventHandler(this.rb_tracerFind_Click);
+            // 
+            // ribbonPanel8
+            // 
+            this.ribbonPanel8.Items.Add(this.rcb_MultiMerge);
+            this.ribbonPanel8.Text = "Configuration";
+            // 
+            // rcb_MultiMerge
+            // 
+            this.rcb_MultiMerge.Text = "Merge\\Multiple";
+            this.rcb_MultiMerge.ToolTip = "Open multiple log files in Trace as either merged, if supported, or as multiple w" +
+    "indows";
+            this.rcb_MultiMerge.CheckBoxCheckChanged += new System.EventHandler(this.rcb_MultiMerge_CheckBoxCheckChanged);
+            // 
             // ribbonOrbRecentItem1
             // 
             this.ribbonOrbRecentItem1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem1.Image")));
@@ -989,30 +1031,17 @@
             this.ribbonOrbMenuItem2.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem2.SmallImage")));
             this.ribbonOrbMenuItem2.Text = "ribbonOrbMenuItem2";
             // 
-            // surface_mainPanel
+            // panel_Logs
             // 
-            this.surface_mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panel_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.surface_mainPanel.Controls.Add(this.tv_Logs);
-            this.surface_mainPanel.Controls.Add(this.dgv_Logs);
-            this.surface_mainPanel.Controls.Add(this.dgv_Diagnostics);
-            this.surface_mainPanel.Controls.Add(this.p_Logging);
-            this.surface_mainPanel.Location = new System.Drawing.Point(12, 113);
-            this.surface_mainPanel.Name = "surface_mainPanel";
-            this.surface_mainPanel.Size = new System.Drawing.Size(868, 463);
-            this.surface_mainPanel.TabIndex = 23;
-            // 
-            // surface_lowerPanel
-            // 
-            this.surface_lowerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.surface_lowerPanel.Controls.Add(this.rtb_Help);
-            this.surface_lowerPanel.Location = new System.Drawing.Point(12, 113);
-            this.surface_lowerPanel.Name = "surface_lowerPanel";
-            this.surface_lowerPanel.Size = new System.Drawing.Size(868, 463);
-            this.surface_lowerPanel.TabIndex = 24;
+            this.panel_Logs.Controls.Add(this.dgv_Logs);
+            this.panel_Logs.Controls.Add(this.tv_Logs);
+            this.panel_Logs.Location = new System.Drawing.Point(2, 108);
+            this.panel_Logs.Name = "panel_Logs";
+            this.panel_Logs.Size = new System.Drawing.Size(901, 485);
+            this.panel_Logs.TabIndex = 23;
             // 
             // rtb_Help
             // 
@@ -1021,38 +1050,17 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtb_Help.BackColor = System.Drawing.SystemColors.Control;
             this.rtb_Help.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtb_Help.Location = new System.Drawing.Point(0, 0);
+            this.rtb_Help.Location = new System.Drawing.Point(7, 3);
             this.rtb_Help.Name = "rtb_Help";
             this.rtb_Help.ReadOnly = true;
-            this.rtb_Help.Size = new System.Drawing.Size(868, 463);
+            this.rtb_Help.Size = new System.Drawing.Size(891, 476);
             this.rtb_Help.TabIndex = 0;
             this.rtb_Help.Text = "";
-            // 
-            // surface_customlocationsPanel
-            // 
-            this.surface_customlocationsPanel.Controls.Add(this.b_deleteLocation);
-            this.surface_customlocationsPanel.Controls.Add(this.b_addupdateLocation);
-            this.surface_customlocationsPanel.Controls.Add(this.label1);
-            this.surface_customlocationsPanel.Controls.Add(this.label2);
-            this.surface_customlocationsPanel.Controls.Add(this.label9);
-            this.surface_customlocationsPanel.Controls.Add(this.label10);
-            this.surface_customlocationsPanel.Controls.Add(this.label11);
-            this.surface_customlocationsPanel.Controls.Add(this.cb_recurseFolder);
-            this.surface_customlocationsPanel.Controls.Add(this.tb_logProduct);
-            this.surface_customlocationsPanel.Controls.Add(this.tb_logCategory);
-            this.surface_customlocationsPanel.Controls.Add(this.tb_fileMask);
-            this.surface_customlocationsPanel.Controls.Add(this.tb_customLocation);
-            this.surface_customlocationsPanel.Controls.Add(this.dgv_customLocations);
-            this.surface_customlocationsPanel.Location = new System.Drawing.Point(222, 113);
-            this.surface_customlocationsPanel.Name = "surface_customlocationsPanel";
-            this.surface_customlocationsPanel.Size = new System.Drawing.Size(658, 463);
-            this.surface_customlocationsPanel.TabIndex = 25;
-            this.surface_customlocationsPanel.Visible = false;
             // 
             // b_deleteLocation
             // 
             this.b_deleteLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_deleteLocation.Location = new System.Drawing.Point(152, 427);
+            this.b_deleteLocation.Location = new System.Drawing.Point(810, 450);
             this.b_deleteLocation.Name = "b_deleteLocation";
             this.b_deleteLocation.Size = new System.Drawing.Size(75, 23);
             this.b_deleteLocation.TabIndex = 26;
@@ -1064,7 +1072,7 @@
             // b_addupdateLocation
             // 
             this.b_addupdateLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.b_addupdateLocation.Location = new System.Drawing.Point(18, 427);
+            this.b_addupdateLocation.Location = new System.Drawing.Point(684, 450);
             this.b_addupdateLocation.Name = "b_addupdateLocation";
             this.b_addupdateLocation.Size = new System.Drawing.Size(107, 23);
             this.b_addupdateLocation.TabIndex = 19;
@@ -1076,7 +1084,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(315, 376);
+            this.label1.Location = new System.Drawing.Point(436, 378);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 25;
@@ -1086,7 +1094,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 376);
+            this.label2.Location = new System.Drawing.Point(7, 378);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(70, 13);
             this.label2.TabIndex = 24;
@@ -1096,7 +1104,7 @@
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(551, 322);
+            this.label9.Location = new System.Drawing.Point(155, 428);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(79, 13);
             this.label9.TabIndex = 23;
@@ -1106,7 +1114,7 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(15, 322);
+            this.label10.Location = new System.Drawing.Point(10, 429);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(125, 13);
             this.label10.TabIndex = 22;
@@ -1116,7 +1124,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 262);
+            this.label11.Location = new System.Drawing.Point(10, 326);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(135, 13);
             this.label11.TabIndex = 20;
@@ -1129,48 +1137,49 @@
             this.cb_recurseFolder.Items.AddRange(new object[] {
             "True",
             "False"});
-            this.cb_recurseFolder.Location = new System.Drawing.Point(554, 340);
+            this.cb_recurseFolder.Location = new System.Drawing.Point(158, 449);
             this.cb_recurseFolder.Name = "cb_recurseFolder";
-            this.cb_recurseFolder.Size = new System.Drawing.Size(84, 21);
+            this.cb_recurseFolder.Size = new System.Drawing.Size(76, 21);
             this.cb_recurseFolder.TabIndex = 16;
             this.cb_recurseFolder.Text = "False";
             // 
             // tb_logProduct
             // 
             this.tb_logProduct.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tb_logProduct.Location = new System.Drawing.Point(318, 395);
+            this.tb_logProduct.Location = new System.Drawing.Point(439, 397);
             this.tb_logProduct.Name = "tb_logProduct";
-            this.tb_logProduct.Size = new System.Drawing.Size(320, 20);
+            this.tb_logProduct.Size = new System.Drawing.Size(446, 20);
             this.tb_logProduct.TabIndex = 18;
             // 
             // tb_logCategory
             // 
             this.tb_logCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tb_logCategory.Location = new System.Drawing.Point(18, 395);
+            this.tb_logCategory.Location = new System.Drawing.Point(10, 397);
             this.tb_logCategory.Name = "tb_logCategory";
-            this.tb_logCategory.Size = new System.Drawing.Size(283, 20);
+            this.tb_logCategory.Size = new System.Drawing.Size(423, 20);
             this.tb_logCategory.TabIndex = 17;
             // 
             // tb_fileMask
             // 
             this.tb_fileMask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tb_fileMask.Location = new System.Drawing.Point(18, 341);
+            this.tb_fileMask.Location = new System.Drawing.Point(13, 450);
             this.tb_fileMask.Name = "tb_fileMask";
-            this.tb_fileMask.Size = new System.Drawing.Size(522, 20);
+            this.tb_fileMask.Size = new System.Drawing.Size(122, 20);
             this.tb_fileMask.TabIndex = 15;
             // 
             // tb_customLocation
             // 
             this.tb_customLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tb_customLocation.Location = new System.Drawing.Point(18, 280);
+            this.tb_customLocation.Location = new System.Drawing.Point(13, 342);
             this.tb_customLocation.Name = "tb_customLocation";
-            this.tb_customLocation.Size = new System.Drawing.Size(620, 20);
+            this.tb_customLocation.Size = new System.Drawing.Size(872, 20);
             this.tb_customLocation.TabIndex = 14;
             // 
             // dgv_customLocations
             // 
             this.dgv_customLocations.AllowUserToAddRows = false;
             this.dgv_customLocations.AllowUserToDeleteRows = false;
+            this.dgv_customLocations.AllowUserToOrderColumns = true;
             this.dgv_customLocations.AllowUserToResizeColumns = false;
             this.dgv_customLocations.AllowUserToResizeRows = false;
             this.dgv_customLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1189,7 +1198,7 @@
             this.dgv_customLocations.ReadOnly = true;
             this.dgv_customLocations.RowHeadersVisible = false;
             this.dgv_customLocations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_customLocations.Size = new System.Drawing.Size(658, 243);
+            this.dgv_customLocations.Size = new System.Drawing.Size(898, 311);
             this.dgv_customLocations.TabIndex = 13;
             this.dgv_customLocations.SelectionChanged += new System.EventHandler(this.dgv_customLocations_SelectionChanged);
             // 
@@ -1203,10 +1212,11 @@
             // 
             // c_cust_fileMask
             // 
-            this.c_cust_fileMask.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.c_cust_fileMask.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.c_cust_fileMask.HeaderText = "File Mask";
             this.c_cust_fileMask.Name = "c_cust_fileMask";
             this.c_cust_fileMask.ReadOnly = true;
+            this.c_cust_fileMask.Width = 71;
             // 
             // c_cust_recurseFolder
             // 
@@ -1231,84 +1241,54 @@
             this.c_cust_logProduct.Name = "c_cust_logProduct";
             this.c_cust_logProduct.ReadOnly = true;
             // 
-            // rt_Trace
+            // panel_Help
             // 
-            this.rt_Trace.Panels.Add(this.ribbonPanel7);
-            this.rt_Trace.Panels.Add(this.ribbonPanel8);
-            this.rt_Trace.Text = "Trace Configuration";
+            this.panel_Help.Controls.Add(this.rtb_Help);
+            this.panel_Help.Location = new System.Drawing.Point(2, 108);
+            this.panel_Help.Name = "panel_Help";
+            this.panel_Help.Size = new System.Drawing.Size(901, 482);
+            this.panel_Help.TabIndex = 24;
             // 
-            // ribbonPanel7
+            // panel_customLocations
             // 
-            this.ribbonPanel7.Items.Add(this.rb_selectTracer);
-            this.ribbonPanel7.Items.Add(this.ribbonSeparator2);
-            this.ribbonPanel7.Items.Add(this.ribbonTextBox5);
-            this.ribbonPanel7.Text = "Tracer";
+            this.panel_customLocations.Controls.Add(this.b_deleteLocation);
+            this.panel_customLocations.Controls.Add(this.dgv_customLocations);
+            this.panel_customLocations.Controls.Add(this.b_addupdateLocation);
+            this.panel_customLocations.Controls.Add(this.label1);
+            this.panel_customLocations.Controls.Add(this.tb_customLocation);
+            this.panel_customLocations.Controls.Add(this.label2);
+            this.panel_customLocations.Controls.Add(this.tb_fileMask);
+            this.panel_customLocations.Controls.Add(this.label9);
+            this.panel_customLocations.Controls.Add(this.label11);
+            this.panel_customLocations.Controls.Add(this.cb_recurseFolder);
+            this.panel_customLocations.Controls.Add(this.label10);
+            this.panel_customLocations.Controls.Add(this.tb_logProduct);
+            this.panel_customLocations.Controls.Add(this.tb_logCategory);
+            this.panel_customLocations.Location = new System.Drawing.Point(2, 108);
+            this.panel_customLocations.Name = "panel_customLocations";
+            this.panel_customLocations.Size = new System.Drawing.Size(901, 485);
+            this.panel_customLocations.TabIndex = 25;
             // 
-            // ribbonPanel8
+            // panel_Diagnostics
             // 
-            this.ribbonPanel8.Items.Add(this.rcb_MultiMerge);
-            this.ribbonPanel8.Text = "Configuration";
-            // 
-            // rcb_MultiMerge
-            // 
-            this.rcb_MultiMerge.Text = "Merge\\Multiple";
-            this.rcb_MultiMerge.ToolTip = "Open multiple log files in Trace as either merged, if supported, or as multiple w" +
-    "indows";
-            this.rcb_MultiMerge.CheckBoxCheckChanged += new System.EventHandler(this.rcb_MultiMerge_CheckBoxCheckChanged);
-            // 
-            // rb_selectTracer
-            // 
-            this.rb_selectTracer.DropDownItems.Add(this.ribbonTextBox1);
-            this.rb_selectTracer.DropDownItems.Add(this.ribbonTextBox2);
-            this.rb_selectTracer.DropDownItems.Add(this.ribbonTextBox4);
-            this.rb_selectTracer.DropDownItems.Add(this.ribbonTextBox3);
-            this.rb_selectTracer.Text = "Log Viewer";
-            this.rb_selectTracer.TextBoxText = "";
-            // 
-            // ribbonTextBox1
-            // 
-            this.ribbonTextBox1.AllowTextEdit = false;
-            this.ribbonTextBox1.Text = "CMTrace";
-            this.ribbonTextBox1.TextBoxText = "CMTrace";
-            this.ribbonTextBox1.Value = "CMTrace";
-            // 
-            // ribbonTextBox2
-            // 
-            this.ribbonTextBox2.AllowTextEdit = false;
-            this.ribbonTextBox2.Text = "Trace Viewer";
-            this.ribbonTextBox2.TextBoxText = "Trace Viewer";
-            this.ribbonTextBox2.Value = "CMTrace";
-            // 
-            // ribbonTextBox3
-            // 
-            this.ribbonTextBox3.AllowTextEdit = false;
-            this.ribbonTextBox3.Text = "Notepad";
-            this.ribbonTextBox3.TextBoxText = "Notepad";
-            this.ribbonTextBox3.Value = "CMTrace";
-            // 
-            // ribbonTextBox4
-            // 
-            this.ribbonTextBox4.AllowTextEdit = false;
-            this.ribbonTextBox4.Text = "Notepad++";
-            this.ribbonTextBox4.TextBoxText = "Notepad++";
-            this.ribbonTextBox4.Value = "Notepad++";
-            // 
-            // ribbonTextBox5
-            // 
-            this.ribbonTextBox5.Text = "Path";
-            this.ribbonTextBox5.TextBoxText = "";
-            this.ribbonTextBox5.TextBoxWidth = 400;
+            this.panel_Diagnostics.Controls.Add(this.dgv_Diagnostics);
+            this.panel_Diagnostics.Location = new System.Drawing.Point(2, 108);
+            this.panel_Diagnostics.Name = "panel_Diagnostics";
+            this.panel_Diagnostics.Size = new System.Drawing.Size(901, 482);
+            this.panel_Diagnostics.TabIndex = 26;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(892, 601);
-            this.Controls.Add(this.surface_customlocationsPanel);
-            this.Controls.Add(this.surface_mainPanel);
+            this.ClientSize = new System.Drawing.Size(903, 618);
+            this.Controls.Add(this.panel_Logs);
+            this.Controls.Add(this.panel_Help);
+            this.Controls.Add(this.panel_Diagnostics);
+            this.Controls.Add(this.panel_customLocations);
             this.Controls.Add(this.ribbon1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.surface_lowerPanel);
+            this.Controls.Add(this.panel_Logging);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(800, 640);
             this.Name = "Form1";
@@ -1319,7 +1299,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Diagnostics)).EndInit();
-            this.p_Logging.ResumeLayout(false);
+            this.panel_Logging.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Logging)).EndInit();
             this.p_Client.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -1332,12 +1313,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_logsizeMb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_sqlcacheloggingLevel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_loggingLevel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Logging)).EndInit();
-            this.surface_mainPanel.ResumeLayout(false);
-            this.surface_lowerPanel.ResumeLayout(false);
-            this.surface_customlocationsPanel.ResumeLayout(false);
-            this.surface_customlocationsPanel.PerformLayout();
+            this.panel_Logs.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_customLocations)).EndInit();
+            this.panel_Help.ResumeLayout(false);
+            this.panel_customLocations.ResumeLayout(false);
+            this.panel_customLocations.PerformLayout();
+            this.panel_Diagnostics.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1366,7 +1347,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgv_c_logPath;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgv_v_Product;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Panel p_Logging;
+        private System.Windows.Forms.Panel panel_Logging;
         private System.Windows.Forms.DataGridView dgv_Logging;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_dgv_logging_componentName;
         private System.Windows.Forms.DataGridViewCheckBoxColumn c_dgv_logging_debugLogging;
@@ -1405,7 +1386,6 @@
         private System.Windows.Forms.RibbonComboBox rcb_remoteServer;
         private System.Windows.Forms.RibbonPanel ribbonPanel2;
         private System.Windows.Forms.RibbonCheckBox rcb_hidearchiveLogs;
-        private System.Windows.Forms.RibbonCheckBox rcb_openmultiLogs;
         private System.Windows.Forms.RibbonTab rt_Monitoring;
         private System.Windows.Forms.RibbonPanel ribbonPanel3;
         private System.Windows.Forms.RibbonButton rb_Monitor;
@@ -1417,8 +1397,6 @@
         private System.Windows.Forms.RibbonPanel ribbonPanel4;
         private System.Windows.Forms.RibbonButton rb_openLogs;
         private System.Windows.Forms.RibbonButton rb_refreshLogs;
-        private System.Windows.Forms.RibbonPanel ribbonPanel5;
-        private System.Windows.Forms.RibbonButton rb_Logging;
         private System.Windows.Forms.RibbonPanel ribbonPanel6;
         private System.Windows.Forms.RibbonButton rb_debugWindow;
         private System.Windows.Forms.RibbonButton rb_customPaths;
@@ -1431,10 +1409,8 @@
         private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem1;
         private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem2;
         private System.Windows.Forms.RibbonButton ribbonButton1;
-        private System.Windows.Forms.Panel surface_mainPanel;
-        private System.Windows.Forms.Panel surface_lowerPanel;
+        private System.Windows.Forms.Panel panel_Logs;
         private System.Windows.Forms.RichTextBox rtb_Help;
-        private System.Windows.Forms.Panel surface_customlocationsPanel;
         private System.Windows.Forms.Button b_deleteLocation;
         private System.Windows.Forms.Button b_addupdateLocation;
         private System.Windows.Forms.Label label1;
@@ -1448,22 +1424,23 @@
         private System.Windows.Forms.TextBox tb_fileMask;
         private System.Windows.Forms.TextBox tb_customLocation;
         private System.Windows.Forms.DataGridView dgv_customLocations;
+        private System.Windows.Forms.RibbonTab rt_Trace;
+        private System.Windows.Forms.RibbonPanel ribbonPanel7;
+        private System.Windows.Forms.RibbonPanel ribbonPanel8;
+        private System.Windows.Forms.RibbonCheckBox rcb_MultiMerge;
+        private System.Windows.Forms.RibbonTextBox rtb_tracerPath;
+        private System.Windows.Forms.RibbonButton rb_showLogs;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_customLocation;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_fileMask;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_recurseFolder;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_logClass;
         private System.Windows.Forms.DataGridViewTextBoxColumn c_cust_logProduct;
-        private System.Windows.Forms.RibbonTab rt_Trace;
-        private System.Windows.Forms.RibbonPanel ribbonPanel7;
-        private System.Windows.Forms.RibbonPanel ribbonPanel8;
-        private System.Windows.Forms.RibbonCheckBox rcb_MultiMerge;
-        private System.Windows.Forms.RibbonComboBox rb_selectTracer;
-        private System.Windows.Forms.RibbonTextBox ribbonTextBox1;
-        private System.Windows.Forms.RibbonTextBox ribbonTextBox2;
-        private System.Windows.Forms.RibbonTextBox ribbonTextBox3;
-        private System.Windows.Forms.RibbonTextBox ribbonTextBox4;
-        private System.Windows.Forms.RibbonSeparator ribbonSeparator2;
-        private System.Windows.Forms.RibbonTextBox ribbonTextBox5;
+        private System.Windows.Forms.RibbonButton rb_supportCenter;
+        private System.Windows.Forms.RibbonButton rb_Logging;
+        private System.Windows.Forms.Panel panel_customLocations;
+        private System.Windows.Forms.Panel panel_Help;
+        private System.Windows.Forms.Panel panel_Diagnostics;
+        private System.Windows.Forms.RibbonButton rb_tracerFind;
     }
 }
 

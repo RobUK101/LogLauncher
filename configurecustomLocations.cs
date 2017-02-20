@@ -55,7 +55,7 @@ namespace LogLauncher
                     }
                 }
             }
-            catch (Exception ee)
+            catch (Exception)
             {
                 return null;
             }
@@ -96,7 +96,7 @@ namespace LogLauncher
                     }
                 }
             }
-            catch (Exception ee)
+            catch (Exception)
             {
                 return null;
             }
@@ -139,7 +139,7 @@ namespace LogLauncher
                                     dgv_customLocations.Rows.Add(newRow);
                                 }
                             }
-                            catch (Exception ee) // Handle this being the first row in the DGV
+                            catch (Exception) // Handle this being the first row in the DGV
                             {
                                 // Create a row so we can clone it then alter its properties, before clearing the rows and adding it again
 
@@ -163,13 +163,13 @@ namespace LogLauncher
                                 }
                             }
                         }
-                        catch (Exception ee)
+                        catch (Exception)
                         {
                         }
                     }
                 }
             }
-            catch (Exception ee)
+            catch (Exception)
             {
 
             }
@@ -221,7 +221,7 @@ namespace LogLauncher
                                     writebackList.Add(newcustomlogLocation);
                                 }
                             }
-                            catch (Exception ee)
+                            catch (Exception)
                             {
 
                             }
@@ -249,14 +249,14 @@ namespace LogLauncher
                             hkcucustomLocations.SetValue("CustomLogLocations", writebackList.ToArray());
                         }
                     }
-                    catch (Exception ee)
+                    catch (Exception)
                     {
 
                     }
 
                     renderDGV();
                 }
-                catch (Exception ee)
+                catch (Exception)
                 {
 
                 }
@@ -290,7 +290,7 @@ namespace LogLauncher
                     tb_logProduct.Text = (string)theRow.Cells[4].Value;
                 }
             }
-            catch (Exception ee)
+            catch (Exception)
             {
 
             }
@@ -328,14 +328,14 @@ namespace LogLauncher
                             hkcucustomLocations.SetValue("CustomLogLocations", writebackList.ToArray());
                         }
                     }
-                    catch (Exception ee)
+                    catch (Exception)
                     {
 
                     }
 
                     renderDGV();
                 }
-                catch (Exception ee)
+                catch (Exception)
                 {
 
                 }
