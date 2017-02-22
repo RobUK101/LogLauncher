@@ -30,7 +30,7 @@ namespace LogLauncher
 {
     public partial class Form1 : Form
     {
-        private const string c_productVersion = "V2.3 - Robert Marshall";
+        private const string c_productVersion = "V3.0 - Robert Marshall";
 
         private const string logfileExtension = "*.lo*";
 
@@ -41,7 +41,9 @@ namespace LogLauncher
 
         // The Help contents
 
-        private const string helpformContent = @"e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcZGVmbGFuZzIwNTd7XGZvbnR0Ymx7XGYwXGZuaWxcZmNoYXJzZXQwIFNlZ29lIFVJO317XGYxXGZuaWxcZmNoYXJzZXQwIENhbGlicmk7fXtcZjJcZm5pbFxmY2hhcnNldDIgU3ltYm9sO319DQpcdmlld2tpbmQ0XHVjMVxwYXJkXHFjXGJcZjBcZnMxOCBMb2cgTGF1bmNoZXIgVjIuMiAtIFRoZSBoYW5keSB3YXkgdG8gY2hlY2sgb3V0IHlvdXIgbG9ncy5ccGFyDQpccGFyZFxiMFxwYXINClxmczE2IFJlcXVpcmVtZW50czogXHBhcg0KXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBBZG1pbmlzdHJhdGl2ZSBTaGFyZXMsIFJlbW90ZSBSZWdpc3RyeSBhbmQgTmV0IDQuMFxwYXINClxwYXJkXHBhcg0KRmVhdHVyZXM6XHBhcg0KXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBFYXNpbHkgdmlzdWFsaXNlIGNoYW5nZXMgdG8gdGhlIGxvZ3Mgb3ZlciB0aW1lIHVzaW5nIHRoZSBtb25pdG9yIGZlYXR1cmUsIHNldCB0aGUgZnJlcXVlbmN5IG1vbml0b3Jpbmcgc2hvdWxkIHRha2UgcGxhY2UsIGNob29zZSB5b3VyIGdyYWRpZW50IHN0YXJ0XFxlbmQgY29sb3VycywgYW5kIHRpY2sgXGIgTW9uaXRvciBMb2dzXGIwXHBhcg0KXHBhcmRccGFyDQpccGFyZHtccG50ZXh0XGYyXCdCN1x0YWJ9e1wqXHBuXHBubHZsYmx0XHBuZjJccG5pbmRlbnQwe1xwbnR4dGJcJ0I3fX1cZmktMzYwXGxpNzIwIE5vdGUgdGhhdCB0aGUgQWNjb3VudCB5b3UgbGF1bmNoIHRoaXMgdG9vbCB1bmRlciBtdXN0IGhhdmUgcmlnaHRzIHRvIHRoZSByZW1vdGUgZGV2aWNlLCBhbmQgbG9nIGxvY2F0aW9ucyBzZWFyY2hlZC5ccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgQ2hhbmdlIGEgQ29uZmlnTWdyXFxTQ0NNIFNpdGUgb3IgYSBDbGllbnRzIExvZyBTZXR0aW5ncyB1c2luZyB0aGUgXGIgTG9nIFNldHRpbmdzXGIwICBmZWF0dXJlLCByZW1lbWJlciB0byBjeWNsZSB0aGUgc2VydmljZSBmb3IgdGhlIFNpdGUgb3IgQWdlbnQgZm9yIGNoYW5nZXMgdG8gdGFrZSBlZmZlY3RccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgSGlkZSBBcmNoaXZlIGxvZ3MgKCoubG9fKSBmcm9tIHZpZXcgYnkgdGlja2luZyBIaWRlIEFyY2hpdmUgTG9nc1xwYXINClxwYXJkXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBUbyBvcGVuIG11bHRpcGxlIGxvZ3MgaW4gaW5kaXZpZHVhbCBpbnN0YW5jZXMgb2YgQ01UcmFjZSAsIHVudGljayBPcGVuIG11bHRpcGxlIGxvZ3MgaW4gb25lIENNVHJhY2VccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgQ3VzdG9tIGxvY2F0aW9ucyBmb3Igc2Nhbm5pbmcgY2FuIGJlIGFkZGVkIGJ5IHNlbGVjdGluZyB0aGUgXGIgQ3VzdG9tIFBhdGhzXGIwICBidXR0b24sIGFuZCBlbnRlcmluZyBhIGZpeGVkIHZvbHVtZSBwYXRoIGFsb25nIHdpdGggYSBmaWxlIG1hc2tccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgTWFrZSBzdXJlIExvZ0xhdW5jaGVyIGhhcyBydW4gYW5kIGZvdW5kIENNVHJhY2UgYmVmb3JlIHJ1bm5pbmcgd2l0aCBhbHRlcm5hdGl2ZSBjcmVkZW50aWFscywgc28gdGhhdCBhIGZhbGwtYmFjayBDTVRyYWNlIGxvY2F0aW9uIGNhbiBiZSByZWNvcmRlZCBhbmQgdXNlZCBieSBMb2dMYXVuY2hlclxwYXINClxwYXJkXGZzMThccGFyDQpcZnMxNiBUaGFuayB5b3UgdGhlIHRvb2wgdGVzdGVycyB3aG8gZ2F2ZSBtZSB0aW1lLCBwb2ludGVkIG91dCBidWdzIGFuZCBpZGVhcyBhbG9uZyB0aGUgd2VlayBhbmQgYSBiaXQgb2YgZGV2ZWxvcG1lbnQgdGltZSBWMS4wIHRvIFYyLjAgdG9vayB0byBjb21wbGV0ZSwgWmVuZyBZaW5naHVhIChTYW5keSksIE1hcmsgQWxkcmlkZ2UsIFNpbW9uIERldHRsaW5nIGFuZCBQYXVsIFdpbnN0YW5sZXkuXHBhcg0KXGZzMThccGFyDQpcZnMxNiBXcml0dGVuIGJ5IFJvYmVydCBNYXJzaGFsbCAtIE5vdmVtYmVyIDIwMTZcZnMxOFxwYXINClxwYXJkXHNhMjAwXHNsMjc2XHNsbXVsdDFcbGFuZzlcZjFcZnMyMlxwYXINCn0NCg==";
+        // private const string helpformContent = @"e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcZGVmbGFuZzIwNTd7XGZvbnR0Ymx7XGYwXGZuaWxcZmNoYXJzZXQwIFNlZ29lIFVJO317XGYxXGZuaWxcZmNoYXJzZXQwIENhbGlicmk7fXtcZjJcZm5pbFxmY2hhcnNldDIgU3ltYm9sO319DQpcdmlld2tpbmQ0XHVjMVxwYXJkXHFjXGJcZjBcZnMxOCBMb2cgTGF1bmNoZXIgVjIuMiAtIFRoZSBoYW5keSB3YXkgdG8gY2hlY2sgb3V0IHlvdXIgbG9ncy5ccGFyDQpccGFyZFxiMFxwYXINClxmczE2IFJlcXVpcmVtZW50czogXHBhcg0KXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBBZG1pbmlzdHJhdGl2ZSBTaGFyZXMsIFJlbW90ZSBSZWdpc3RyeSBhbmQgTmV0IDQuMFxwYXINClxwYXJkXHBhcg0KRmVhdHVyZXM6XHBhcg0KXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBFYXNpbHkgdmlzdWFsaXNlIGNoYW5nZXMgdG8gdGhlIGxvZ3Mgb3ZlciB0aW1lIHVzaW5nIHRoZSBtb25pdG9yIGZlYXR1cmUsIHNldCB0aGUgZnJlcXVlbmN5IG1vbml0b3Jpbmcgc2hvdWxkIHRha2UgcGxhY2UsIGNob29zZSB5b3VyIGdyYWRpZW50IHN0YXJ0XFxlbmQgY29sb3VycywgYW5kIHRpY2sgXGIgTW9uaXRvciBMb2dzXGIwXHBhcg0KXHBhcmRccGFyDQpccGFyZHtccG50ZXh0XGYyXCdCN1x0YWJ9e1wqXHBuXHBubHZsYmx0XHBuZjJccG5pbmRlbnQwe1xwbnR4dGJcJ0I3fX1cZmktMzYwXGxpNzIwIE5vdGUgdGhhdCB0aGUgQWNjb3VudCB5b3UgbGF1bmNoIHRoaXMgdG9vbCB1bmRlciBtdXN0IGhhdmUgcmlnaHRzIHRvIHRoZSByZW1vdGUgZGV2aWNlLCBhbmQgbG9nIGxvY2F0aW9ucyBzZWFyY2hlZC5ccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgQ2hhbmdlIGEgQ29uZmlnTWdyXFxTQ0NNIFNpdGUgb3IgYSBDbGllbnRzIExvZyBTZXR0aW5ncyB1c2luZyB0aGUgXGIgTG9nIFNldHRpbmdzXGIwICBmZWF0dXJlLCByZW1lbWJlciB0byBjeWNsZSB0aGUgc2VydmljZSBmb3IgdGhlIFNpdGUgb3IgQWdlbnQgZm9yIGNoYW5nZXMgdG8gdGFrZSBlZmZlY3RccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgSGlkZSBBcmNoaXZlIGxvZ3MgKCoubG9fKSBmcm9tIHZpZXcgYnkgdGlja2luZyBIaWRlIEFyY2hpdmUgTG9nc1xwYXINClxwYXJkXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBUbyBvcGVuIG11bHRpcGxlIGxvZ3MgaW4gaW5kaXZpZHVhbCBpbnN0YW5jZXMgb2YgQ01UcmFjZSAsIHVudGljayBPcGVuIG11bHRpcGxlIGxvZ3MgaW4gb25lIENNVHJhY2VccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgQ3VzdG9tIGxvY2F0aW9ucyBmb3Igc2Nhbm5pbmcgY2FuIGJlIGFkZGVkIGJ5IHNlbGVjdGluZyB0aGUgXGIgQ3VzdG9tIFBhdGhzXGIwICBidXR0b24sIGFuZCBlbnRlcmluZyBhIGZpeGVkIHZvbHVtZSBwYXRoIGFsb25nIHdpdGggYSBmaWxlIG1hc2tccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgTWFrZSBzdXJlIExvZ0xhdW5jaGVyIGhhcyBydW4gYW5kIGZvdW5kIENNVHJhY2UgYmVmb3JlIHJ1bm5pbmcgd2l0aCBhbHRlcm5hdGl2ZSBjcmVkZW50aWFscywgc28gdGhhdCBhIGZhbGwtYmFjayBDTVRyYWNlIGxvY2F0aW9uIGNhbiBiZSByZWNvcmRlZCBhbmQgdXNlZCBieSBMb2dMYXVuY2hlclxwYXINClxwYXJkXGZzMThccGFyDQpcZnMxNiBUaGFuayB5b3UgdGhlIHRvb2wgdGVzdGVycyB3aG8gZ2F2ZSBtZSB0aW1lLCBwb2ludGVkIG91dCBidWdzIGFuZCBpZGVhcyBhbG9uZyB0aGUgd2VlayBhbmQgYSBiaXQgb2YgZGV2ZWxvcG1lbnQgdGltZSBWMS4wIHRvIFYyLjAgdG9vayB0byBjb21wbGV0ZSwgWmVuZyBZaW5naHVhIChTYW5keSksIE1hcmsgQWxkcmlkZ2UsIFNpbW9uIERldHRsaW5nIGFuZCBQYXVsIFdpbnN0YW5sZXkuXHBhcg0KXGZzMThccGFyDQpcZnMxNiBXcml0dGVuIGJ5IFJvYmVydCBNYXJzaGFsbCAtIE5vdmVtYmVyIDIwMTZcZnMxOFxwYXINClxwYXJkXHNhMjAwXHNsMjc2XHNsbXVsdDFcbGFuZzlcZjFcZnMyMlxwYXINCn0NCg==";
+
+        private const string helpformContent = @"e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcbm91aWNvbXBhdFxkZWZsYW5nMjA1N3tcZm9udHRibHtcZjBcZnN3aXNzXGZwcnEyXGZjaGFyc2V0MCBTZWdvZSBVSTt9e1xmMVxmc3dpc3NcZnBycTJcZmNoYXJzZXQwIENhbGlicmk7fXtcZjJcZm5pbFxmY2hhcnNldDAgQ2FsaWJyaTt9e1xmM1xmbmlsXGZjaGFyc2V0MiBTeW1ib2w7fX0NCntcY29sb3J0YmwgO1xyZWQwXGdyZWVuMFxibHVlMjU1O1xyZWQ1XGdyZWVuOTlcYmx1ZTE5Mzt9DQp7XCpcZ2VuZXJhdG9yIFJpY2hlZDIwIDEwLjAuMTQzOTN9XHZpZXdraW5kNFx1YzEgDQpccGFyZFx3aWRjdGxwYXJccWNcYlxmMFxmczE4IExvZyBMYXVuY2hlciBWMy4wIC0gVGhlIGhhbmR5IHdheSB0byBjaGVjayBvdXQgeW91ciBsb2dzLlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGIwXGZzMTZccGFyDQpcYlxmczI0IEZlYXR1cmVzXHBhcg0KXGIwXGZzMTZccGFyDQoNClxwYXJke1xwbnRleHRcZjNcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mM1xwbmluZGVudDB7XHBudHh0YlwnQjd9fVx3aWRjdGxwYXJcZmktMzYwXGxpMTA4MCBHZXQgYXQgYWxsIENvbmZpZ01nclxcU0NDTSBsb2dzIGVhc2lseSwgcXVpY2tseVxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9VmlzdWFsaXNlIGNoYW5nZXMgdG8gU0NDTVxcQ29uZmlnTWdyIGxvZ3Mgb3ZlciB0aW1lIHVzaW5nIHRoZSBcaSBtb25pdG9yaW5nXGkwICBmZWF0dXJlXHBhcg0Ke1xwbnRleHRcZjNcJ0I3XHRhYn1PcGVuIG11bHRpcGxlIGxvZ3MgaW4gb25lIHRyYWNlIHRvb2wsIG9yIG9wZW4gYSB0cmFjZSB0b29sIGZvciBlYWNoIGxvZ1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9SW50ZWdyYXRlcyB3aXRoIHRoZSBDb25maWdNZ3IgQ29uc29sZSBmb3IgZGV2aWNlcyBpbiB0aGVpciBjb250ZXh0IG1lbnVcXHJpYmJvblxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9TG9nIGhpbnRzIGZvciBrbm93biBTQ0NNXFxDb25maWdNZ3IgbG9ncywgaG92ZXIgb3ZlciBhIGxvZyB0byBzZWUgYSB0b29sdGlwIGRlc2NyaXB0aW9uIG9mIHRoZSBsb2dccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifUFkZCBjdXN0b20gbG9jYXRpb25zIGZvciBzY2FubmluZyBmb3IgbG9nc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9TGF1bmNoIGRpcmVjdGx5IGZyb20gTG9nTGF1bmNoZXIgdGhlIENvbmZpZ3VyYXRpb24gTWFuYWdlciBTdXBwb3J0IENlbnRlciBpZiBpdCBpcyBpbnN0YWxsZWRccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifUNoYW5nZSBhIENvbmZpZ01nclxcU0NDTSBTaXRlIG9yIGEgQ2xpZW50cyBMb2cgU2V0dGluZ3MgdXNpbmcgdGhlIFxpIExvZyBTZXR0aW5nc1xpMCAgZmVhdHVyZSwgcmVtZW1iZXIgdG8gcmVzdGFydCB0aGUgc2VydmljZSBmb3IgdGhlIFNpdGUgb3IgQWdlbnQgZm9yIGNoYW5nZXMgdG8gdGFrZSBlZmZlY3RccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifVRvZ2dsZSBoaWRpbmcgb2YgQXJjaGl2ZSBsb2dzICgqLmxvXylccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifVJlbWVtYmVycyB3aGF0IGRldmljZXMgeW91XHJxdW90ZSB2ZSBzY2FubmVkIGZvciBlYXN5IGFjY2Vzc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9RGlhZ25vc3RpYyBvdXRwdXQgZm9yIHdoZW4gdGhpbmdzIGdvIHdyb25nLCBmb3IgZmVlZGJhY2sgdG8gYXV0aG9yIGFzIHdlbGwgYXMgdHJvdWJsZXNob290aW5nIGFkZGVkIGxvY2F0aW9uc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9QXV0b21hdGljYWxseSBzY2FucyB0aGUgZGV2aWNlIHRoZSB0b29sIGlzIHJ1biBvblxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9QWNjZXB0cyBkZXZpY2UgbmFtZSBlbnRlcmVkIG9uIHRoZSBjb21tYW5kIGxpbmUgKExvZ0xhdW5jaGVyLmV4ZSA8REVWSUNFTkFNRT4pIGZvciBhdXRvbWF0aW9uIHB1cnBvc2VzXHBhcg0KDQpccGFyZHtcKlxwblxwbmx2bGNvbnRccG5mM1xwbmluZGVudDB7XHBudHh0YlwnQjd9fVx3aWRjdGxwYXJccGFyDQpcYlxmczI0IFJlcXVpcmVtZW50c1xwYXINClxiMFxmczE2XHBhcg0KDQpccGFyZHtccG50ZXh0XGYzXCdCN1x0YWJ9e1wqXHBuXHBubHZsYmx0XHBuZjNccG5pbmRlbnQwe1xwbnR4dGJcJ0I3fX1cd2lkY3RscGFyXGZpLTM2MFxsaTEwODAgQWRtaW5pc3RyYXRpdmUgU2hhcmVzLCBSZW1vdGUgUmVnaXN0cnkgYW5kIE5ldCA0LjAgb3IgYWJvdmVccGFyDQoNClxwYXJkXHdpZGN0bHBhclxwYXINClxiXGZzMjQgQ2hvb3NpbmcgYSBUcmFjZXJcYjBccGFyDQpcZnMxNlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGxpNzIwIE9uIHN0YXJ0dXAgeW91IHdvdWxkIGhhdmUgYmVlbiBwcm9tcHRlZCB0byBsb2NhdGUgYSB0cmFjaW5nIHRvb2wsIGluc3RlYWQgb2YgcGVyZm9ybWluZyBkZXRlY3Rpb24gSVxycXVvdGUgdmUgbGVmdCBpdCBmb3IgeW91IHRvIGRlY2lkZSB3aGF0IGlzIHlvdXIgdHJhY2luZyB0b29sLCBhbmQgd2hlcmUgdG8gZmluZCBpdC5ccGFyDQpccGFyDQpZb3UgY2FuIGNoYW5nZSB0aGlzIHBhdGggYW5kIHRoZSB0b29sIGJlaW5nIHVzZWQgYnkgTG9nTGF1bmNoZXIgYnkgdmlzaXRpbmcgdGhlIFxpIFRyYWNlIENvbmZpZ3VyYXRpb25caTAgIHRhYi5ccGFyDQpccGFyDQpMb2dMYXVuY2hlciB3aWxsIHN0b3JlIHRoZSBmaXJzdCB0cmFjZXIgY2hvc2VuIGluIEhLTE1cXFNvZnR3YXJlXFxTTVNNYXJzaGFsbFxcTG9nTGF1bmNoZXIsIHdoaWNoIHdpbGwgdGhlbiBiZSB1c2VkIGJ5IGRlZmF1bHQgZm9yIGFsbCBuZXcgdXNlcnMsIHVubGVzcyB0aGV5IG9wdCB0byBsb2NhdGUgYSB0cmFjaW5nIHRvb2wgdGhlbXNlbHZlcy4gXHBhcg0KXHBhcg0KVGhlIFVzZXJzIGNob2ljZSBvZiB0cmFjZXIgaXMgc3RvcmVkIGluIEhLQ1VcXFNvZnR3YXJlXFxTTVNNYXJzaGFsbFxcTG9nTGF1bmNoZXIuXHBhcg0KXHBhcg0KQ01UcmFjZSBjYW4gYmUgZm91bmQgaW4geW91ciBDb25maWdNZ3JcXFNDQ00gRGlzdHJpYnV0aW9uIGtpdCwgYW5kIENvbmZpZ3VyYXRpb24gTWFuYWdlciBTdXBwb3J0IENlbnRlciB3aXRoIENNTG9nVmlld2VyIGNhbiBiZSBmb3VuZCBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL3d3dy5taWNyb3NvZnQuY29tL2VuLXVzL2Rvd25sb2FkL2RldGFpbHMuYXNweD9pZD00MjY0NSB9fXtcZmxkcnNsdHtodHRwczovL3d3dy5taWNyb3NvZnQuY29tL2VuLXVzL2Rvd25sb2FkL2RldGFpbHMuYXNweD9pZD00MjY0NVx1bDBcY2YwfX19fVxmMFxmczE2XHBhcg0KXGZzMThccGFyDQoNClxwYXJkXHdpZGN0bHBhclxzYTE2MFxzbDI1MlxzbG11bHQxXGJcZnMyNCBTY2FubmluZyBmb3IgTG9nc1xmczE2XHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjBcc2ExNjBcc2wyNTJcc2xtdWx0MVxiMCBUbyBzY2FuIGEgcmVtb3RlIGRldmljZSwgZ28gdG8gdGhlIEhvbWUgdGFiIGFuZCBlbnRlciB0aGUgZGV2aWNlcyBuYW1lIGludG8gdGhlIERldmljZSBmaWVsZCwgY2xpY2sgXGkgU2NhblxpMCAuXHBhcg0KT24gc3RhcnR1cCBMb2dMYXVuY2hlciB3aWxsIHNjYW4gdGhlIGRldmljZSBpdCBpcyBydW4gb24uXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcc2ExNjBcc2wyNTJcc2xtdWx0MVxiXGZzMjQgT3BlbmluZyBMb2dzXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjBcc2ExNjBcc2wyNTJcc2xtdWx0MVxiMFxmczE2IFRvIG9wZW4gbG9ncyB1c2UgdGhlIE9wZW4gYnV0dG9uIG9uIHRoZSBIb21lIHRhYiwgaGlnaGxpZ2h0IHRoZSBsb2dzIGFuZCBwcmVzcyBFbnRlciwgb3IgcmlnaHQgY2xpY2sgYSBsb2cgb3Igb25lIG9mIHRoZSBzZWxlY3RlZCBsb2dzIGFuZCB1c2UgdGhlIGNvbnRleHQgbWVudTsgWW91IGNhbiBhbHNvIGdldCB0byB0aGUgbG9ncyBmb2xkZXIgdXNpbmcgdGhlIGNvbnRleHQgbWVudS5ccGFyDQoNClxwYXJkXHdpZGN0bHBhclxzYTE2MFxzbDI1MlxzbG11bHQxXGJcZnMyNCBNb25pdG9yaW5nIExvZ3NccGFyDQoNClxwYXJkXHdpZGN0bHBhclxsaTcyMFxzYTE2MFxzbDI1MlxzbG11bHQxXGIwXGZzMTYgTW9uaXRvcmluZyBtZWFucyBrZWVwaW5nIGFuIGV5ZSBvbiB0aGUgbGFzdCB0aW1lIHRoZSBsb2dzIHdlcmUgbW9kaWZpZWQuXHBhcg0KVG8gdmlzdWFsaXNlIHRoaXMsIHRoZSB0b29sIHdpbGwgdXNlIHdoYXRldmVyIGlzIGRlZmluZWQgZm9yIFxpIE5ld2VzdFxpMCAgY29sb3VyLCBhbmQgY2hhbmdlIHRoZSBtb2RpZmllZCBsb2dzIGVudHJ5IHRvIHRoYXQgY29sb3VyLCB0aGVyZWFmdGVyIHRoZSBjb2xvdXIgd2lsbCBiZSBjaGFuZ2VkIGF0IGVhY2ggc2NhbiBpbnRlcnZhbCBhbG9uZyBhIGdyYWRpZW50IHRvd2FyZHMgd2hhdGV2ZXIgaXMgZGVmaW5lZCBmb3IgT2xkZXN0IGNvbG91ciB1bmxlc3MgdGhlIGxvZyBpcyBtb2RpZmllZCBhZ2FpbiB3aGljaCB3aWxsIHJldHVybiBpdCB0byB0aGUgXGkgTmV3ZXN0XGkwICBjb2xvdXIuXHBhcg0KVGhpcyBjb2xvdXIgdmlzdWFsaXNhdGlvbiByZWFsbHkgaGVscHMgY29udHJhc3QgYWN0aXZpdHkgaW4gdGhlIFNDQ01cXENvbmZpZ01nciBwcm9kdWN0cyBsb2dzLCBzaG93aW5nIHdoYXQgaGFzIGFuZCBoYXNuXHJxdW90ZSB0IGJlZW4gdG91Y2hlZCBzaW5jZSB0aGUgbW9uaXRvcmluZyBzZXNzaW9uIGJlZ2FuLlxwYXINClRvIGJlZ2luIG1vbml0b3JpbmcgZmlyc3Qgc2NhbiBhIGRldmljZSBmcm9tIHRoZSBIb21lIHRhYiwgdGhlbiBzZWxlY3QgdGhlIE1vbml0b3JpbmcgdGFiLCB5b3VccnF1b3RlIGxsIG5vdGUgdGhhdCB0aGUgZGVmYXVsdCByZWZyZXNoIGludGVydmFsIGlzIHNldCB0byA1IHNlY29uZHMsIGFuZCBJXHJxdW90ZSBkIHJlY29tbWVuZCBub3QgZ29pbmcgYmVsb3cgdGhhdCB1bmxlc3MgaXQgaXMgZm9yIHZlcnkgc2hvcnQgbW9uaXRvcmluZyBzZXNzaW9ucywgY2hvb3NlIHRoZSBjb2xvdXJzIGZvciB0aGUgY29sb3VyIGdyYWRpZW50IGFuZCBzZWxlY3QgdGhlIFxpIE1vbml0b3JpbmdcaTAgIGJ1dHRvbi5ccGFyDQoNClxwYXJkXHdpZGN0bHBhclxmaTcyMFxzYTE2MFxzbDI1MlxzbG11bHQxXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcYlxmczI0IENvbnNvbGUgSW50ZWdyYXRpb25ccGFyDQpcYjBcZnMxNlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGxpNzIwIExvZ0xhdW5jaGVyIHdpbGwgaW50ZWdyYXRlIGludG8gdGhlIENvbmZpZ01nclxcU0NDTSBDb25zb2xlIGlmIGl0IGlzIGRldGVjdGVkIGxvY2FsbHksIGFuZCB3aWxsIGFwcGVhciBvbiB0aGUgRGV2aWNlcyBSaWJib24gaW4gQXNzZXRzIGFuZCBDb21wbGlhbmNlLCBhbmQgaW4gdGhlIGNvbnRleHQgbWVudSBmb3IgYW4gaW5kaXZpZHVhbCBkZXZpY2UuXHBhcg0KXHBhcg0KVG8gcmVtb3ZlIENvbnNvbGUgaW50ZWdyYXRpb24gb3BlbiBGaWxlIEV4cGxvcmVyLCB2aXNpdCB5b3VyIENvbnNvbGUgaW5zdGFsbGF0aW9uIHBhdGgsIHNlYXJjaCBmb3IgXGkgTG9nTGF1bmNoZXIuWE1MXGkwICBhbmQgZGVsZXRlIHRoZSB0d28gZmlsZXMgdGhhdCBhcHBlYXIsIHJlc3RhcnQgdGhlIENvbnNvbGUgdG8gY29tcGxldGUgZGlzaW50ZWdyYXRpb24uXHBhcg0KXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJccGFyDQpcYlxmczI0IEFja25vd2xlZGdlbWVudHNccGFyDQpcYjBcZnMxOFxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGxpNzIwXGZzMTYgVGhhbmsgeW91IHRvIHRoZSB0b29sIHRlc3RlcnMgd2hvIGdhdmUgdXAgc29tZSB0aW1lLCBwb2ludGVkIG91dCBidWdzIGFuZCBvZmZlcmVkIHVwIGlkZWFzLCBaZW5nIFlpbmdodWEgKFNhbmR5KSwgTWFyayBBbGRyaWRnZSwgU2ltb24gRGV0dGxpbmcsIFBhdWwgV2luc3RhbmxleSBhbmQgTmlhbGwgQnJhZHkuXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJccGFyDQoNClxwYXJkXHdpZGN0bHBhclxsaTcyMCBWZXJzaW9uIDMuMCBvZiB0aGUgdG9vbCBpbXBsZW1lbnRzIGEgdmVyeSBoYW5keSBcaSBSaWJib25caTAgLCB3aGljaCBpcyBwcm92aWRlZCBhcyBhIHB1YmxpY2x5IGF2YWlsYWJsZSBETEwgdGhhdCBoYXMgYmVlbiBtZXJnZWQgd2l0aCB0aGlzIFBvcnRhYmxlIEV4ZWN1dGFibGUgZmlsZSAoTG9nTGF1bmNoZXIuZXhlKS5ccGFyDQpccGFyDQpJXHJxdW90ZSBkIGxpa2UgdG8gdGhhbmsgdGhlIHRlYW0gd2hvIG1haW50YWluIHRoZSBSaWJib24sIGFuZCB0YWtlIG15IGhhdCBvZmYgdG8gdGhlbSBmb3IgZG9pbmcgc3VjaCBhIGdvb2Qgam9iIGF0IGV4cG9zaW5nIGl0cyBmdW5jdGlvbmFsaXR5IHNvIHRoYXQgSSBjb3VsZCBnZXQgaXQgaW50byB0aGlzIHRvb2wgYW5kIG1ha2luZyB0aGVpciBjb2RlIGF2YWlsYWJsZSBmb3IgdXNlLlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjAgVGhlIERMTCBmb3IgdGhlIFJpYmJvbiBhbmQgYSB0ZW1wbGF0ZSBwcm9qZWN0IGlzIGF2YWlsYWJsZSBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL3d3dy5jb2RlcHJvamVjdC5jb20vQXJ0aWNsZXMvMzY0MjcyL0Vhc2lseS1BZGQtYS1SaWJib24taW50by1hLVdpbkZvcm1zLUFwcGxpY2F0aW9uLUNzIH19e1xmbGRyc2x0e2h0dHBzOi8vd3d3LmNvZGVwcm9qZWN0LmNvbS9BcnRpY2xlcy8zNjQyNzIvRWFzaWx5LUFkZC1hLVJpYmJvbi1pbnRvLWEtV2luRm9ybXMtQXBwbGljYXRpb24tQ3NcdWwwXGNmMH19fX1cZjBcZnMxNlxwYXINCg0KXHBhcmRcd2lkY3RscGFyICBccGFyDQpcYlxmczI0IEF1dGhvclxiMFxmczE2XHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjAgIFxwYXINCldyaXR0ZW4gYnkgUm9iZXJ0IE1hcnNoYWxsLCBFbnRlcnByaXNlIE1vYmlsaXR5IE1WUCwgdXNpbmcgQyMgYW5kIFZpc3VhbCBTdHVkaW8gMjAxNS5ccGFyDQpccGFyDQpUaGUgc291cmNlIGZvciB0aGlzIHByb2plY3QgY2FuIGJlIGZvdW5kIG9uIEdpdEh1YiBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL2dpdGh1Yi5jb20vUm9iVUsxMDEvTG9nTGF1bmNoZXIgfX17XGZsZHJzbHR7aHR0cHM6Ly9naXRodWIuY29tL1JvYlVLMTAxL0xvZ0xhdW5jaGVyXHVsMFxjZjB9fX19XGYwXGZzMTZccGFyDQpccGFyDQp7XGYxXGZzMjJ7XGZpZWxke1wqXGZsZGluc3R7SFlQRVJMSU5LICJodHRwOi8vd3d3LnNtc21hcnNoYWxsLmNvbSIgfX17XGZsZHJzbHR7XHVsXGNmMVxjZjJcdWxcZjBcZnMxNiBTTVNNYXJzaGFsbCBMdGR9fX19XGYwXGZzMTYgIFxlbmRhc2ggIExhc3QgcmV2aXNpb24gZGF0ZSA6IEZlYnJ1YXJ5IDIwMTdccGFyDQoNClxwYXJkXHNhMjAwXHNsMjc2XHNsbXVsdDFcZjJcZnMyMlxsYW5nOVxwYXINCn0NCgA=";
 
         // Images used to populate the Ribbon
 
@@ -1110,88 +1112,107 @@ namespace LogLauncher
                 }
             }
 
-            logitemstoRemove.Reverse();
-
-            foreach (int itemIndex in logitemstoRemove)
+            try
             {
-                refreshthelogItems.Remove(itemIndex);
+                logitemstoRemove.Reverse();
+
+                foreach (int itemIndex in logitemstoRemove)
+                {
+                    refreshthelogItems.Remove(itemIndex);
+                }
+            }
+            catch (Exception)
+            {
+
             }
 
             // Add new logs
 
             foreach (string logpathtoMonitor in logpathstoMonitor) // Iterate over each unique log folder
             {
-                foreach(string logExtension in logfileExtensions)
+                foreach (string logExtension in logfileExtensions)
                 {
                     // Get the log files from logpathtoMonitor with the logExtension file extension
 
-                    DirectoryInfo alogFolder = new DirectoryInfo(logpathtoMonitor);
-
-                    // Get the files from the log location
-
-                    FileInfo[] theFiles = alogFolder.GetFiles("*" + logExtension);
-
-                    // Now check if there are any in the file list that are not in the existing collection
-
-                    foreach(FileInfo aFile in theFiles)
+                    try
                     {
-                        if (refreshthelogItems.Contains(aFile.FullName) == null) // Is this a new file
+                        DirectoryInfo alogFolder = new DirectoryInfo(logpathtoMonitor);
+
+                        // Get the files from the log location
+
+                        FileInfo[] theFiles = alogFolder.GetFiles("*" + logExtension);
+
+                        // Now check if there are any in the file list that are not in the existing collection
+
+                        foreach (FileInfo aFile in theFiles)
                         {
-                            logItem newlogItem = new logItem();
-
-                            newlogItem.fulllogName = aFile.FullName; /// This is introducing those archive files ... $$$$
-
-                            // Get the first instance of alogdefinitionCollection to retrieve some properties from it
-
-                            logDefinition alogDefinition = new logDefinition();
-
                             try
                             {
-                                alogDefinition = alogdefinitionCollection.Item(0);
+                                if (refreshthelogItems.Contains(aFile.FullName) == null) // Is this a new file
+                                {
+                                    logItem newlogItem = new logItem();
+
+                                    newlogItem.fulllogName = aFile.FullName;
+
+                                    // Get the first instance of alogdefinitionCollection to retrieve some properties from it
+
+                                    logDefinition alogDefinition = new logDefinition();
+
+                                    try
+                                    {
+                                        alogDefinition = alogdefinitionCollection.Item(0);
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
+
+                                    if (alogDefinition.LogClass == null)
+                                    {
+                                        newlogItem.logClass = "FailedLookup";
+                                        newlogItem.logProduct = "FailedLookup";
+                                    }
+                                    else
+                                    {
+                                        newlogItem.logClass = alogDefinition.LogClass;
+                                        newlogItem.logProduct = alogDefinition.LogProduct;
+                                    }
+
+                                    if (aFile.Name.Substring(aFile.Name.Length - 3, 3) == "lo_")
+                                    {
+                                        newlogItem.logType = "Archive Log";
+                                    }
+                                    else
+                                    {
+                                        newlogItem.logType = "Active Log";
+                                    }
+
+                                    newlogItem.loglastModified = aFile.LastWriteTime;
+
+                                    newlogItem.logLocation = aFile.FullName.Replace(@"\" + aFile.Name, "");
+
+                                    string cleanedlogName = aFile.Name.ToLower().Replace(Path.GetExtension(aFile.Name), "");
+
+                                    newlogItem.LogName = cleanedlogName;
+
+                                    newlogItem.logSize = aFile.Length;
+
+                                    refreshthelogItems.Add(newlogItem); // Add the log to the local dataset
+
+                                    globallogitemCollection.Add(newlogItem); // Add the log to the global dataset
+                                }
                             }
                             catch (Exception)
                             {
-
                             }
-
-                            if (alogDefinition.LogClass == null)
-                            {
-                                newlogItem.logClass = "FailedLookup";
-                                newlogItem.logProduct = "FailedLookup";
-                            }
-                            else
-                            {
-                                newlogItem.logClass = alogDefinition.LogClass;
-                                newlogItem.logProduct = alogDefinition.LogProduct;
-                            }
-
-                            if (aFile.Name.Substring(aFile.Name.Length - 3, 3) == "lo_")
-                            {
-                                newlogItem.logType = "Archive Log";
-                            }
-                            else
-                            {
-                                newlogItem.logType = "Active Log";
-                            }
-
-                            newlogItem.loglastModified = aFile.LastWriteTime;
-
-                            newlogItem.logLocation = aFile.FullName.Replace(@"\" + aFile.Name, "");
-
-                            string cleanedlogName = aFile.Name.ToLower().Replace(Path.GetExtension(aFile.Name),"");
-
-                            newlogItem.LogName = cleanedlogName;
-
-                            newlogItem.logSize = aFile.Length;
-
-                            refreshthelogItems.Add(newlogItem); // Add the log to the local dataset
-
-                            globallogitemCollection.Add(newlogItem); // Add the log to the global dataset
                         }
                     }
-                }
+                    catch (Exception)
+                    {
 
-            }                       
+                    }
+                }
+            }
 
             return refreshthelogItems;
         }
@@ -2506,6 +2527,8 @@ namespace LogLauncher
             {
                 TreeNode selectedtvNode = tv_Logs.Nodes[0];
 
+                selectedtvNode.BackColor = Color.LightBlue;
+
                 tv_Logs.SelectedNode = selectedtvNode;
             }
             catch (Exception ee)
@@ -2801,8 +2824,19 @@ namespace LogLauncher
             rtb_tracerPath.Text = "Tracer";
         }
 
+        private void showhelpText(string filePath)
+        {            
+            byte[] document = File.ReadAllBytes(filePath);
+            string base64string = Convert.ToBase64String(document);
+            MessageBox.Show(base64string);
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Uncomment to generate Base64 for an RTF file for the Help Panels contents            
+
+            // showhelpText(@"D:\OneDriveBusiness\SharePoint\SharePoint\SMSMarshallTeam - Documents\Products\LogLauncher\Help-Form-Contents-Compressed.rtf");
+
             // Populate SCCM Log hints
 
             notificationMessage("Building ConfigMgr Log Hints ...");
@@ -2918,7 +2952,6 @@ namespace LogLauncher
 
             try
             {
-
                 dgv_Logs.Sort(this.dgv_Logs.Columns["dgv_c_lastWritten"], ListSortDirection.Descending);
             }
             catch (Exception)
@@ -2938,16 +2971,18 @@ namespace LogLauncher
             bw.RunWorkerCompleted +=
                 new RunWorkerCompletedEventHandler(bw_scan_RunWorkerCompleted);
 
-            // Get Command line parameter for device to connect too, if it isn't supplied then it remains empty
+            // Get Command line parameter for device to connect too, if it isn't supplied then it remains empty            
 
             getcommandlineParameters(); // Placed here so that it overrides all other changes if command line is supplied
 
-            // If the device name is not set, configure it, and populate the device name drop down box            
+            // If the device name is not set, configure it
 
-            if (deviceName != "" || deviceName != null)
+            if (deviceName == "" || deviceName == null)
             {
                 deviceName = System.Environment.MachineName;
             }
+
+            // Populate the device name drop down box
 
             RibbonTextBox aribbontextBox = new RibbonTextBox();
 
@@ -3118,6 +3153,53 @@ namespace LogLauncher
             panel_Logging.Visible = false;
             panel_Help.Visible = false;
             panel_Diagnostics.Visible = false;
+
+            // Change the colour of the currently selected node
+
+            try
+            {
+                foreach (TreeNode tvNode in this.tv_Logs.Nodes)
+                {
+                    foreach (TreeNode tvnodeCategory in tvNode.Nodes)
+                    {
+                        foreach (TreeNode tvnodeProduct in tvnodeCategory.Nodes)
+                        {
+                            if (tvnodeProduct == this.tv_Logs.SelectedNode)
+                            {
+                                tvnodeProduct.BackColor = Color.LightBlue;
+                            }
+                            else
+                            {
+                                tvnodeProduct.BackColor = tv_Logs.BackColor;
+                            }
+                        }
+
+                        if (tvnodeCategory == this.tv_Logs.SelectedNode)
+                        {
+                            tvnodeCategory.BackColor = Color.LightBlue;
+                        }
+                        else
+                        {
+                            tvnodeCategory.BackColor = tv_Logs.BackColor;
+                        }
+                    }
+
+                    if (tvNode == this.tv_Logs.SelectedNode)
+                    {
+                        tvNode.BackColor = Color.LightBlue;
+                    }
+                    else
+                    {
+                        tvNode.BackColor = tv_Logs.BackColor;
+                    }
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+            }
 
             try
             {
@@ -5116,6 +5198,16 @@ namespace LogLauncher
 
                 }
             }
+        }
+
+        private void rtb_Help_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText.ToString()); // Default Browser            
+        }
+
+        private void ribbon1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -125,6 +125,7 @@
             this.ribbonButton1 = new System.Windows.Forms.RibbonButton();
             this.ribbonOrbMenuItem2 = new System.Windows.Forms.RibbonOrbMenuItem();
             this.panel_Logs = new System.Windows.Forms.Panel();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.rtb_Help = new System.Windows.Forms.RichTextBox();
             this.b_deleteLocation = new System.Windows.Forms.Button();
             this.b_addupdateLocation = new System.Windows.Forms.Button();
@@ -147,6 +148,18 @@
             this.panel_Help = new System.Windows.Forms.Panel();
             this.panel_customLocations = new System.Windows.Forms.Panel();
             this.panel_Diagnostics = new System.Windows.Forms.Panel();
+            this.ribbonOrbMenuItem3 = new System.Windows.Forms.RibbonOrbMenuItem();
+            this.ribbonOrbRecentItem6 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbRecentItem7 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbRecentItem8 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbRecentItem9 = new System.Windows.Forms.RibbonOrbRecentItem();
+            this.ribbonOrbMenuItem4 = new System.Windows.Forms.RibbonOrbMenuItem();
+            this.ribbonSeparator2 = new System.Windows.Forms.RibbonSeparator();
+            this.ribbonSeparator5 = new System.Windows.Forms.RibbonSeparator();
+            this.ribbonSeparator6 = new System.Windows.Forms.RibbonSeparator();
+            this.ribbonSeparator7 = new System.Windows.Forms.RibbonSeparator();
+            this.ribbonSeparator8 = new System.Windows.Forms.RibbonSeparator();
+            this.rcc_sortbyModified = new System.Windows.Forms.RibbonCheckBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -164,6 +177,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_sqlcacheloggingLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_loggingLevel)).BeginInit();
             this.panel_Logs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_customLocations)).BeginInit();
             this.panel_Help.SuspendLayout();
             this.panel_customLocations.SuspendLayout();
@@ -172,13 +189,14 @@
             // 
             // tv_Logs
             // 
-            this.tv_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tv_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tv_Logs.BackColor = System.Drawing.SystemColors.Info;
             this.tv_Logs.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tv_Logs.Location = new System.Drawing.Point(3, 3);
+            this.tv_Logs.Location = new System.Drawing.Point(3, 0);
             this.tv_Logs.Name = "tv_Logs";
-            this.tv_Logs.Size = new System.Drawing.Size(187, 479);
+            this.tv_Logs.Size = new System.Drawing.Size(205, 479);
             this.tv_Logs.TabIndex = 0;
             this.tv_Logs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv_Logs_AfterSelect);
             // 
@@ -232,13 +250,13 @@
             this.dgv_v_Product});
             this.dgv_Logs.ContextMenuStrip = this.contextMenuStrip1;
             this.dgv_Logs.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgv_Logs.Location = new System.Drawing.Point(196, 4);
+            this.dgv_Logs.Location = new System.Drawing.Point(3, 0);
             this.dgv_Logs.Name = "dgv_Logs";
             this.dgv_Logs.ReadOnly = true;
             this.dgv_Logs.RowHeadersVisible = false;
             this.dgv_Logs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgv_Logs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_Logs.Size = new System.Drawing.Size(702, 478);
+            this.dgv_Logs.Size = new System.Drawing.Size(680, 479);
             this.dgv_Logs.StandardTab = true;
             this.dgv_Logs.TabIndex = 10;
             this.dgv_Logs.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgv_Logs_ColumnDisplayIndexChanged);
@@ -498,9 +516,9 @@
             // 
             this.b_cycleCCMEXEC.Location = new System.Drawing.Point(20, 79);
             this.b_cycleCCMEXEC.Name = "b_cycleCCMEXEC";
-            this.b_cycleCCMEXEC.Size = new System.Drawing.Size(99, 23);
+            this.b_cycleCCMEXEC.Size = new System.Drawing.Size(150, 23);
             this.b_cycleCCMEXEC.TabIndex = 9;
-            this.b_cycleCCMEXEC.Text = "Cycle CCMEXEC";
+            this.b_cycleCCMEXEC.Text = "Restart CCMEXEC Service";
             this.b_cycleCCMEXEC.UseVisualStyleBackColor = true;
             this.b_cycleCCMEXEC.Click += new System.EventHandler(this.b_cycleCCMEXEC_Click);
             // 
@@ -528,7 +546,7 @@
             // 
             // nud_client_logLevel
             // 
-            this.nud_client_logLevel.Location = new System.Drawing.Point(250, 19);
+            this.nud_client_logLevel.Location = new System.Drawing.Point(290, 19);
             this.nud_client_logLevel.Name = "nud_client_logLevel";
             this.nud_client_logLevel.Size = new System.Drawing.Size(63, 20);
             this.nud_client_logLevel.TabIndex = 1;
@@ -537,7 +555,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(162, 84);
+            this.label5.Location = new System.Drawing.Point(202, 84);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 7;
@@ -545,7 +563,7 @@
             // 
             // nud_client_logmaxHistory
             // 
-            this.nud_client_logmaxHistory.Location = new System.Drawing.Point(250, 50);
+            this.nud_client_logmaxHistory.Location = new System.Drawing.Point(290, 50);
             this.nud_client_logmaxHistory.Name = "nud_client_logmaxHistory";
             this.nud_client_logmaxHistory.Size = new System.Drawing.Size(63, 20);
             this.nud_client_logmaxHistory.TabIndex = 2;
@@ -554,7 +572,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(162, 53);
+            this.label4.Location = new System.Drawing.Point(202, 53);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 13);
             this.label4.TabIndex = 6;
@@ -562,7 +580,7 @@
             // 
             // nud_client_logmaxSize
             // 
-            this.nud_client_logmaxSize.Location = new System.Drawing.Point(250, 82);
+            this.nud_client_logmaxSize.Location = new System.Drawing.Point(290, 82);
             this.nud_client_logmaxSize.Maximum = new decimal(new int[] {
             999999999,
             0,
@@ -586,7 +604,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(162, 21);
+            this.label3.Location = new System.Drawing.Point(202, 21);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 5;
@@ -625,16 +643,16 @@
             // 
             this.b_cycleSMSEXEC.Location = new System.Drawing.Point(7, 82);
             this.b_cycleSMSEXEC.Name = "b_cycleSMSEXEC";
-            this.b_cycleSMSEXEC.Size = new System.Drawing.Size(103, 23);
+            this.b_cycleSMSEXEC.Size = new System.Drawing.Size(148, 23);
             this.b_cycleSMSEXEC.TabIndex = 10;
-            this.b_cycleSMSEXEC.Text = "Cycle SMSEXEC";
+            this.b_cycleSMSEXEC.Text = "Restart SMSEXEC Service";
             this.b_cycleSMSEXEC.UseVisualStyleBackColor = true;
             this.b_cycleSMSEXEC.Click += new System.EventHandler(this.b_cycleSMSEXEC_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(127, 21);
+            this.label6.Location = new System.Drawing.Point(181, 21);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(116, 13);
             this.label6.TabIndex = 18;
@@ -665,7 +683,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(111, 51);
+            this.label7.Location = new System.Drawing.Point(165, 51);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(132, 13);
             this.label7.TabIndex = 19;
@@ -684,7 +702,7 @@
             // 
             // num_provider_logsizeMb
             // 
-            this.num_provider_logsizeMb.Location = new System.Drawing.Point(249, 82);
+            this.num_provider_logsizeMb.Location = new System.Drawing.Point(303, 82);
             this.num_provider_logsizeMb.Name = "num_provider_logsizeMb";
             this.num_provider_logsizeMb.Size = new System.Drawing.Size(42, 20);
             this.num_provider_logsizeMb.TabIndex = 22;
@@ -697,7 +715,7 @@
             // 
             // num_provider_sqlcacheloggingLevel
             // 
-            this.num_provider_sqlcacheloggingLevel.Location = new System.Drawing.Point(249, 49);
+            this.num_provider_sqlcacheloggingLevel.Location = new System.Drawing.Point(303, 49);
             this.num_provider_sqlcacheloggingLevel.Maximum = new decimal(new int[] {
             10,
             0,
@@ -710,7 +728,7 @@
             // 
             // num_provider_loggingLevel
             // 
-            this.num_provider_loggingLevel.Location = new System.Drawing.Point(249, 19);
+            this.num_provider_loggingLevel.Location = new System.Drawing.Point(303, 19);
             this.num_provider_loggingLevel.Maximum = new decimal(new int[] {
             10,
             0,
@@ -724,7 +742,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(129, 84);
+            this.label8.Location = new System.Drawing.Point(183, 84);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(114, 13);
             this.label8.TabIndex = 21;
@@ -755,6 +773,7 @@
             this.ribbon1.Tabs.Add(this.rt_Trace);
             this.ribbon1.TabsMargin = new System.Windows.Forms.Padding(12, 2, 20, 0);
             this.ribbon1.ThemeColor = System.Windows.Forms.RibbonTheme.Blue;
+            this.ribbon1.Click += new System.EventHandler(this.ribbon1_Click);
             // 
             // rt_Home
             // 
@@ -906,6 +925,8 @@
             this.ribbonPanel3.Items.Add(this.ribbonSeparator4);
             this.ribbonPanel3.Items.Add(this.rcc_Newest);
             this.ribbonPanel3.Items.Add(this.rcc_Oldest);
+            this.ribbonPanel3.Items.Add(this.ribbonSeparator8);
+            this.ribbonPanel3.Items.Add(this.rcc_sortbyModified);
             this.ribbonPanel3.Text = "";
             // 
             // rb_Monitor
@@ -1036,12 +1057,30 @@
             this.panel_Logs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_Logs.Controls.Add(this.dgv_Logs);
-            this.panel_Logs.Controls.Add(this.tv_Logs);
+            this.panel_Logs.Controls.Add(this.splitContainer1);
             this.panel_Logs.Location = new System.Drawing.Point(2, 108);
             this.panel_Logs.Name = "panel_Logs";
             this.panel_Logs.Size = new System.Drawing.Size(901, 485);
             this.panel_Logs.TabIndex = 23;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(0, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tv_Logs);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.dgv_Logs);
+            this.splitContainer1.Size = new System.Drawing.Size(901, 482);
+            this.splitContainer1.SplitterDistance = 211;
+            this.splitContainer1.TabIndex = 11;
             // 
             // rtb_Help
             // 
@@ -1056,6 +1095,7 @@
             this.rtb_Help.Size = new System.Drawing.Size(891, 476);
             this.rtb_Help.TabIndex = 0;
             this.rtb_Help.Text = "";
+            this.rtb_Help.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.rtb_Help_LinkClicked);
             // 
             // b_deleteLocation
             // 
@@ -1243,6 +1283,9 @@
             // 
             // panel_Help
             // 
+            this.panel_Help.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_Help.Controls.Add(this.rtb_Help);
             this.panel_Help.Location = new System.Drawing.Point(2, 108);
             this.panel_Help.Name = "panel_Help";
@@ -1251,6 +1294,9 @@
             // 
             // panel_customLocations
             // 
+            this.panel_customLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_customLocations.Controls.Add(this.b_deleteLocation);
             this.panel_customLocations.Controls.Add(this.dgv_customLocations);
             this.panel_customLocations.Controls.Add(this.b_addupdateLocation);
@@ -1271,11 +1317,56 @@
             // 
             // panel_Diagnostics
             // 
+            this.panel_Diagnostics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_Diagnostics.Controls.Add(this.dgv_Diagnostics);
             this.panel_Diagnostics.Location = new System.Drawing.Point(2, 108);
             this.panel_Diagnostics.Name = "panel_Diagnostics";
             this.panel_Diagnostics.Size = new System.Drawing.Size(901, 482);
             this.panel_Diagnostics.TabIndex = 26;
+            // 
+            // ribbonOrbMenuItem3
+            // 
+            this.ribbonOrbMenuItem3.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left;
+            this.ribbonOrbMenuItem3.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem3.Image")));
+            this.ribbonOrbMenuItem3.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem3.SmallImage")));
+            this.ribbonOrbMenuItem3.Text = "ribbonOrbMenuItem3";
+            // 
+            // ribbonOrbRecentItem6
+            // 
+            this.ribbonOrbRecentItem6.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem6.Image")));
+            this.ribbonOrbRecentItem6.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem6.SmallImage")));
+            this.ribbonOrbRecentItem6.Text = "ribbonOrbRecentItem6";
+            // 
+            // ribbonOrbRecentItem7
+            // 
+            this.ribbonOrbRecentItem7.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem7.Image")));
+            this.ribbonOrbRecentItem7.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem7.SmallImage")));
+            this.ribbonOrbRecentItem7.Text = "ribbonOrbRecentItem7";
+            // 
+            // ribbonOrbRecentItem8
+            // 
+            this.ribbonOrbRecentItem8.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem8.Image")));
+            this.ribbonOrbRecentItem8.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem8.SmallImage")));
+            this.ribbonOrbRecentItem8.Text = "ribbonOrbRecentItem8";
+            // 
+            // ribbonOrbRecentItem9
+            // 
+            this.ribbonOrbRecentItem9.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem9.Image")));
+            this.ribbonOrbRecentItem9.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbRecentItem9.SmallImage")));
+            this.ribbonOrbRecentItem9.Text = "ribbonOrbRecentItem9";
+            // 
+            // ribbonOrbMenuItem4
+            // 
+            this.ribbonOrbMenuItem4.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left;
+            this.ribbonOrbMenuItem4.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem4.Image")));
+            this.ribbonOrbMenuItem4.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem4.SmallImage")));
+            this.ribbonOrbMenuItem4.Text = "ribbonOrbMenuItem4";
+            // 
+            // rcc_sortbyModified
+            // 
+            this.rcc_sortbyModified.Text = "Automatically sort Logs";
             // 
             // Form1
             // 
@@ -1290,7 +1381,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel_Logging);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(800, 640);
+            this.MinimumSize = new System.Drawing.Size(919, 657);
             this.Name = "Form1";
             this.Text = "Log Launcher";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -1314,6 +1405,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_sqlcacheloggingLevel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_provider_loggingLevel)).EndInit();
             this.panel_Logs.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_customLocations)).EndInit();
             this.panel_Help.ResumeLayout(false);
             this.panel_customLocations.ResumeLayout(false);
@@ -1441,6 +1536,19 @@
         private System.Windows.Forms.Panel panel_Help;
         private System.Windows.Forms.Panel panel_Diagnostics;
         private System.Windows.Forms.RibbonButton rb_tracerFind;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem3;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem6;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem7;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem8;
+        private System.Windows.Forms.RibbonOrbRecentItem ribbonOrbRecentItem9;
+        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem4;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator2;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator5;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator6;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator7;
+        private System.Windows.Forms.RibbonSeparator ribbonSeparator8;
+        private System.Windows.Forms.RibbonCheckBox rcc_sortbyModified;
     }
 }
 
