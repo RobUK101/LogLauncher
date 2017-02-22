@@ -85,6 +85,7 @@
             this.num_provider_loggingLevel = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.ribbon1 = new System.Windows.Forms.Ribbon();
+            this.ribbonOrbMenuItem5 = new System.Windows.Forms.RibbonOrbMenuItem();
             this.rt_Home = new System.Windows.Forms.RibbonTab();
             this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
             this.rb_scanLogs = new System.Windows.Forms.RibbonButton();
@@ -110,6 +111,8 @@
             this.ribbonSeparator4 = new System.Windows.Forms.RibbonSeparator();
             this.rcc_Newest = new System.Windows.Forms.RibbonColorChooser();
             this.rcc_Oldest = new System.Windows.Forms.RibbonColorChooser();
+            this.ribbonSeparator8 = new System.Windows.Forms.RibbonSeparator();
+            this.rcc_sortbyModified = new System.Windows.Forms.RibbonCheckBox();
             this.rt_Trace = new System.Windows.Forms.RibbonTab();
             this.ribbonPanel7 = new System.Windows.Forms.RibbonPanel();
             this.rtb_tracerPath = new System.Windows.Forms.RibbonTextBox();
@@ -158,8 +161,6 @@
             this.ribbonSeparator5 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator6 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator7 = new System.Windows.Forms.RibbonSeparator();
-            this.ribbonSeparator8 = new System.Windows.Forms.RibbonSeparator();
-            this.rcc_sortbyModified = new System.Windows.Forms.RibbonCheckBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -261,7 +262,7 @@
             this.dgv_Logs.TabIndex = 10;
             this.dgv_Logs.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgv_Logs_ColumnDisplayIndexChanged);
             this.dgv_Logs.DoubleClick += new System.EventHandler(this.dgv_Logs_DoubleClick);
-            this.dgv_Logs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_Logs_KeyDown);
+            this.dgv_Logs.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dgv_Logs_KeyPress);
             // 
             // dgv_c_hiddenlogName
             // 
@@ -760,11 +761,13 @@
             // 
             this.ribbon1.OrbDropDown.BorderRoundness = 8;
             this.ribbon1.OrbDropDown.Location = new System.Drawing.Point(0, 0);
+            this.ribbon1.OrbDropDown.MenuItems.Add(this.ribbonOrbMenuItem5);
             this.ribbon1.OrbDropDown.Name = "";
-            this.ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 447);
+            this.ribbon1.OrbDropDown.Size = new System.Drawing.Size(527, 160);
             this.ribbon1.OrbDropDown.TabIndex = 0;
             this.ribbon1.OrbImage = null;
             this.ribbon1.OrbStyle = System.Windows.Forms.RibbonOrbStyle.Office_2010;
+            this.ribbon1.OrbText = "File";
             this.ribbon1.RibbonTabFont = new System.Drawing.Font("Trebuchet MS", 9F);
             this.ribbon1.Size = new System.Drawing.Size(903, 107);
             this.ribbon1.TabIndex = 22;
@@ -774,6 +777,14 @@
             this.ribbon1.TabsMargin = new System.Windows.Forms.Padding(12, 2, 20, 0);
             this.ribbon1.ThemeColor = System.Windows.Forms.RibbonTheme.Blue;
             this.ribbon1.Click += new System.EventHandler(this.ribbon1_Click);
+            // 
+            // ribbonOrbMenuItem5
+            // 
+            this.ribbonOrbMenuItem5.DropDownArrowDirection = System.Windows.Forms.RibbonArrowDirection.Left;
+            this.ribbonOrbMenuItem5.Image = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem5.Image")));
+            this.ribbonOrbMenuItem5.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem5.SmallImage")));
+            this.ribbonOrbMenuItem5.Text = "Exit";
+            this.ribbonOrbMenuItem5.Click += new System.EventHandler(this.ribbonOrbMenuItem5_Click);
             // 
             // rt_Home
             // 
@@ -845,11 +856,11 @@
             // 
             // ribbonPanel6
             // 
-            this.ribbonPanel6.Items.Add(this.rb_Logging);
-            this.ribbonPanel6.Items.Add(this.rb_supportCenter);
             this.ribbonPanel6.Items.Add(this.rb_showLogs);
             this.ribbonPanel6.Items.Add(this.rb_customPaths);
+            this.ribbonPanel6.Items.Add(this.rb_Logging);
             this.ribbonPanel6.Items.Add(this.rb_debugWindow);
+            this.ribbonPanel6.Items.Add(this.rb_supportCenter);
             this.ribbonPanel6.Items.Add(this.rb_Help);
             this.ribbonPanel6.Text = "";
             // 
@@ -962,6 +973,11 @@
             this.rcc_Oldest.SmallImage = ((System.Drawing.Image)(resources.GetObject("rcc_Oldest.SmallImage")));
             this.rcc_Oldest.Text = "Oldest";
             this.rcc_Oldest.Click += new System.EventHandler(this.rcc_Oldest_Click);
+            // 
+            // rcc_sortbyModified
+            // 
+            this.rcc_sortbyModified.Checked = true;
+            this.rcc_sortbyModified.Text = "Automatically sort Logs";
             // 
             // rt_Trace
             // 
@@ -1103,7 +1119,7 @@
             this.b_deleteLocation.Location = new System.Drawing.Point(810, 450);
             this.b_deleteLocation.Name = "b_deleteLocation";
             this.b_deleteLocation.Size = new System.Drawing.Size(75, 23);
-            this.b_deleteLocation.TabIndex = 26;
+            this.b_deleteLocation.TabIndex = 20;
             this.b_deleteLocation.TabStop = false;
             this.b_deleteLocation.Text = "Delete";
             this.b_deleteLocation.UseVisualStyleBackColor = true;
@@ -1180,7 +1196,7 @@
             this.cb_recurseFolder.Location = new System.Drawing.Point(158, 449);
             this.cb_recurseFolder.Name = "cb_recurseFolder";
             this.cb_recurseFolder.Size = new System.Drawing.Size(76, 21);
-            this.cb_recurseFolder.TabIndex = 16;
+            this.cb_recurseFolder.TabIndex = 18;
             this.cb_recurseFolder.Text = "False";
             // 
             // tb_logProduct
@@ -1189,7 +1205,7 @@
             this.tb_logProduct.Location = new System.Drawing.Point(439, 397);
             this.tb_logProduct.Name = "tb_logProduct";
             this.tb_logProduct.Size = new System.Drawing.Size(446, 20);
-            this.tb_logProduct.TabIndex = 18;
+            this.tb_logProduct.TabIndex = 16;
             // 
             // tb_logCategory
             // 
@@ -1197,7 +1213,7 @@
             this.tb_logCategory.Location = new System.Drawing.Point(10, 397);
             this.tb_logCategory.Name = "tb_logCategory";
             this.tb_logCategory.Size = new System.Drawing.Size(423, 20);
-            this.tb_logCategory.TabIndex = 17;
+            this.tb_logCategory.TabIndex = 15;
             // 
             // tb_fileMask
             // 
@@ -1205,7 +1221,7 @@
             this.tb_fileMask.Location = new System.Drawing.Point(13, 450);
             this.tb_fileMask.Name = "tb_fileMask";
             this.tb_fileMask.Size = new System.Drawing.Size(122, 20);
-            this.tb_fileMask.TabIndex = 15;
+            this.tb_fileMask.TabIndex = 17;
             // 
             // tb_customLocation
             // 
@@ -1364,19 +1380,15 @@
             this.ribbonOrbMenuItem4.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem4.SmallImage")));
             this.ribbonOrbMenuItem4.Text = "ribbonOrbMenuItem4";
             // 
-            // rcc_sortbyModified
-            // 
-            this.rcc_sortbyModified.Text = "Automatically sort Logs";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(903, 618);
+            this.Controls.Add(this.panel_customLocations);
             this.Controls.Add(this.panel_Logs);
             this.Controls.Add(this.panel_Help);
             this.Controls.Add(this.panel_Diagnostics);
-            this.Controls.Add(this.panel_customLocations);
             this.Controls.Add(this.ribbon1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel_Logging);
@@ -1549,6 +1561,8 @@
         private System.Windows.Forms.RibbonSeparator ribbonSeparator7;
         private System.Windows.Forms.RibbonSeparator ribbonSeparator8;
         private System.Windows.Forms.RibbonCheckBox rcc_sortbyModified;
+        private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem5;
+        private System.Windows.Forms.RibbonOrbOptionButton ribbonOrbOptionButton1;
     }
 }
 

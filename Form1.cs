@@ -30,20 +30,13 @@ namespace LogLauncher
 {
     public partial class Form1 : Form
     {
-        private const string c_productVersion = "V3.0 - Robert Marshall";
-
-        private const string logfileExtension = "*.lo*";
-
-        public static readonly string[] c_colourWheel = {"FF2D3AF7", "FF3E4AF7", "FF4F5AF7", "FF606BF7", "FF7C84F7", "FF9299F7", "FFC6C9F7", "FFDFE0F7", "FFE6E7F5"};
-
+        // ConfigMgr/SCCM Log Hints
 
         string[,] logHints = new string[,] { { @"CAS.log" , @"Content Access service. Maintains the local package cache on the client." },   { @"Ccm32BitLauncher.log" , @"Records actions for starting applications on the client marked as 'run as 32bit'." }, { @"CcmEval.log" , @"Records Configuration Manager client status evaluation activities and details for components that are required by the Configuration Manager client." },    { @"CcmEvalTask.log" , @"Records the Configuration Manager client status evaluation activities that are initiated by the evaluation scheduled task." }, { @"CcmExec.log" , @"Records activities of the client and the SMS Agent Host service. This log file also includes information about enabling and disabling wake-up proxy." },   { @"CcmMessaging.log" , @"Records activities related to communications between the client and management points." },    { @"CCMNotificationAgent.log" , @"Records activities related to client notification operations." }, { @"Ccmperf.log" , @"Records activities related to the maintenance and capture of data related to client performance counters." },  { @"CcmRestart.log" , @"Records client service restart activity." },    { @"CCMSDKProvider.log" , @"Records activities for the client SDK interfaces." },   { @"CertificateMaintenance.log" , @"Maintains certificates for Active Directory Domain Services and management points." },  { @"CIDownloader.log" , @"Records details about configuration item definition downloads." },    { @"CITaskMgr.log" , @"Records tasks that are initiated for each application and deployment type, such as content download or install or uninstall actions." }, { @"ClientAuth.log" , @"Records the signing and authentication activity for the client." }, { @"ClientIDManagerStartup.log" , @"Creates and maintains the client GUID and identifies tasks performed during client registration and assignment." }, { @"ClientLocation.log" , @"Records tasks that are related to client site assignment." },   { @"CMHttpsReadiness.log" , @"Records the results of running the Configuration Manager HTTPS Readiness Assessment Tool. This tool checks whether computers have a PKI client authentication certificate that can be used for Configuration Manager." }, { @"CmRcService.log" , @"Records information for the remote control service." },    { @"ContentTransferManager.log" , @"Schedules the Background Intelligent Transfer Service (BITS) or the Server Message Block (SMB) to download or to access packages." },   { @"DataTransferService.log" , @"Records all BITS communication for policy or package access." },   { @"EndpointProtectionAgent" , @"Records information about the installation of the Endpoint Protection client and the application of antimalware policy to that client." }, { @"execmgr.log" , @"Records details about packages and task sequences that run on the client." },  { @"ExpressionSolver.log" , @"Records details about enhanced detection methods that are used when verbose or debug logging is enabled." },  { @"ExternalEventAgent.log" , @"Records the history of Endpoint Protection malware detection and events related to client status." },   { @"FileBITS.log" , @"Records all SMB package access tasks." }, { @"FileSystemFile.log" , @"Records the activity of the Windows Management Instrumentation (WMI) provider for software inventory and file collection." },   { @"FSPStateMessage.log" , @"Records the activity for state messages that are sent to the fallback status point by the client." },  { @"InternetProxy.log" , @"Records the network proxy configuration and usage activity for the client." },   { @"InventoryAgent.log" , @"Records activities of hardware inventory, software inventory, and heartbeat discovery actions on the client." },    { @"LocationCache.log" , @"Records the activity for location cache usage and maintenance for the client." },    { @"LocationServices.log" , @"Records the client activity for locating management points, software update points, and distribution points." },  { @"MaintenanceCoordinator.log" , @"Records the activity for general maintenance task activity for the client." },  { @"Mifprovider.log" , @"Records the activity of the WMI provider for .MIF files." },   { @"mtrmgr.log" , @"Monitors all software metering processes." },   { @"PolicyAgent.log" , @"Records requests for policies made by using the Data Transfer service." }, { @"PolicyAgentProvider.log" , @"Records policy changes." },    { @"PolicyEvaluator.log" , @"Records details about the evaluation of policies on client computers, including policies from software updates." },    { @"PolicyPlatformClient.log" , @"Records the process of remediation and compliance for all providers located in %Program Files%\Microsoft Policy Platform, except the file provider." },   { @"PolicySdk.log" , @"Records activities for policy system SDK interfaces." }, { @"Pwrmgmt.log" , @"Records information about enabling or disabling and configuring the wake-up proxy client settings." }, { @"PwrProvider.log" , @"Records the activities of the power management provider (PWRInvProvider) hosted in the Windows Management Instrumentation (WMI) service. On all supported versions of Windows, the provider enumerates the current settings on computers during hardware inventory and applies power plan settings." },    { @"SCClient_<domain>@<username>_1.log" , @"Records the activity in Software Center for the specified user on the client computer." },  { @"SCClient_<domain>@<username>_2.log" , @"Records the historical activity in Software Center for the specified user on the client computer." },   { @"Scheduler.log" , @"Records activities of scheduled tasks for all client operations." }, { @"SCNotify_<domain>@<username>_1.log" , @"Records the activity for notifying users about software for the specified user." }, { @"SCNotify_<domain>@<username>_1-<date_time>.log" , @"Records the historical information for notifying users about software for the specified user." },   { @"setuppolicyevaluator.log" , @"Records configuration and inventory policy creation in WMI." },   { @"SleepAgent_<domain>@<@SYSTEM_0.log" , @"Main log file for wake-up proxy." },    { @"smscliui.log" , @"Records usage of the Configuration Manager client in Control Panel." },   { @"SrcUpdateMgr.log" , @"Records activity for installed Windows Installer applications that are updated with current distribution point source locations." },  { @"StatusAgent.log" , @"Records status messages that are created by the client components." }, { @"SWMTRReportGen.log" , @"Generates a usage data report that is collected by the metering agent. This data is logged in Mtrmgr.log." },   { @"UserAffinity.log" , @"Records details about user device affinity." },   { @"VirtualApp.log" , @"Records information specific to the evaluation of App-V deployment types." },   { @"Wedmtrace.log" , @"Records operations related to write filters on Windows Embedded clients." }, { @"wakeprxy-install.log" , @"Records installation information when clients receive the client setting option to enable wake-up proxy." },  { @"wakeprxy-uninstall.log" , @"Records information about uninstalling wake-up proxy when clients receive the client setting option to disable wake-up proxy, if wake-up proxy was previously enabled." },  { @"ccmsetup.log" , @"Records ccmsetup tasks for client setup, client upgrade, and client removal. Can be used to troubleshoot client installation problems." },    { @"ccmsetup-ccmeval.log" , @"Records ccmsetup tasks for client status and remediation." }, { @"CcmRepair.log" , @"Records the repair activities of the client agent." },   { @"client.msi.log" , @"Records setup tasks performed by client.msi. Can be used to troubleshoot client installation or removal problems." },   { @"adctrl.log" , @"Records enrollment processing activity." }, { @"ADForestDisc.log" , @"Records Active Directory Forest Discovery actions." },    { @"ADService.log" , @"Records account creation and security group details in Active Directory." }, { @"adsgdis.log" , @"Records Active Directory Group Discovery actions." },  { @"adsysdis.log" , @"Records Active Directory System Discovery actions." },    { @"adusrdis.log" , @"Records Active Directory User Discovery actions." },  { @"ccm.log" , @"Records client push installation activities." },   { @"CertMgr.log" , @"Records the certificate activities for intra-site communications." },  { @"chmgr.log" , @"Records activities of the client health manager." }, { @"Cidm.log" , @"Records changes to the client settings by the Client Install Data Manager (CIDM)." }, { @"colleval.log" , @"Records details about when collections are created, changed, and deleted by the Collection Evaluator." }, { @"compmon.log" , @"Records the status of component threads monitored for the site server." }, { @"compsumm.log" , @"Records Component Status Summarizer tasks." },    { @"ComRegSetup.log" , @"Records the initial installation of COM registration results for a site server." },    { @"dataldr.log" , @"Records information about the processing of Management Information Format (MIF) files and hardware inventory in the Configuration Manager database." },    { @"ddm.log" , @"Records activities of the discovery data manager." },  { @"despool.log" , @"Records incoming site-to-site communication transfers." }, { @"distmgr.log" , @"Records details about package creation, compression, delta replication, and information updates." },   { @"EPCtrlMgr.log" , @"Records information about the synchronization of malware threat information from the Endpoint Protection site system role server into the Configuration Manager database." },    { @"EPMgr.log" , @"Records the status of the Endpoint Protection site system role." },  { @"EPSetup.log" , @"Provides information about the installation of the Endpoint Protection site system role." },   { @"EnrollSrv.log" , @"Records activities of the enrollment service process." },    { @"EnrollWeb.log" , @"Records activities of the enrollment website process." },    { @"fspmgr.log" , @"Records activities of the fallback status point site system role." },   { @"hman.log" , @"Records information about site configuration changes, and the publishing of site information in Active Directory Domain Services." }, { @"Inboxast.log" , @"Records the files that are moved from the management point to the corresponding INBOXES folder on the site server." },    { @"inboxmgr.log" , @"Records file transfer activities between inbox folders." },   { @"inboxmon.log" , @"Records the processing of inbox files and performance counter updates." },    { @"invproc.log" , @"Records the forwarding of MIF files from a secondary site to its parent site." },  { @"migmctrl.log" , @"Records information for Migration actions involving migration jobs, shared distribution points, and distribution point upgrades. The top-level site in the System Center 2012 Configuration Manager hierarchy, and each child primary site." },   { @"mpcontrol.log" , @"Records the registration of the management point with WINS. Records the availability of the management point every 10 minutes." },   { @"mpfdm.log" , @"Records the actions of the management point component that moves client files to the corresponding INBOXES folder on the site server." },    { @"mpMSI.log" , @"Records details of about the management point installation." },  { @"MPSetup.log" , @"Records the management point installation wrapper process." }, { @"netdisc.log" , @"Records Network Discovery actions." }, { @"ntsvrdis.log" , @"Records the discovery activity of site system servers." },    { @"Objreplmgr" , @"Records the processing of object change notifications for replication." },  { @"offermgr.log" , @"Records advertisement updates." },    { @"offersum.log" , @"Records the summarization of deployment status messages." },  { @"OfflineServicingMgr.log" , @"Records the activities of applying updates to operating system image files." },    { @"outboxmon.log" , @"Records the processing of outbox files and performance counter updates." },  { @"PerfSetup.log" , @"Records the results of the installation of performance counters." }, { @"PkgXferMgr.log" , @"Records the actions of the SMS Executive component that is responsible for sending content from a primary site to a remote distribution point." },  { @"policypv.log" , @"Records updates to the client policies to reflect changes to client settings or deployments." },  { @"rcmctrl.log" , @"Records the activities of database replication between sites in the hierarchy." }, { @"replmgr.log" , @"Records the replication of files between the site server components and the Scheduler component." },   { @"ResourceExplorer.log" , @"Records errors, warnings, and information about running the Resource Explorer." },    { @"ruleengine.log" , @"Records details about automatic deployment rules for the identification, content download, and software update group and deployment creation." },   { @"schedule.log" , @"Records details about site-to-site job and file replication." },  { @"sender.log" , @"Records the files that transfer by file-based replication between sites." },    { @"sinvproc.log" , @"Records information about the processing of software inventory data to the site database." }, { @"sitecomp.log" , @"Records details about the maintenance of the installed site components on all site system servers in the site." },    { @"sitectrl.log" , @"Records site setting changes made to site control objects in the database." },    { @"sitestat.log" , @"Records the availability and disk space monitoring process of all site systems." },   { @"SmsAdminUI.log" , @"Records Configuration Manager console activity." }, { @"SMSAWEBSVCSetup.log" , @"Records the installation activities of the Application Catalog web service." },    { @"smsbkup.log" , @"Records output from the site backup process." },   { @"smsdbmon.log" , @"Records database changes." }, { @"SMSENROLLSRVSetup.log" , @"Records the installation activities of the enrollment web service." },   { @"SMSENROLLWEBSetup.log" , @"Records the installation activities of the enrollment website." },   { @"smsexec.log" , @"Records the processing of all site server component threads." },   { @"SMSFSPSetup.log" , @"Records messages generated by the installation of a fallback status point." }, { @"SMSPORTALWEBSetup.log" , @"Records the installation activities of the Application Catalog website." },  { @"SMSProv.log" , @"Records WMI provider access to the site database." },  { @"srsrpMSI.log" , @"Records detailed results of the reporting point installation process from the MSI output." }, { @"srsrpsetup.log" , @"Records results of the reporting point installation process." },    { @"statesys.log" , @"Records the processing of state system messages." },  { @"statmgr.log" , @"Records the writing of all status messages to the database." },    { @"swmproc.log" , @"Records the processing of metering files and settings." }, { @"ConfigMgrPrereq.log" , @"Records pre-requisite component evaluation and installation activities." },    { @"ConfigMgrSetup.log" , @"Records detailed output from site server setup." }, { @"ConfigMgrSetupWizard.log" , @"Records information related to activity in the Setup wizard." },  { @"SMS_BOOTSTRAP.log" , @"Records information about the progress of launching the secondary site installation process. Details of the actual setup process are contained in ConfigMgrSetup.log." },    { @"smstsvc.log" , @"Records information about the installation, use, and removal of a Windows service that is used to test network connectivity and permissions between servers, using the computer account of the server initiating the connection." },   { @"FspIsapi" , @"Records details about communications to the fallback status point from mobile device legacy clients and client computers." }, { @"fspMSI.log" , @"Records messages generated by the installation of a fallback status point." },  { @"fspmgr.log" , @"Records activities of the fallback status point site system role." },   { @"CcmIsapi.log" , @"Records client messaging activity on the endpoint." },    { @"MP_CliReg.log" , @"Records the client registration activity processed by the management point." },  { @"MP_Ddr.log" , @"Records the conversion of XML.ddr records from clients, and copies them to the site server." }, { @"MP_Framework.log" , @"Records the activities of the core management point and client framework components." },  { @"MP_GetAuth.log" , @"Records client authorization activity." },  { @"MP_GetPolicy.log" , @"Records policy request activity from client computers." },    { @"MP_Hinv.log" , @"Records details about the conversion of XML hardware inventory records from clients and the copy of those files to the site server." },    { @"MP_Location.log" , @"Records location request and reply activity from clients." },  { @"MP_OOBMgr.log" , @"Records the management point activities related to receiving OTP from a client." },  { @"MP_Policy.log" , @"Records policy communication." },    { @"MP_Relay.log" , @"Records the transfer of files that are collected from the client." }, { @"MP_Retry.log" , @"Records the hardware inventory retry processes." },   { @"MP_Sinv.log" , @"Records details about the conversion of XML software inventory records from clients and the copy of those files to the site server." },    { @"MP_SinvCollFile.log" , @"Records details about file collection." }, { @"MP_Status.log" , @"Records details about the conversion of XML.svf status message files from clients and the copy of those files to the site server." },    { @"mpcontrol.log" , @"Records the registration of the management point with WINS. Records the availability of the management point every 10 minutes." },   { @"mpfdm.log" , @"Records the actions of the management point component that moves client files to the corresponding INBOXES folder on the site server." },    { @"mpMSI.log" , @"Records details of about the management point installation." },  { @"MPSetup.log" , @"Records the management point installation wrapper process." }, { @"objreplmgr.log" , @"Records details about the replication of software updates notification files from a parent to child sites." },  { @"PatchDownloader.log" , @"Records details about the process of downloading software updates from the update source to the download destination on the site server." },   { @"ruleengine.log" , @"Records details about automatic deployment rules for the identification, content download, and software update group and deployment creation." },   { @"SUPSetup.log" , @"Records details about the software update point installation. When the software update point installation completes, Installation was successful is written to this log file." }, { @"WCM.log" , @"Records details about the software update point configuration and connections to the Windows Server Update Services (WSUS) server for subscribed update categories, classifications, and languages." },    { @"WSUSCtrl.log" , @"Records details about the configuration, database connectivity, and health of the WSUS server for the site." },   { @"wsyncmgr.log" , @"Records details about the software updates synchronization process." },   { @"WUSSyncXML.log" , @"Records details about the Inventory Tool for the Microsoft Updates synchronization process." }, { @"AppIntentEval.log" , @"Records details about the current and intended state of applications, their applicability, whether requirements were met, deployment types, and dependencies." },    { @"AppDiscovery.log" , @"Records details about the discovery or detection of applications on client computers. " },    { @"AppEnforce.log" , @"Records details about enforcement actions (install and uninstall) taken for applications on the client." }, { @"awebsctl.log" , @"Records the monitoring activities for the Application Catalog web service point site system role." }, { @"awebsvcMSI.log" , @"Records detailed installation information for the Application Catalog web service point site system role." },   { @"Ccmsdkprovider.log" , @"Records the activities of the application management SDK." },   { @"colleval.log" , @"Records details about when collections are created, changed, and deleted by the Collection Evaluator." }, { @"ConfigMgrSoftwareCatalog.log" , @"Records the activity of the Application Catalog, which includes its use of Silverlight." },   { @"portlctl.log" , @"Records the monitoring activities for the Application Catalog website point site system role." }, { @"portlwebMSI.log" , @"Records the MSI installation activity for the Application Catalog website role." },    { @"PrestageContent.log" , @"Records the details about the use of the ExtractContent.exe tool on a remote prestaged distribution point. This tool extracts content that has been exported to a file." },    { @"ServicePortalWebService.log" , @"Records the activity of the Application Catalog web service." },   { @"ServicePortalWebSite.log" , @"Records the activity of the Application Catalog website." },  { @"SMSdpmon.log" , @"Records details about the distribution point health monitoring scheduled task that is configured on a distribution point." }, { @"SoftwareCatalogUpdateEndpoint.log" , @"Records the activities for managing the URL for the Application Catalog shown in Software Center." },    { @"SoftwareCenterSystemTasks.log" , @"Records the activities for Software Center prerequisite component validation." },    { @"colleval.log" , @"Records details about when collections are created, changed, and deleted by the Collection Evaluator." }, { @"execmgr.log" , @"Records details about packages and task sequences that run." },    { @"AssetAdvisor.log" , @"Records the activities of Asset Intelligence inventory actions." },   { @"aikbmgr.log" , @"Records details about the processing of XML files from the inbox for updating the Asset Intelligence catalog." },  { @"AIUpdateSvc.log" , @"Records the interaction of the Asset Intelligence synchronization point with SCO (System Center Online), the online web service." },   { @"AIUSMSI.log" , @"Records details about the installation of Asset Intelligence synchronization point site system role." },   { @"AIUSSetup.log" , @"Records details about the installation of Asset Intelligence synchronization point site system role." }, { @"ManagedProvider.log" , @"Records details about discovering software with an associated software identification tag. Also records activities relating to hardware inventory." }, { @"MVLSImport.log" , @"Records details about the processing of imported licensing files." },   { @"ConfigMgrSetup.log" , @"Records information about setup and recovery tasks when Configuration Manager recovers a site from backup." },  { @"Smsbkup.log" , @"Records details about the site backup activity." },    { @"smssqlbkup.log" , @"Records output from the site database backup process when SQL Server is installed on a different server than the site server." },   { @"Smswriter.log" , @"Records information about the state of the Configuration Manager VSS writer that is used by the backup process." },  { @"Crp.log" , @"Records the enrollment activities." }, { @"Crpctrl.log" , @"Records the operational health of the certificate registration point." },  { @"Crpsetup.log" , @"Records details about the installation and configuration of the certificate registration point." },   { @"Crpmsi.log" , @"Records details about the installation and configuration of the certificate registration point." }, { @"NDESPlugin.log" , @"Records the challenge verification and certificate enrollment activities." },   { @"bgbmgr.log" , @"Records details about the activities of the site server relating to client notification tasks and processing online and task status files." },  { @"BGBServer.log" , @"Records the activities of the notification server such as client-server communications and pushing tasks to clients. Also records information about online and task status files generation to be sent to the site server." },   { @"BgbSetup.log" , @"Records the activities of the notification server installation wrapper process during installation and uninstall." }, { @"bgbisapiMSI.log" , @"Records details about the notification server installation and uninstall." },  { @"BgbHttpProxy.log" , @"Records the activities of the notification HTTP proxy as it relays the messages of clients using HTTP to and from the notification server." },    { @"CcmNotificationAgent.log" , @"Records the activities of the notification agent such as client-server communication and information about tasks received and dispatched to other client agents." },  { @"CIAgent.log" , @"Records details about the process of remediation and compliance for compliance settings, software updates, and application management." }, { @"CITaskManager.log" , @"Records information about configuration item task scheduling." },    { @"DCMAgent.log" , @"Records high-level information about the evaluation, conflict reporting, and remediation of configuration items and applications." }, { @"DCMReporting.log" , @"Records information about reporting policy platform results into state messages for configuration items." },  { @"DcmWmiProvider.log" , @"Records information about reading configuration item synclets from Windows Management Instrumentation (WMI)." },    { @"ConfigMgrAdminUISetup.log" , @"Records the installation of the Configuration Manager console." },   { @"SmsAdminUI.log" , @"Records information about the operation of the Configuration Manager console." },   { @"Smsprov.log" , @"Records activities performed by the SMS Provider. Configuration Manager console activities use the SMS provider." },   { @"CloudMgr.log" , @"Records details about the provisioning of content, collecting storage and bandwidth statistics, and administrator initiated actions to stop or start the cloud service that runs a cloud-based distribution point." },    { @"For System Center 2012 Configuration Manager SP1 and later:" , @"Records all BITS communication for policy or package access. This log is also used for content management by pull-distribution points." }, { @"DataTransferService.log" , @"" },   { @"For System Center 2012 Configuration Manager SP1 and later:" , @"Records details about content that the pull-distribution point transfers from source distribution points." },  { @"PullDP.log" , @"" },    { @"PrestageContent.log" , @"Records the details about the use of the ExtractContent.exe tool on a remote prestaged distribution point. This tool extracts content that has been exported to a file." },    { @"SMSdpmon.log" , @"Records details about the distribution point health monitoring scheduled task that are configured on a distribution point." },    { @"smsdpprov.log" , @"Records details about the extraction of compressed files received from a primary site. This log is generated by the WMI Provider of the remote distribution point." },   { @"adsgdis.log" , @"Records Active Directory Security Group Discovery actions." }, { @"adsysdis.log" , @"Records Active Directory System Discovery actions." },    { @"adusrdis.log" , @"Records Active Directory User Discovery actions." },  { @"ADForestDisc.Log" , @"Records Active Directory Forest Discovery actions." },    { @"ddm.log" , @"Records activities of the discovery data manager." },  { @"InventoryAgent.log" , @"Records activities of hardware inventory, software inventory, and heartbeat discovery actions on the client." },    { @"netdisc.log" , @"Records Network Discovery actions." }, { @"EndpointProtectionAgent.log" , @"Records details about the installation of the Endpoint Protection client and the application of antimalware policy to that client." }, { @"EPCtrlMgr.log" , @"Records details about the synchronization of malware threat information from the Endpoint Protection role server into the Configuration Manager database." },    { @"EPMgr.log" , @"Monitors the status of the Endpoint Protection site system role." }, { @"EPSetup.log" , @"Provides information about the installation of the Endpoint Protection site system role." },   { @"AdminUI.ExtensionInstaller.log" , @"Records information about the download of extensions from Microsoft, and the installation and uninstallation of all extensions." }, { @"FeatureExtensionInstaller.log" , @"Records information about the installation and removal of individual extensions when they are enabled or disabled in the Configuration Manager console." },  { @"SmsAdminUI.log" , @"Records Configuration Manager console activity." }, { @"dataldr.log" , @"Records information about the processing of Management Information Format (MIF) files and hardware inventory in the Configuration Manager database." },    { @"invproc.log" , @"Records the forwarding of MIF files from a secondary site to its parent site." },  { @"sinvproc.log" , @"Records information about the processing of software inventory data to the site database." }, { @"mtrmgr.log" , @"Monitors all software metering processes." },   { @"migmctrl.log" , @"Records information about migration actions that involve migration jobs, shared distribution points, and distribution point upgrades." }, { @"DMPRP.log" , @"Records communication between management points that are enabled for mobile devices and the management point endpoints." },  { @"dmpmsi.log" , @"Records the Windows Installer data for the configuration of a management point that is enabled for mobile devices." },  { @"DMPSetup.log" , @"Records the configuration of the management point when it is enabled for mobile devices." },  { @"enrollsrvMSI.log" , @"Records the Windows Installer data for the configuration of an enrollment point." },  { @"enrollmentweb.log" , @"Records communication between mobile devices and the enrollment proxy point." }, { @"enrollwebMSI.log" , @"Records the Windows Installer data for the configuration of an enrollment proxy point." },    { @"enrollmentservice.log" , @"Records communication between an enrollment proxy point and an enrollment point." }, { @"SMS_DM.log" , @"Records communication between mobile devices, Mac computers and the management point that is enabled for mobile devices and Mac computers." },  { @"easdisc.log" , @"Records the activities and the status of the Exchange Server connector." },    { @"DmCertEnroll.log" , @"Records details about certificate enrollment data on mobile device legacy clients." },    { @"DMCertResp.htm" , @"Records the HTML response from the certificate server when the mobile device legacy client enroller program requests a PKI certificate." }, { @"DmClientHealth.log" , @"Records the GUIDs of all the mobile device legacy clients that communicate with the management point that is enabled for mobile devices." },    { @"DmClientRegistration.log" , @"Records registration requests and responses to and from mobile device legacy clients." }, { @"DmClientSetup.log" , @"Records client setup data for mobile device legacy clients." },  { @"DmClientXfer.log" , @"Records client transfer data for mobile device legacy clients and for ActiveSync deployments." }, { @"DmCommonInstaller.log" , @"Records client transfer file installation for configuring mobile device legacy client transfer files." },    { @"DmInstaller.log" , @"Records whether DMInstaller correctly calls DmClientSetup, and whether DmClientSetup exits with success or failure for mobile device legacy clients." },   { @"DmpDatastore.log" , @"Records all the site database connections and queries made by the management point that is enabled for mobile devices." },    { @"DmpDiscovery.log" , @"Records all the discovery data from the mobile device legacy clients on the management point that is enabled for mobile devices." },  { @"DmpHardware.log" , @"Records hardware inventory data from mobile device legacy clients on the management point that is enabled for mobile devices." },  { @"DmpIsapi.log" , @"Records mobile device legacy client communication with a management point that is enabled for mobile devices." }, { @"dmpmsi.log" , @"Records the Windows Installer data for the configuration of a management point that is enabled for mobile devices." },  { @"DMPSetup.log" , @"Records the configuration of the management point when it is enabled for mobile devices." },  { @"DmpSoftware.log" , @"Records software distribution data from mobile device legacy clients on a management point that is enabled for mobile devices." }, { @"DmpStatus.log" , @"Records status messages data from mobile device clients on a management point that is enabled for mobile devices." },    { @"DmSvc.log" , @"Records client communication from mobile device legacy clients with a management point that is enabled for mobile devices." },   { @"FspIsapi.log" , @"Records details about communications to the fallback status point from mobile device legacy clients and client computers." }, { @"CAS.log" , @"Records details when distribution points are found for referenced content." }, { @"ccmsetup.log" , @"Records ccmsetup tasks for client setup, client upgrade, and client removal. Can be used to troubleshoot client installation problems." },    { @"CreateTSMedia.log" , @"Records details for task sequence media creation." },    { @"For System Center 2012 R2 Configuration Manager and later:" , @"Records details about the VHD creation and modification process" }, { @"DeployToVhd.log" , @"" },   { @"Dism.log" , @"Records driver installation actions or update apply actions for offline servicing." },    { @"Distmgr.log" , @"Records details about the configuration of enabling a distribution point for PXE." },  { @"DriverCatalog.log" , @"Records details about device drivers that have been imported into the driver catalog." },    { @"mcsisapi.log" , @"Records information for multicast package transfer and client request responses." },  { @"mcsexec.log" , @"Records health check, namespace, session creation and certificate check actions." },   { @"mcsmgr.log" , @"Records changes to configuration, security mode and availability." },   { @"mcsprv.log" , @"Records multicast provider interaction with Windows Deployment Services (WDS)." },  { @"MCSSetup.log" , @"Records details about multicast server role installation." }, { @"MCSMSI.log" , @"Records details about multicast server role installation." },   { @"Mcsperf.log" , @"Records details about multicast performance counter updates." },   { @"MP_ClientIDManager.log" , @"Records management point responses to the client ID requests task sequences initiated from PXE or boot media." },   { @"MP_DriverManager.log" , @"Records management point responses to Auto Apply Driver task sequence action requests." },    { @"OfflineServicingMgr.log" , @"Records details of offline servicing schedules and update apply actions on operating system .wim files." },    { @"Setupact.log" , @"Records details about Windows Sysprep and setup logs." }, { @"Setupapi.log" , @"Records details about Windows Sysprep and setup logs." }, { @"Setuperr.log" , @"Records details about Windows Sysprep and setup logs." }, { @"smpisapi.log" , @"Records details about the client state capture and restore actions, and threshold information." },    { @"Smpmgr.log" , @"Records details about the results of state migration point health checks and configuration changes." }, { @"smpmsi.log" , @"Records installation and configuration details about the state migration point." }, { @"smpperf.log" , @"Records the state migration point performance counter updates." }, { @"smspxe.log" , @"Records details about the responses to clients that PXE boot and details about the expansion of boot images and boot files." }, { @"smssmpsetup.log" , @"Records installation and configuration details about the state migration point." },    { @"Smsts.log" , @"Records task sequence activities." },    { @"TSAgent.log" , @"Records the outcome of task sequence dependencies before starting a task sequence." }, { @"TaskSequenceProvider.log" , @"Records details about task sequences when they are imported, exported, or edited." }, { @"loadstate.log" , @"Records details about the User State Migration Tool (USMT) and restoring user state data." },    { @"scanstate.log" , @"Records details about the User State Migration Tool (USMT) and capturing user state data." },    { @"amtopmgr.log" , @"Records the activities of the out of band service point, which include the discovery of management controllers, provisioning, audit log control, and power control commands." },  { @"adctrl.log" , @"Records details about managing Active Directory accounts that are used by out of band management." },   { @"ADService.log" , @"Records details about account creation and security group details in Active Directory." },   { @"amtproxymgr.log" , @"Records details about the activities of the site server relating to provisioning and sending instruction files to the out of band service point, which include the following: Discovery of management controllers, AMT provisioning, Audit log control and Power control commands. This log file also records information about out of band management site replication." },   { @"amtspsetup.log" , @"Records details about the installation of the out of band service point." },    { @"oobmgmt.log" , @"Records details about out of band management activities on AMT-based computers, which includes the AMT provisioning state of the management controller." },    { @"pwrmgmt.log" , @"Records details about power management activities on the client computer, which include monitoring and the enforcement of settings by the Power Management Client Agent." },   { @"CMRcViewer.log" , @"Records details about the activity of the remote control viewer." },    { @"Oobconsole" , @"Records details about running the out of band management console." },   { @"srsrp.log" , @"Records information about the activity and status of the reporting services point." },   { @"srsrpMSI.log" , @"Records detailed results of the reporting services point installation process from the MSI output." },    { @"srsrpsetup.log" , @"Records results of the reporting services point installation process." },   { @"hman.log" , @"Records information about site configuration changes, and the publishing of site information to Active Directory Domain Services." }, { @"SMSProv.log" , @"Records WMI provider access to the site database." },  { @"ccmcca.log" , @"Records details about the processing of compliance evaluation based on Configuration Manager NAP policy processing, and contains the processing of remediation for each software update required for compliance." },    { @"ccmperf.log" , @"Records activities related to the maintenance and capture of data related to client performance counters." },  { @"PatchDownloader.log" , @"Records details about the process of downloading software updates from the update source to the download destination on the site server." },   { @"PolicyEvaluator.log" , @"Records details about the evaluation of policies on client computers, including policies from software updates." },    { @"RebootCoordinator.log" , @"Records details about the coordination of system restarts on client computers after software update installations." },   { @"ScanAgent.log" , @"Records details about scan requests for software updates, the WSUS location, and related actions." },    { @"SdmAgent.log" , @"Records details about tracking of remediation and compliance. However, the software updates log file, Updateshandler.log, provides more informative details about installing the software updates required for compliance. This log file is shared with compliance settings." },  { @"ServiceWindowManager.log" , @"Records details about the evaluation of maintenance windows." },  { @"smssha.log" , @"The main log file for the Configuration Manager Network Access Protection client and it contains a merged statement of health information from the two Configuration Manager components: location services (LS) and the configuration compliance agent (CCA). This log file also contains information about the interactions between the Configuration Manager System Health Agent and the operating system NAP agent, and also between the Configuration Manager System Health Agent and both the configuration compliance agent and the location services. It provides information about whether the NAP agent successfully initialized, the statement of health data, and the statement of health response." },  { @"Smsshv.log" , @"This is the main log file for the System Health Validator point and records the basic operations of the System Health Validator service, such as the initialization progress." },   { @"Smsshvadcacheclient.log" , @"Records details about the retrieval of Configuration Manager health state references from Active Directory Domain Services." },    { @"SmsSHVCacheStore.log" , @"Records details about the cache store used to hold the Configuration Manager NAP health state references retrieved from Active Directory Domain Services, such as reading from the store and purging entries from the local cache store file. The cache store is not configurable." },    { @"smsSHVQuarValidator.log" , @"Records client statement of health information and processing operations. To obtain full information, change the registry key LogLevel from 1 to 0 in the following location: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SMSSHV\Logging\@GLOBAL" }, { @"smsshvregistrysettings.log" , @"Records any dynamic change to the System Health Validator component configuration while the service is running." }, { @"SMSSHVSetup.log" , @"Records the success or failure (with failure reason) of installing the System Health Validator point." },  { @"SmsWusHandler.log" , @"Records details about the scan process for the Inventory Tool for Microsoft Updates." }, { @"StateMessage.log" , @"Records details about software updates state messages that are created and sent to the management point." },  { @"SUPSetup.log" , @"Records details about the software update point installation. When the software update point installation completes, Installation was successful is written to this log file." }, { @"UpdatesDeployment.log" , @"Records details about deployments on the client, including software update activation, evaluation, and enforcement. Verbose logging shows additional information about the interaction with the client user interface." },   { @"UpdatesHandler.log" , @"Records details about software update compliance scanning and about the download and installation of software updates on the client." },    { @"UpdatesStore.log" , @"Records details about compliance status for the software updates that were assessed during the compliance scan cycle." }, { @"WCM.log" , @"Records details about software update point configurations and connections to the Windows Server Update Services (WSUS) server for subscribed update categories, classifications, and languages." },   { @"WSUSCtrl.log" , @"Records details about the configuration, database connectivity, and health of the WSUS server for the site." },   { @"wsyncmgr.log" , @"Records details about the software updates synchronization process." },   { @"WUAHandler.log" , @"Records details about the Windows Update Agent on the client when it searches for software updates." }, { @"wolcmgr.log" , @"Records details about which clients need to be sent wake-up packets, the number of wake-up packets sent, and the number of wake-up packets retried." },    { @"wolmgr.log" , @"Records details about wake-up procedures, such as when to wake up deployments that are configured for Wake On LAN." },  { @"CertMgr.log" , @"Records certificate and proxy account information." }, { @"CollEval.log" , @"Records details about when collections are created, changed, and deleted by the Collection Evaluator." }, { @"Cloudusersync.log" , @"Records license enablement for users." },    { @"Dataldr.log" , @"Records information about the processing of MIF files." }, { @"ddm.log" , @"Records activities of the discovery data manager." },  { @"Distmgr.log" , @"Records details about content distribution requests." },   { @"Dmpdownloader.log" , @"Records details on downloads from Microsoft Intune." },  { @"Dmpuploader.log" , @"Records details for uploading database changes to Microsoft Intune." },    { @"hman.log" , @"Records information about message forwarding." }, { @"objreplmgr.log" , @"Records the processing of policy and assignment." },    { @"PolicyPV.log" , @"Records policy generation of all policies." },    { @"outgoingcontentmanager.log" , @"Records content uploaded to Microsoft Intune." },   { @"Sitecomp.log" , @"Records details of connector role installation." },   { @"SmsAdminUI.log" , @"Records Configuration Manager console activity." }, { @"Smsprov.log" , @"Records activities performed by the SMS Provider. Configuration Manager console activities use the SMS Provider." },   { @"SrvBoot.log" , @"Records details about the Intune connector installer service." },  { @"Statesys.log " , @"Records the processing of mobile device management messages." }, { @"WindowsUpdate.log" , @"Records details about when the Windows Update Agent connects to the WSUS server and retrieves the software updates for compliance assessment and whether there are updates to the agent components." },  { @"Change.log" , @"Records details about the WSUS server database information that has changed." },    { @"SoftwareDistribution.log" , @"Records details about the software updates that are synchronized from the configured update source to the WSUS server database." },   { @"SCClient_" , @"Records the activity in Software Center for the specified user on the client computer." },   { @"SCNotify_" , @"Records the activity for notifying users about software for the specified user." },  { @"SleepAgent_" , @"Main log file for wake-up proxy." },   { @"CloudDP-" , @"Records details for a specific cloud-based distribution point, including information about storage and content access." } };
 
         // The Help contents
 
-        // private const string helpformContent = @"e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcZGVmbGFuZzIwNTd7XGZvbnR0Ymx7XGYwXGZuaWxcZmNoYXJzZXQwIFNlZ29lIFVJO317XGYxXGZuaWxcZmNoYXJzZXQwIENhbGlicmk7fXtcZjJcZm5pbFxmY2hhcnNldDIgU3ltYm9sO319DQpcdmlld2tpbmQ0XHVjMVxwYXJkXHFjXGJcZjBcZnMxOCBMb2cgTGF1bmNoZXIgVjIuMiAtIFRoZSBoYW5keSB3YXkgdG8gY2hlY2sgb3V0IHlvdXIgbG9ncy5ccGFyDQpccGFyZFxiMFxwYXINClxmczE2IFJlcXVpcmVtZW50czogXHBhcg0KXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBBZG1pbmlzdHJhdGl2ZSBTaGFyZXMsIFJlbW90ZSBSZWdpc3RyeSBhbmQgTmV0IDQuMFxwYXINClxwYXJkXHBhcg0KRmVhdHVyZXM6XHBhcg0KXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBFYXNpbHkgdmlzdWFsaXNlIGNoYW5nZXMgdG8gdGhlIGxvZ3Mgb3ZlciB0aW1lIHVzaW5nIHRoZSBtb25pdG9yIGZlYXR1cmUsIHNldCB0aGUgZnJlcXVlbmN5IG1vbml0b3Jpbmcgc2hvdWxkIHRha2UgcGxhY2UsIGNob29zZSB5b3VyIGdyYWRpZW50IHN0YXJ0XFxlbmQgY29sb3VycywgYW5kIHRpY2sgXGIgTW9uaXRvciBMb2dzXGIwXHBhcg0KXHBhcmRccGFyDQpccGFyZHtccG50ZXh0XGYyXCdCN1x0YWJ9e1wqXHBuXHBubHZsYmx0XHBuZjJccG5pbmRlbnQwe1xwbnR4dGJcJ0I3fX1cZmktMzYwXGxpNzIwIE5vdGUgdGhhdCB0aGUgQWNjb3VudCB5b3UgbGF1bmNoIHRoaXMgdG9vbCB1bmRlciBtdXN0IGhhdmUgcmlnaHRzIHRvIHRoZSByZW1vdGUgZGV2aWNlLCBhbmQgbG9nIGxvY2F0aW9ucyBzZWFyY2hlZC5ccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgQ2hhbmdlIGEgQ29uZmlnTWdyXFxTQ0NNIFNpdGUgb3IgYSBDbGllbnRzIExvZyBTZXR0aW5ncyB1c2luZyB0aGUgXGIgTG9nIFNldHRpbmdzXGIwICBmZWF0dXJlLCByZW1lbWJlciB0byBjeWNsZSB0aGUgc2VydmljZSBmb3IgdGhlIFNpdGUgb3IgQWdlbnQgZm9yIGNoYW5nZXMgdG8gdGFrZSBlZmZlY3RccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgSGlkZSBBcmNoaXZlIGxvZ3MgKCoubG9fKSBmcm9tIHZpZXcgYnkgdGlja2luZyBIaWRlIEFyY2hpdmUgTG9nc1xwYXINClxwYXJkXHBhcg0KXHBhcmR7XHBudGV4dFxmMlwnQjdcdGFifXtcKlxwblxwbmx2bGJsdFxwbmYyXHBuaW5kZW50MHtccG50eHRiXCdCN319XGZpLTM2MFxsaTcyMCBUbyBvcGVuIG11bHRpcGxlIGxvZ3MgaW4gaW5kaXZpZHVhbCBpbnN0YW5jZXMgb2YgQ01UcmFjZSAsIHVudGljayBPcGVuIG11bHRpcGxlIGxvZ3MgaW4gb25lIENNVHJhY2VccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgQ3VzdG9tIGxvY2F0aW9ucyBmb3Igc2Nhbm5pbmcgY2FuIGJlIGFkZGVkIGJ5IHNlbGVjdGluZyB0aGUgXGIgQ3VzdG9tIFBhdGhzXGIwICBidXR0b24sIGFuZCBlbnRlcmluZyBhIGZpeGVkIHZvbHVtZSBwYXRoIGFsb25nIHdpdGggYSBmaWxlIG1hc2tccGFyDQpccGFyZFxwYXINClxwYXJke1xwbnRleHRcZjJcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mMlxwbmluZGVudDB7XHBudHh0YlwnQjd9fVxmaS0zNjBcbGk3MjAgTWFrZSBzdXJlIExvZ0xhdW5jaGVyIGhhcyBydW4gYW5kIGZvdW5kIENNVHJhY2UgYmVmb3JlIHJ1bm5pbmcgd2l0aCBhbHRlcm5hdGl2ZSBjcmVkZW50aWFscywgc28gdGhhdCBhIGZhbGwtYmFjayBDTVRyYWNlIGxvY2F0aW9uIGNhbiBiZSByZWNvcmRlZCBhbmQgdXNlZCBieSBMb2dMYXVuY2hlclxwYXINClxwYXJkXGZzMThccGFyDQpcZnMxNiBUaGFuayB5b3UgdGhlIHRvb2wgdGVzdGVycyB3aG8gZ2F2ZSBtZSB0aW1lLCBwb2ludGVkIG91dCBidWdzIGFuZCBpZGVhcyBhbG9uZyB0aGUgd2VlayBhbmQgYSBiaXQgb2YgZGV2ZWxvcG1lbnQgdGltZSBWMS4wIHRvIFYyLjAgdG9vayB0byBjb21wbGV0ZSwgWmVuZyBZaW5naHVhIChTYW5keSksIE1hcmsgQWxkcmlkZ2UsIFNpbW9uIERldHRsaW5nIGFuZCBQYXVsIFdpbnN0YW5sZXkuXHBhcg0KXGZzMThccGFyDQpcZnMxNiBXcml0dGVuIGJ5IFJvYmVydCBNYXJzaGFsbCAtIE5vdmVtYmVyIDIwMTZcZnMxOFxwYXINClxwYXJkXHNhMjAwXHNsMjc2XHNsbXVsdDFcbGFuZzlcZjFcZnMyMlxwYXINCn0NCg==";
-
-        private const string helpformContent = @"e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcbm91aWNvbXBhdFxkZWZsYW5nMjA1N3tcZm9udHRibHtcZjBcZnN3aXNzXGZwcnEyXGZjaGFyc2V0MCBTZWdvZSBVSTt9e1xmMVxmc3dpc3NcZnBycTJcZmNoYXJzZXQwIENhbGlicmk7fXtcZjJcZm5pbFxmY2hhcnNldDAgQ2FsaWJyaTt9e1xmM1xmbmlsXGZjaGFyc2V0MiBTeW1ib2w7fX0NCntcY29sb3J0YmwgO1xyZWQwXGdyZWVuMFxibHVlMjU1O1xyZWQ1XGdyZWVuOTlcYmx1ZTE5Mzt9DQp7XCpcZ2VuZXJhdG9yIFJpY2hlZDIwIDEwLjAuMTQzOTN9XHZpZXdraW5kNFx1YzEgDQpccGFyZFx3aWRjdGxwYXJccWNcYlxmMFxmczE4IExvZyBMYXVuY2hlciBWMy4wIC0gVGhlIGhhbmR5IHdheSB0byBjaGVjayBvdXQgeW91ciBsb2dzLlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGIwXGZzMTZccGFyDQpcYlxmczI0IEZlYXR1cmVzXHBhcg0KXGIwXGZzMTZccGFyDQoNClxwYXJke1xwbnRleHRcZjNcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mM1xwbmluZGVudDB7XHBudHh0YlwnQjd9fVx3aWRjdGxwYXJcZmktMzYwXGxpMTA4MCBHZXQgYXQgYWxsIENvbmZpZ01nclxcU0NDTSBsb2dzIGVhc2lseSwgcXVpY2tseVxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9VmlzdWFsaXNlIGNoYW5nZXMgdG8gU0NDTVxcQ29uZmlnTWdyIGxvZ3Mgb3ZlciB0aW1lIHVzaW5nIHRoZSBcaSBtb25pdG9yaW5nXGkwICBmZWF0dXJlXHBhcg0Ke1xwbnRleHRcZjNcJ0I3XHRhYn1PcGVuIG11bHRpcGxlIGxvZ3MgaW4gb25lIHRyYWNlIHRvb2wsIG9yIG9wZW4gYSB0cmFjZSB0b29sIGZvciBlYWNoIGxvZ1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9SW50ZWdyYXRlcyB3aXRoIHRoZSBDb25maWdNZ3IgQ29uc29sZSBmb3IgZGV2aWNlcyBpbiB0aGVpciBjb250ZXh0IG1lbnVcXHJpYmJvblxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9TG9nIGhpbnRzIGZvciBrbm93biBTQ0NNXFxDb25maWdNZ3IgbG9ncywgaG92ZXIgb3ZlciBhIGxvZyB0byBzZWUgYSB0b29sdGlwIGRlc2NyaXB0aW9uIG9mIHRoZSBsb2dccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifUFkZCBjdXN0b20gbG9jYXRpb25zIGZvciBzY2FubmluZyBmb3IgbG9nc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9TGF1bmNoIGRpcmVjdGx5IGZyb20gTG9nTGF1bmNoZXIgdGhlIENvbmZpZ3VyYXRpb24gTWFuYWdlciBTdXBwb3J0IENlbnRlciBpZiBpdCBpcyBpbnN0YWxsZWRccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifUNoYW5nZSBhIENvbmZpZ01nclxcU0NDTSBTaXRlIG9yIGEgQ2xpZW50cyBMb2cgU2V0dGluZ3MgdXNpbmcgdGhlIFxpIExvZyBTZXR0aW5nc1xpMCAgZmVhdHVyZSwgcmVtZW1iZXIgdG8gcmVzdGFydCB0aGUgc2VydmljZSBmb3IgdGhlIFNpdGUgb3IgQWdlbnQgZm9yIGNoYW5nZXMgdG8gdGFrZSBlZmZlY3RccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifVRvZ2dsZSBoaWRpbmcgb2YgQXJjaGl2ZSBsb2dzICgqLmxvXylccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifVJlbWVtYmVycyB3aGF0IGRldmljZXMgeW91XHJxdW90ZSB2ZSBzY2FubmVkIGZvciBlYXN5IGFjY2Vzc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9RGlhZ25vc3RpYyBvdXRwdXQgZm9yIHdoZW4gdGhpbmdzIGdvIHdyb25nLCBmb3IgZmVlZGJhY2sgdG8gYXV0aG9yIGFzIHdlbGwgYXMgdHJvdWJsZXNob290aW5nIGFkZGVkIGxvY2F0aW9uc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9QXV0b21hdGljYWxseSBzY2FucyB0aGUgZGV2aWNlIHRoZSB0b29sIGlzIHJ1biBvblxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9QWNjZXB0cyBkZXZpY2UgbmFtZSBlbnRlcmVkIG9uIHRoZSBjb21tYW5kIGxpbmUgKExvZ0xhdW5jaGVyLmV4ZSA8REVWSUNFTkFNRT4pIGZvciBhdXRvbWF0aW9uIHB1cnBvc2VzXHBhcg0KDQpccGFyZHtcKlxwblxwbmx2bGNvbnRccG5mM1xwbmluZGVudDB7XHBudHh0YlwnQjd9fVx3aWRjdGxwYXJccGFyDQpcYlxmczI0IFJlcXVpcmVtZW50c1xwYXINClxiMFxmczE2XHBhcg0KDQpccGFyZHtccG50ZXh0XGYzXCdCN1x0YWJ9e1wqXHBuXHBubHZsYmx0XHBuZjNccG5pbmRlbnQwe1xwbnR4dGJcJ0I3fX1cd2lkY3RscGFyXGZpLTM2MFxsaTEwODAgQWRtaW5pc3RyYXRpdmUgU2hhcmVzLCBSZW1vdGUgUmVnaXN0cnkgYW5kIE5ldCA0LjAgb3IgYWJvdmVccGFyDQoNClxwYXJkXHdpZGN0bHBhclxwYXINClxiXGZzMjQgQ2hvb3NpbmcgYSBUcmFjZXJcYjBccGFyDQpcZnMxNlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGxpNzIwIE9uIHN0YXJ0dXAgeW91IHdvdWxkIGhhdmUgYmVlbiBwcm9tcHRlZCB0byBsb2NhdGUgYSB0cmFjaW5nIHRvb2wsIGluc3RlYWQgb2YgcGVyZm9ybWluZyBkZXRlY3Rpb24gSVxycXVvdGUgdmUgbGVmdCBpdCBmb3IgeW91IHRvIGRlY2lkZSB3aGF0IGlzIHlvdXIgdHJhY2luZyB0b29sLCBhbmQgd2hlcmUgdG8gZmluZCBpdC5ccGFyDQpccGFyDQpZb3UgY2FuIGNoYW5nZSB0aGlzIHBhdGggYW5kIHRoZSB0b29sIGJlaW5nIHVzZWQgYnkgTG9nTGF1bmNoZXIgYnkgdmlzaXRpbmcgdGhlIFxpIFRyYWNlIENvbmZpZ3VyYXRpb25caTAgIHRhYi5ccGFyDQpccGFyDQpMb2dMYXVuY2hlciB3aWxsIHN0b3JlIHRoZSBmaXJzdCB0cmFjZXIgY2hvc2VuIGluIEhLTE1cXFNvZnR3YXJlXFxTTVNNYXJzaGFsbFxcTG9nTGF1bmNoZXIsIHdoaWNoIHdpbGwgdGhlbiBiZSB1c2VkIGJ5IGRlZmF1bHQgZm9yIGFsbCBuZXcgdXNlcnMsIHVubGVzcyB0aGV5IG9wdCB0byBsb2NhdGUgYSB0cmFjaW5nIHRvb2wgdGhlbXNlbHZlcy4gXHBhcg0KXHBhcg0KVGhlIFVzZXJzIGNob2ljZSBvZiB0cmFjZXIgaXMgc3RvcmVkIGluIEhLQ1VcXFNvZnR3YXJlXFxTTVNNYXJzaGFsbFxcTG9nTGF1bmNoZXIuXHBhcg0KXHBhcg0KQ01UcmFjZSBjYW4gYmUgZm91bmQgaW4geW91ciBDb25maWdNZ3JcXFNDQ00gRGlzdHJpYnV0aW9uIGtpdCwgYW5kIENvbmZpZ3VyYXRpb24gTWFuYWdlciBTdXBwb3J0IENlbnRlciB3aXRoIENNTG9nVmlld2VyIGNhbiBiZSBmb3VuZCBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL3d3dy5taWNyb3NvZnQuY29tL2VuLXVzL2Rvd25sb2FkL2RldGFpbHMuYXNweD9pZD00MjY0NSB9fXtcZmxkcnNsdHtodHRwczovL3d3dy5taWNyb3NvZnQuY29tL2VuLXVzL2Rvd25sb2FkL2RldGFpbHMuYXNweD9pZD00MjY0NVx1bDBcY2YwfX19fVxmMFxmczE2XHBhcg0KXGZzMThccGFyDQoNClxwYXJkXHdpZGN0bHBhclxzYTE2MFxzbDI1MlxzbG11bHQxXGJcZnMyNCBTY2FubmluZyBmb3IgTG9nc1xmczE2XHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjBcc2ExNjBcc2wyNTJcc2xtdWx0MVxiMCBUbyBzY2FuIGEgcmVtb3RlIGRldmljZSwgZ28gdG8gdGhlIEhvbWUgdGFiIGFuZCBlbnRlciB0aGUgZGV2aWNlcyBuYW1lIGludG8gdGhlIERldmljZSBmaWVsZCwgY2xpY2sgXGkgU2NhblxpMCAuXHBhcg0KT24gc3RhcnR1cCBMb2dMYXVuY2hlciB3aWxsIHNjYW4gdGhlIGRldmljZSBpdCBpcyBydW4gb24uXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcc2ExNjBcc2wyNTJcc2xtdWx0MVxiXGZzMjQgT3BlbmluZyBMb2dzXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjBcc2ExNjBcc2wyNTJcc2xtdWx0MVxiMFxmczE2IFRvIG9wZW4gbG9ncyB1c2UgdGhlIE9wZW4gYnV0dG9uIG9uIHRoZSBIb21lIHRhYiwgaGlnaGxpZ2h0IHRoZSBsb2dzIGFuZCBwcmVzcyBFbnRlciwgb3IgcmlnaHQgY2xpY2sgYSBsb2cgb3Igb25lIG9mIHRoZSBzZWxlY3RlZCBsb2dzIGFuZCB1c2UgdGhlIGNvbnRleHQgbWVudTsgWW91IGNhbiBhbHNvIGdldCB0byB0aGUgbG9ncyBmb2xkZXIgdXNpbmcgdGhlIGNvbnRleHQgbWVudS5ccGFyDQoNClxwYXJkXHdpZGN0bHBhclxzYTE2MFxzbDI1MlxzbG11bHQxXGJcZnMyNCBNb25pdG9yaW5nIExvZ3NccGFyDQoNClxwYXJkXHdpZGN0bHBhclxsaTcyMFxzYTE2MFxzbDI1MlxzbG11bHQxXGIwXGZzMTYgTW9uaXRvcmluZyBtZWFucyBrZWVwaW5nIGFuIGV5ZSBvbiB0aGUgbGFzdCB0aW1lIHRoZSBsb2dzIHdlcmUgbW9kaWZpZWQuXHBhcg0KVG8gdmlzdWFsaXNlIHRoaXMsIHRoZSB0b29sIHdpbGwgdXNlIHdoYXRldmVyIGlzIGRlZmluZWQgZm9yIFxpIE5ld2VzdFxpMCAgY29sb3VyLCBhbmQgY2hhbmdlIHRoZSBtb2RpZmllZCBsb2dzIGVudHJ5IHRvIHRoYXQgY29sb3VyLCB0aGVyZWFmdGVyIHRoZSBjb2xvdXIgd2lsbCBiZSBjaGFuZ2VkIGF0IGVhY2ggc2NhbiBpbnRlcnZhbCBhbG9uZyBhIGdyYWRpZW50IHRvd2FyZHMgd2hhdGV2ZXIgaXMgZGVmaW5lZCBmb3IgT2xkZXN0IGNvbG91ciB1bmxlc3MgdGhlIGxvZyBpcyBtb2RpZmllZCBhZ2FpbiB3aGljaCB3aWxsIHJldHVybiBpdCB0byB0aGUgXGkgTmV3ZXN0XGkwICBjb2xvdXIuXHBhcg0KVGhpcyBjb2xvdXIgdmlzdWFsaXNhdGlvbiByZWFsbHkgaGVscHMgY29udHJhc3QgYWN0aXZpdHkgaW4gdGhlIFNDQ01cXENvbmZpZ01nciBwcm9kdWN0cyBsb2dzLCBzaG93aW5nIHdoYXQgaGFzIGFuZCBoYXNuXHJxdW90ZSB0IGJlZW4gdG91Y2hlZCBzaW5jZSB0aGUgbW9uaXRvcmluZyBzZXNzaW9uIGJlZ2FuLlxwYXINClRvIGJlZ2luIG1vbml0b3JpbmcgZmlyc3Qgc2NhbiBhIGRldmljZSBmcm9tIHRoZSBIb21lIHRhYiwgdGhlbiBzZWxlY3QgdGhlIE1vbml0b3JpbmcgdGFiLCB5b3VccnF1b3RlIGxsIG5vdGUgdGhhdCB0aGUgZGVmYXVsdCByZWZyZXNoIGludGVydmFsIGlzIHNldCB0byA1IHNlY29uZHMsIGFuZCBJXHJxdW90ZSBkIHJlY29tbWVuZCBub3QgZ29pbmcgYmVsb3cgdGhhdCB1bmxlc3MgaXQgaXMgZm9yIHZlcnkgc2hvcnQgbW9uaXRvcmluZyBzZXNzaW9ucywgY2hvb3NlIHRoZSBjb2xvdXJzIGZvciB0aGUgY29sb3VyIGdyYWRpZW50IGFuZCBzZWxlY3QgdGhlIFxpIE1vbml0b3JpbmdcaTAgIGJ1dHRvbi5ccGFyDQoNClxwYXJkXHdpZGN0bHBhclxmaTcyMFxzYTE2MFxzbDI1MlxzbG11bHQxXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcYlxmczI0IENvbnNvbGUgSW50ZWdyYXRpb25ccGFyDQpcYjBcZnMxNlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGxpNzIwIExvZ0xhdW5jaGVyIHdpbGwgaW50ZWdyYXRlIGludG8gdGhlIENvbmZpZ01nclxcU0NDTSBDb25zb2xlIGlmIGl0IGlzIGRldGVjdGVkIGxvY2FsbHksIGFuZCB3aWxsIGFwcGVhciBvbiB0aGUgRGV2aWNlcyBSaWJib24gaW4gQXNzZXRzIGFuZCBDb21wbGlhbmNlLCBhbmQgaW4gdGhlIGNvbnRleHQgbWVudSBmb3IgYW4gaW5kaXZpZHVhbCBkZXZpY2UuXHBhcg0KXHBhcg0KVG8gcmVtb3ZlIENvbnNvbGUgaW50ZWdyYXRpb24gb3BlbiBGaWxlIEV4cGxvcmVyLCB2aXNpdCB5b3VyIENvbnNvbGUgaW5zdGFsbGF0aW9uIHBhdGgsIHNlYXJjaCBmb3IgXGkgTG9nTGF1bmNoZXIuWE1MXGkwICBhbmQgZGVsZXRlIHRoZSB0d28gZmlsZXMgdGhhdCBhcHBlYXIsIHJlc3RhcnQgdGhlIENvbnNvbGUgdG8gY29tcGxldGUgZGlzaW50ZWdyYXRpb24uXHBhcg0KXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJccGFyDQpcYlxmczI0IEFja25vd2xlZGdlbWVudHNccGFyDQpcYjBcZnMxOFxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGxpNzIwXGZzMTYgVGhhbmsgeW91IHRvIHRoZSB0b29sIHRlc3RlcnMgd2hvIGdhdmUgdXAgc29tZSB0aW1lLCBwb2ludGVkIG91dCBidWdzIGFuZCBvZmZlcmVkIHVwIGlkZWFzLCBaZW5nIFlpbmdodWEgKFNhbmR5KSwgTWFyayBBbGRyaWRnZSwgU2ltb24gRGV0dGxpbmcsIFBhdWwgV2luc3RhbmxleSBhbmQgTmlhbGwgQnJhZHkuXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJccGFyDQoNClxwYXJkXHdpZGN0bHBhclxsaTcyMCBWZXJzaW9uIDMuMCBvZiB0aGUgdG9vbCBpbXBsZW1lbnRzIGEgdmVyeSBoYW5keSBcaSBSaWJib25caTAgLCB3aGljaCBpcyBwcm92aWRlZCBhcyBhIHB1YmxpY2x5IGF2YWlsYWJsZSBETEwgdGhhdCBoYXMgYmVlbiBtZXJnZWQgd2l0aCB0aGlzIFBvcnRhYmxlIEV4ZWN1dGFibGUgZmlsZSAoTG9nTGF1bmNoZXIuZXhlKS5ccGFyDQpccGFyDQpJXHJxdW90ZSBkIGxpa2UgdG8gdGhhbmsgdGhlIHRlYW0gd2hvIG1haW50YWluIHRoZSBSaWJib24sIGFuZCB0YWtlIG15IGhhdCBvZmYgdG8gdGhlbSBmb3IgZG9pbmcgc3VjaCBhIGdvb2Qgam9iIGF0IGV4cG9zaW5nIGl0cyBmdW5jdGlvbmFsaXR5IHNvIHRoYXQgSSBjb3VsZCBnZXQgaXQgaW50byB0aGlzIHRvb2wgYW5kIG1ha2luZyB0aGVpciBjb2RlIGF2YWlsYWJsZSBmb3IgdXNlLlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjAgVGhlIERMTCBmb3IgdGhlIFJpYmJvbiBhbmQgYSB0ZW1wbGF0ZSBwcm9qZWN0IGlzIGF2YWlsYWJsZSBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL3d3dy5jb2RlcHJvamVjdC5jb20vQXJ0aWNsZXMvMzY0MjcyL0Vhc2lseS1BZGQtYS1SaWJib24taW50by1hLVdpbkZvcm1zLUFwcGxpY2F0aW9uLUNzIH19e1xmbGRyc2x0e2h0dHBzOi8vd3d3LmNvZGVwcm9qZWN0LmNvbS9BcnRpY2xlcy8zNjQyNzIvRWFzaWx5LUFkZC1hLVJpYmJvbi1pbnRvLWEtV2luRm9ybXMtQXBwbGljYXRpb24tQ3NcdWwwXGNmMH19fX1cZjBcZnMxNlxwYXINCg0KXHBhcmRcd2lkY3RscGFyICBccGFyDQpcYlxmczI0IEF1dGhvclxiMFxmczE2XHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjAgIFxwYXINCldyaXR0ZW4gYnkgUm9iZXJ0IE1hcnNoYWxsLCBFbnRlcnByaXNlIE1vYmlsaXR5IE1WUCwgdXNpbmcgQyMgYW5kIFZpc3VhbCBTdHVkaW8gMjAxNS5ccGFyDQpccGFyDQpUaGUgc291cmNlIGZvciB0aGlzIHByb2plY3QgY2FuIGJlIGZvdW5kIG9uIEdpdEh1YiBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL2dpdGh1Yi5jb20vUm9iVUsxMDEvTG9nTGF1bmNoZXIgfX17XGZsZHJzbHR7aHR0cHM6Ly9naXRodWIuY29tL1JvYlVLMTAxL0xvZ0xhdW5jaGVyXHVsMFxjZjB9fX19XGYwXGZzMTZccGFyDQpccGFyDQp7XGYxXGZzMjJ7XGZpZWxke1wqXGZsZGluc3R7SFlQRVJMSU5LICJodHRwOi8vd3d3LnNtc21hcnNoYWxsLmNvbSIgfX17XGZsZHJzbHR7XHVsXGNmMVxjZjJcdWxcZjBcZnMxNiBTTVNNYXJzaGFsbCBMdGR9fX19XGYwXGZzMTYgIFxlbmRhc2ggIExhc3QgcmV2aXNpb24gZGF0ZSA6IEZlYnJ1YXJ5IDIwMTdccGFyDQoNClxwYXJkXHNhMjAwXHNsMjc2XHNsbXVsdDFcZjJcZnMyMlxsYW5nOVxwYXINCn0NCgA=";
+        private const string helpformContent = @"e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcbm91aWNvbXBhdFxkZWZsYW5nMjA1N3tcZm9udHRibHtcZjBcZnN3aXNzXGZwcnEyXGZjaGFyc2V0MCBTZWdvZSBVSTt9e1xmMVxmc3dpc3NcZnBycTJcZmNoYXJzZXQwIENhbGlicmk7fXtcZjJcZm5pbFxmY2hhcnNldDAgQ2FsaWJyaTt9e1xmM1xmbmlsXGZjaGFyc2V0MiBTeW1ib2w7fX0NCntcY29sb3J0YmwgO1xyZWQwXGdyZWVuMFxibHVlMjU1O1xyZWQ1XGdyZWVuOTlcYmx1ZTE5Mzt9DQp7XCpcZ2VuZXJhdG9yIFJpY2hlZDIwIDEwLjAuMTQzOTN9XHZpZXdraW5kNFx1YzEgDQpccGFyZFx3aWRjdGxwYXJccWNcYlxmMFxmczMyIExvZyBMYXVuY2hlciBWMy4xXHBhcg0KXGZzMThccGFyDQpNYW5hZ2luZyBsb2dzIGhhcyBuZXZlciBiZWVuIHRoaXMgZWFzeVxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGIwXGZzMTZccGFyDQpcYlxmczI0IEZlYXR1cmVzXHBhcg0KXGIwXGZzMTZccGFyDQoNClxwYXJke1xwbnRleHRcZjNcJ0I3XHRhYn17XCpccG5ccG5sdmxibHRccG5mM1xwbmluZGVudDB7XHBudHh0YlwnQjd9fVx3aWRjdGxwYXJcZmktMzYwXGxpMTA4MCBHZXQgYXQgYWxsIENvbmZpZ01nclxcU0NDTSBsb2dzIGVhc2lseSwgcXVpY2tseVxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9VmlzdWFsaXNlIGNoYW5nZXMgdG8gU0NDTVxcQ29uZmlnTWdyIGxvZ3Mgb3ZlciB0aW1lIHVzaW5nIHRoZSBcaSBtb25pdG9yaW5nXGkwICBmZWF0dXJlXHBhcg0Ke1xwbnRleHRcZjNcJ0I3XHRhYn1PcGVuIG11bHRpcGxlIGxvZ3MgaW4gb25lIHRyYWNlIHRvb2wsIG9yIG9wZW4gYSB0cmFjZSB0b29sIGZvciBlYWNoIGxvZ1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9SW50ZWdyYXRlcyB3aXRoIHRoZSBDb25maWdNZ3IgQ29uc29sZSBmb3IgZGV2aWNlcyBpbiB0aGVpciBjb250ZXh0IG1lbnVcXHJpYmJvblxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9TG9nIGhpbnRzIGZvciBrbm93biBTQ0NNXFxDb25maWdNZ3IgbG9ncywgaG92ZXIgb3ZlciBhIGxvZyB0byBzZWUgYSB0b29sdGlwIGRlc2NyaXB0aW9uIG9mIHRoZSBsb2dccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifUFkZCBjdXN0b20gbG9jYXRpb25zIGZvciBzY2FubmluZyBmb3IgbG9nc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9TGF1bmNoIGRpcmVjdGx5IGZyb20gTG9nTGF1bmNoZXIgdGhlIENvbmZpZ3VyYXRpb24gTWFuYWdlciBTdXBwb3J0IENlbnRlciBpZiBpdCBpcyBpbnN0YWxsZWRccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifUNoYW5nZSBhIENvbmZpZ01nclxcU0NDTSBTaXRlIG9yIGEgQ2xpZW50cyBMb2cgU2V0dGluZ3MgdXNpbmcgdGhlIFxpIExvZyBTZXR0aW5nc1xpMCAgZmVhdHVyZSwgcmVtZW1iZXIgdG8gcmVzdGFydCB0aGUgc2VydmljZSBmb3IgdGhlIFNpdGUgb3IgQWdlbnQgZm9yIGNoYW5nZXMgdG8gdGFrZSBlZmZlY3RccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifVRvZ2dsZSBoaWRpbmcgb2YgQXJjaGl2ZSBsb2dzICgqLmxvXylccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifVJlbWVtYmVycyB3aGF0IGRldmljZXMgeW91XHJxdW90ZSB2ZSBzY2FubmVkIGZvciBlYXN5IGFjY2Vzc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9RGlhZ25vc3RpYyBvdXRwdXQgZm9yIHdoZW4gdGhpbmdzIGdvIHdyb25nLCBmb3IgZmVlZGJhY2sgdG8gYXV0aG9yIGFzIHdlbGwgYXMgdHJvdWJsZXNob290aW5nIGFkZGVkIGxvY2F0aW9uc1xwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9QXV0b21hdGljYWxseSBzY2FucyB0aGUgZGV2aWNlIHRoZSB0b29sIGlzIHJ1biBvblxwYXINCntccG50ZXh0XGYzXCdCN1x0YWJ9QWNjZXB0cyBkZXZpY2UgbmFtZSBlbnRlcmVkIG9uIHRoZSBjb21tYW5kIGxpbmUgKExvZ0xhdW5jaGVyLmV4ZSA8REVWSUNFTkFNRT4pIGZvciBhdXRvbWF0aW9uIHB1cnBvc2VzXHBhcg0Ke1xwbnRleHRcZjNcJ0I3XHRhYn1Qcm9ncmVzc2l2ZSBzZWFyY2gsIGZvY3VzIG9uIGxvZyB2aWV3IGFuZCBzdGFydCB0eXBpbmcgYSBsb2dzIG5hbWVccGFyDQp7XHBudGV4dFxmM1wnQjdcdGFifUF1dG9tYXRpYyBzb3J0aW5nIG9mIGxvZ3MgYmFzZWQgb24gdGhlaXIgbGFzdCBtb2RpZmllZCBkYXRlXHBhcg0KDQpccGFyZHtcKlxwblxwbmx2bGNvbnRccG5mM1xwbmluZGVudDB7XHBudHh0YlwnQjd9fVx3aWRjdGxwYXJccGFyDQpcYlxmczI0IFJlcXVpcmVtZW50c1xwYXINClxiMFxmczE2XHBhcg0KDQpccGFyZHtccG50ZXh0XGYzXCdCN1x0YWJ9e1wqXHBuXHBubHZsYmx0XHBuZjNccG5pbmRlbnQwe1xwbnR4dGJcJ0I3fX1cd2lkY3RscGFyXGZpLTM2MFxsaTEwODAgQWRtaW5pc3RyYXRpdmUgU2hhcmVzLCBSZW1vdGUgUmVnaXN0cnkgYW5kIE5ldCA0LjAgb3IgYWJvdmVccGFyDQoNClxwYXJkXHdpZGN0bHBhclxwYXINClxiXGZzMjQgQ2hvb3NpbmcgYSBUcmFjZXJcYjBccGFyDQpcZnMxNlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGxpNzIwIE9uIHN0YXJ0dXAgeW91IHdvdWxkIGhhdmUgYmVlbiBwcm9tcHRlZCB0byBsb2NhdGUgYSB0cmFjaW5nIHRvb2wsIGluc3RlYWQgb2YgcGVyZm9ybWluZyBkZXRlY3Rpb24gSVxycXVvdGUgdmUgbGVmdCBpdCBmb3IgeW91IHRvIGRlY2lkZSB3aGF0IGlzIHlvdXIgdHJhY2luZyB0b29sLCBhbmQgd2hlcmUgdG8gZmluZCBpdC5ccGFyDQpccGFyDQpZb3UgY2FuIGNoYW5nZSB0aGlzIHBhdGggYW5kIHRoZSB0b29sIGJlaW5nIHVzZWQgYnkgTG9nTGF1bmNoZXIgYnkgdmlzaXRpbmcgdGhlIFxpIFRyYWNlIENvbmZpZ3VyYXRpb25caTAgIHRhYi5ccGFyDQpccGFyDQpMb2dMYXVuY2hlciB3aWxsIHN0b3JlIHRoZSBmaXJzdCB0cmFjZXIgY2hvc2VuIGluIEhLTE1cXFNvZnR3YXJlXFxTTVNNYXJzaGFsbFxcTG9nTGF1bmNoZXIsIHdoaWNoIHdpbGwgdGhlbiBiZSB1c2VkIGJ5IGRlZmF1bHQgZm9yIGFsbCBuZXcgdXNlcnMsIHVubGVzcyB0aGV5IG9wdCB0byBsb2NhdGUgYSB0cmFjaW5nIHRvb2wgdGhlbXNlbHZlcy4gXHBhcg0KXHBhcg0KVGhlIFVzZXJzIGNob2ljZSBvZiB0cmFjZXIgaXMgc3RvcmVkIGluIEhLQ1VcXFNvZnR3YXJlXFxTTVNNYXJzaGFsbFxcTG9nTGF1bmNoZXIuXHBhcg0KXHBhcg0KQ01UcmFjZSBjYW4gYmUgZm91bmQgaW4geW91ciBDb25maWdNZ3JcXFNDQ00gRGlzdHJpYnV0aW9uIGtpdCwgYW5kIENvbmZpZ3VyYXRpb24gTWFuYWdlciBTdXBwb3J0IENlbnRlciB3aXRoIENNTG9nVmlld2VyIGNhbiBiZSBmb3VuZCBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL3d3dy5taWNyb3NvZnQuY29tL2VuLXVzL2Rvd25sb2FkL2RldGFpbHMuYXNweD9pZD00MjY0NSB9fXtcZmxkcnNsdHtodHRwczovL3d3dy5taWNyb3NvZnQuY29tL2VuLXVzL2Rvd25sb2FkL2RldGFpbHMuYXNweD9pZD00MjY0NVx1bDBcY2YwfX19fVxmMFxmczE2XHBhcg0KXGZzMThccGFyDQoNClxwYXJkXHdpZGN0bHBhclxzYTE2MFxzbDI1MlxzbG11bHQxXGJcZnMyNCBTY2FubmluZyBmb3IgTG9nc1xmczE2XHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjBcc2ExNjBcc2wyNTJcc2xtdWx0MVxiMCBUbyBzY2FuIGEgcmVtb3RlIGRldmljZSwgZ28gdG8gdGhlIEhvbWUgdGFiIGFuZCBlbnRlciB0aGUgZGV2aWNlcyBuYW1lIGludG8gdGhlIERldmljZSBmaWVsZCwgY2xpY2sgXGkgU2NhblxpMCAuXHBhcg0KT24gc3RhcnR1cCBMb2dMYXVuY2hlciB3aWxsIHNjYW4gdGhlIGRldmljZSBpdCBpcyBydW4gb24uXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcc2ExNjBcc2wyNTJcc2xtdWx0MVxiXGZzMjQgT3BlbmluZyBMb2dzXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjBcc2ExNjBcc2wyNTJcc2xtdWx0MVxiMFxmczE2IFRvIG9wZW4gbG9ncyB1c2UgdGhlIE9wZW4gYnV0dG9uIG9uIHRoZSBIb21lIHRhYiwgaGlnaGxpZ2h0IHRoZSBsb2dzIGFuZCBwcmVzcyBFbnRlciwgb3IgcmlnaHQgY2xpY2sgYSBsb2cgb3Igb25lIG9mIHRoZSBzZWxlY3RlZCBsb2dzIGFuZCB1c2UgdGhlIGNvbnRleHQgbWVudTsgWW91IGNhbiBhbHNvIGdldCB0byB0aGUgbG9ncyBmb2xkZXIgdXNpbmcgdGhlIGNvbnRleHQgbWVudS5ccGFyDQoNClxwYXJkXHdpZGN0bHBhclxzYTE2MFxzbDI1MlxzbG11bHQxXGJcZnMyNCBNb25pdG9yaW5nIExvZ3NccGFyDQoNClxwYXJkXHdpZGN0bHBhclxsaTcyMFxzYTE2MFxzbDI1MlxzbG11bHQxXGIwXGZzMTYgTW9uaXRvcmluZyBtZWFucyBrZWVwaW5nIGFuIGV5ZSBvbiB0aGUgbGFzdCB0aW1lIHRoZSBsb2dzIHdlcmUgbW9kaWZpZWQuXHBhcg0KVG8gdmlzdWFsaXNlIHRoaXMsIHRoZSB0b29sIHdpbGwgdXNlIHdoYXRldmVyIGlzIGRlZmluZWQgZm9yIFxpIE5ld2VzdFxpMCAgY29sb3VyLCBhbmQgY2hhbmdlIHRoZSBtb2RpZmllZCBsb2dzIGVudHJ5IHRvIHRoYXQgY29sb3VyLCB0aGVyZWFmdGVyIHRoZSBjb2xvdXIgd2lsbCBiZSBjaGFuZ2VkIGF0IGVhY2ggc2NhbiBpbnRlcnZhbCBhbG9uZyBhIGdyYWRpZW50IHRvd2FyZHMgd2hhdGV2ZXIgaXMgZGVmaW5lZCBmb3IgT2xkZXN0IGNvbG91ciB1bmxlc3MgdGhlIGxvZyBpcyBtb2RpZmllZCBhZ2FpbiB3aGljaCB3aWxsIHJldHVybiBpdCB0byB0aGUgXGkgTmV3ZXN0XGkwICBjb2xvdXIuXHBhcg0KVGhpcyBjb2xvdXIgdmlzdWFsaXNhdGlvbiByZWFsbHkgaGVscHMgY29udHJhc3QgYWN0aXZpdHkgaW4gdGhlIFNDQ01cXENvbmZpZ01nciBwcm9kdWN0cyBsb2dzLCBzaG93aW5nIHdoYXQgaGFzIGFuZCBoYXNuXHJxdW90ZSB0IGJlZW4gdG91Y2hlZCBzaW5jZSB0aGUgbW9uaXRvcmluZyBzZXNzaW9uIGJlZ2FuLlxwYXINClRvIGJlZ2luIG1vbml0b3JpbmcgZmlyc3Qgc2NhbiBhIGRldmljZSBmcm9tIHRoZSBIb21lIHRhYiwgdGhlbiBzZWxlY3QgdGhlIE1vbml0b3JpbmcgdGFiLCB5b3VccnF1b3RlIGxsIG5vdGUgdGhhdCB0aGUgZGVmYXVsdCByZWZyZXNoIGludGVydmFsIGlzIHNldCB0byA1IHNlY29uZHMsIGFuZCBJXHJxdW90ZSBkIHJlY29tbWVuZCBub3QgZ29pbmcgYmVsb3cgdGhhdCB1bmxlc3MgaXQgaXMgZm9yIHZlcnkgc2hvcnQgbW9uaXRvcmluZyBzZXNzaW9ucywgY2hvb3NlIHRoZSBjb2xvdXJzIGZvciB0aGUgY29sb3VyIGdyYWRpZW50IGFuZCBzZWxlY3QgdGhlIFxpIE1vbml0b3JpbmdcaTAgIGJ1dHRvbi4gWW91XHJxdW90ZSBsbCBzZWUgdGhhdCB0aGUgcHJvZHVjdCBvciBjYXRlZ29yeSBiZWluZyBtb25pdG9yZWQgd2lsbCBiZSBoaWdobGlnaHRlZCBpbiBncmVlbiwgdW50aWwgbW9uaXRvcmluZyBzdG9wcywgdGhpcyBpcyBzbyB0aGF0IHlvdSBjYW4gZWFzaWx5IHNlZSB3aGF0IGlzIGJlaW5nIG1vbml0b3JlZCB3aGlsZSB5b3UgdmlldyBvdGhlciBsb2dzLlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXGJcZnMyNCBDb25zb2xlIEludGVncmF0aW9uXHBhcg0KXGIwXGZzMTZccGFyDQoNClxwYXJkXHdpZGN0bHBhclxsaTcyMCBMb2dMYXVuY2hlciB3aWxsIGludGVncmF0ZSBpbnRvIHRoZSBDb25maWdNZ3JcXFNDQ00gQ29uc29sZSBpZiBpdCBpcyBkZXRlY3RlZCBsb2NhbGx5LCBhbmQgd2lsbCBhcHBlYXIgb24gdGhlIERldmljZXMgUmliYm9uIGluIEFzc2V0cyBhbmQgQ29tcGxpYW5jZSwgYW5kIGluIHRoZSBjb250ZXh0IG1lbnUgZm9yIGFuIGluZGl2aWR1YWwgZGV2aWNlLlxwYXINClxwYXINClRvIHJlbW92ZSBDb25zb2xlIGludGVncmF0aW9uIG9wZW4gRmlsZSBFeHBsb3JlciwgdmlzaXQgeW91ciBDb25zb2xlIGluc3RhbGxhdGlvbiBwYXRoLCBzZWFyY2ggZm9yIFxpIExvZ0xhdW5jaGVyLlhNTFxpMCAgYW5kIGRlbGV0ZSB0aGUgdHdvIGZpbGVzIHRoYXQgYXBwZWFyLCByZXN0YXJ0IHRoZSBDb25zb2xlIHRvIGNvbXBsZXRlIGRpc2ludGVncmF0aW9uLlxwYXINClxwYXINCg0KXHBhcmRcd2lkY3RscGFyXHBhcg0KXGJcZnMyNCBBY2tub3dsZWRnZW1lbnRzXHBhcg0KXGIwXGZzMThccGFyDQoNClxwYXJkXHdpZGN0bHBhclxsaTcyMFxmczE2IFRoYW5rIHlvdSB0byB0aGUgdG9vbCB0ZXN0ZXJzIHdobyBnYXZlIHVwIHNvbWUgdGltZSwgcG9pbnRlZCBvdXQgYnVncyBhbmQgb2ZmZXJlZCB1cCBpZGVhcywgWmVuZyBZaW5naHVhIChTYW5keSksIE1hcmsgQWxkcmlkZ2UsIFNpbW9uIERldHRsaW5nLCBQYXVsIFdpbnN0YW5sZXkgYW5kIE5pYWxsIEJyYWR5LlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjAgVmVyc2lvbiAzLnggb253YXJkcyBpbXBsZW1lbnRzIGEgdmVyeSBoYW5keSBcaSBSaWJib25caTAgIGV4dGVuc2lvbiB0byBWaXN1YWwgU3R1ZGlvLCBvcmlnaW5hbGx5IHdyaXR0ZW4gYnkgSm9zZSBNZW5lZGV6IFBvbyBhbmQgbm93IG1haW50YWluZWQgYnkgYSBjb21tdW5pdHkgb2YgYXdlc29tZSBjb2RlcnMsIHRoZSBETEwgaGFzIGJlZW4gbWVyZ2VkIHdpdGggdGhpcyBQb3J0YWJsZSBFeGVjdXRhYmxlIGZpbGUgKExvZ0xhdW5jaGVyLmV4ZSkgdG8gcHJvdmlkZSB0aGUgcmliYm9uIGZ1bmN0aW9uYWxpdHkuXHBhcg0KXHBhcg0KSVxycXVvdGUgZCBsaWtlIHRvIHRoYW5rIEpvc2UgTWVuZWRleiBQb28gYW5kIGVzcGVjaWFsbHkgdGhlIHRlYW0gd2hvIGN1cnJlbnRseSBtYWludGFpbiB0aGUgUmliYm9uLCBhbmQgdGFrZSBteSBoYXQgb2ZmIHRvIHRoZW0gZm9yIGRvaW5nIHN1Y2ggYSBnb29kIGpvYiBhdCBleHBvc2luZyBpdHMgZnVuY3Rpb25hbGl0eSBzbyB0aGF0IEkgY291bGQgZ2V0IGl0LCB3aXRoIGEgbGl0dGxlIGxpZ2h0IHdvcmssIGludG8gdGhpcyB0b29sLlxwYXINCg0KXHBhcmRcd2lkY3RscGFyXHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjAgVGhlIERMTCBmb3IgdGhlIFJpYmJvbiBhbmQgYSB0ZW1wbGF0ZSBwcm9qZWN0IGlzIGF2YWlsYWJsZSBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL3d3dy5jb2RlcHJvamVjdC5jb20vQXJ0aWNsZXMvMzY0MjcyL0Vhc2lseS1BZGQtYS1SaWJib24taW50by1hLVdpbkZvcm1zLUFwcGxpY2F0aW9uLUNzIH19e1xmbGRyc2x0e2h0dHBzOi8vd3d3LmNvZGVwcm9qZWN0LmNvbS9BcnRpY2xlcy8zNjQyNzIvRWFzaWx5LUFkZC1hLVJpYmJvbi1pbnRvLWEtV2luRm9ybXMtQXBwbGljYXRpb24tQ3NcdWwwXGNmMH19fX1cZjBcZnMxNlxwYXINCg0KXHBhcmRcd2lkY3RscGFyICBccGFyDQpcYlxmczI0IEF1dGhvclxiMFxmczE2XHBhcg0KDQpccGFyZFx3aWRjdGxwYXJcbGk3MjAgIFxwYXINCldyaXR0ZW4gYnkgUm9iZXJ0IE1hcnNoYWxsLCBFbnRlcnByaXNlIE1vYmlsaXR5IE1WUCwgdXNpbmcgQyMgYW5kIFZpc3VhbCBTdHVkaW8gMjAxNS5ccGFyDQpccGFyDQpUaGUgc291cmNlIGZvciB0aGlzIHByb2plY3QgY2FuIGJlIGZvdW5kIG9uIEdpdEh1YiBoZXJlOiB7e1xmaWVsZHtcKlxmbGRpbnN0e0hZUEVSTElOSyBodHRwczovL2dpdGh1Yi5jb20vUm9iVUsxMDEvTG9nTGF1bmNoZXIgfX17XGZsZHJzbHR7aHR0cHM6Ly9naXRodWIuY29tL1JvYlVLMTAxL0xvZ0xhdW5jaGVyXHVsMFxjZjB9fX19XGYwXGZzMTZccGFyDQpccGFyDQp7XGYxXGZzMjJ7XGZpZWxke1wqXGZsZGluc3R7SFlQRVJMSU5LICJodHRwOi8vd3d3LnNtc21hcnNoYWxsLmNvbSIgfX17XGZsZHJzbHR7XHVsXGNmMVxjZjJcdWxcZjBcZnMxNiBTTVNNYXJzaGFsbCBMdGR9fX19XGYwXGZzMTYgIFxlbmRhc2ggIExhc3QgcmV2aXNpb24gZGF0ZSA6IEZlYnJ1YXJ5IDIwMTdccGFyDQoNClxwYXJkXHNhMjAwXHNsMjc2XHNsbXVsdDFcZjJcZnMyMlxsYW5nOVxwYXINCn0NCgA=";
 
         // Images used to populate the Ribbon
 
@@ -59,6 +52,8 @@ namespace LogLauncher
         public const string imagetextshowLogs = "iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QITDyMGdTZc/wAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAFE0lEQVRIx5XUy28bxx0H8O889r1cUlxRoizJomTLsQO7MQoFCBAE8C23tkBvyX/YS29FLjHsAklRt2iDIEEsWarkNLEefIjc9+zOzvRgyqAlU0l/wO+wh9/MYD7zXba9/d7HGxtbH+U1TUUWWQC8OW3tfPDg96/OklOg8gF493q9leWNrbv90+N85+HOp92bvR3LZKJ7Y/O9+1tbjwa1GpVJbHPXIkdRoncn/Z9GABjm1P310Fm4sf7skb9gxZU2ZJUW8eRsuGq1xcrmJtZ6689H5wP2r8OjF4927mZP/v7F1wZgAtDctcxA8+Y5AA6AzNskGQy1quqmMu2YFSnxFwImyshSWri+52mRF7ZjmBkAkhaTEoBRvV6P0Cir42+/+XIAQANQ8zrVqGspIynrXKGsnj5+cmrJqiTgUVXVhJv8LJucDgGQ/vlzMT2bAqBouBC8P/2g13UvADdN44FhuWsGo4sAwLzGAmds03Mcr5TyY+UvLAMA5+Fbs7SW1eR3f/hjCEBc1w+XUFqWLVzHE42gEQGoGg1fOI4j/MDPm36zr73lEwDyg/fbdHaWtdphHbb9oLt2e/U3t2+t7R7sn0592Gyf00W7EbYzmR+fHPdrsrG+7A/OBonJnezg5b7I86Ik0MmrH49qyqjRH0b1xSx1LDssBCFECVLoup7iX7kuPRlorVlLMa/luW7guY7PbWYrXbeCVsvZvt0zyzKhAAinhM/OcsJYNk7qrBOQKoorNQP2Vl3Aa8YKRjVqpakpspK4PNI1jOOzU3F4mlYAdC5kObsGZZSur4TGnXFqbjZbzifzHsEbeIYuCOtxxrq8ETQ5Y5vcNr2loPWgs7jgAUC3E/izN0JtyxIwWunWcjMmlIvpU54L32h4wrKc3PO8tBG8hvcaQSoZrW/evCUByE47EADKN/Cu69a2bYrRKMot8JPdg734MvosfDLuD+NURvH4bDIcRaXJnezFwQ9ifWVVHZ0Mz4c/H16B557rhZU2RNMjBAazL67xsskFPLV8zSvmOm5TFnU+UbpuhZ2lVCrFzGp8GX66GGV5rRBTSmRR5piX/DfwYAWjOquVlqbISgIeyVqTUmST/47Ly/AKgOKOobsyjf0//+3ZE6QJphm5UhfwCtVRSViLM1byRqA4YzcM2xo5trPdXWymk0MU3U7g7/3nVX7xL+SEBsQ06xJpUuKaergEcmLZgpumkBVyz+YFiC8c6gjPcNOG3yw2G+1y9x9fzcIDAJjfsMpwaT26t72xdfvudu/F3v6r6xL/Lvj9o33hGrwcjOP09KeX8gq86/iLRVmXnsVklRblzPv+9fBhmFqW7agswrvguaY0VbWW0DW3bbv85cTrnDGqldLcLF8nXkrFGWXncZzU70o8twjbLuJk9+mXj/cAgFLKlVJz4QHruFJJW3HaZ36z4oytWbY1ogbuec3VZ8D3+RV407Umi+F65/ONz5ZTFa+83B1+9e/vvh7Oh9eTsmrBd2RlsFw61BGO6WauGyTf/+VPPwPAFXjXdeuwyaofB5nwbFo8/evjQwDGNfCjOJVRNJv4/V2x2O4YBwcv+gDYOxNfVGZp64RBmyYAexrIXw3fWVpKa11dYOsriSeMZXFaxg3XHifJeHj3zo73/ya+kopIJc8vDnc58ZRTttoIgi3L5LdcL/jw+d4/R1Owt/pOCGZZ5n2Tk2VQftPgvGM0FwKD857p2I5tOr+dbqJvLDe92dn/ATnHCFTuK/xiAAAAAElFTkSuQmCC";
         public const string imagesupportCenter = "iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QITDyIckU+UxAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAACb0lEQVRIx92WTWtTQRSGn5OPRtpYG7Fpgx/VCi5EqagoFHGnuOk/8me48T+4c+9eFIK0IIImVKNWhbRpPm+a5Lh5r4yXm5B1B4bJzJ1z3nnfc85M4LQ0CyfuXgZeAEfq34CfQAP4aGatNCfujpnNDXIXeAZ8AM4Bq8A6cAl4AETAb6AJdIAe8B04BKpm9jYNJJeY39DJF/VtAPwCToAdIANc1noP6AN5rTfdfdvMxkmQTGK+IcMxMFEfA23gj5iM5HgFuCimWeAgDSCNyQXgLPBOzkcCGgH7YhhKHcsdAV+mxSTJZF3OV4GheqSxJpa9YOwBxzpIfRpIksmS9D6v2BjgAv4MbGlfVj0jwKJiNxvE3dfkuCfjrGTKqB8qs/IJkGNgGTiYh8mmaqMtefJiFevuStcl2cUgcXLU5gEpS9dWEA8Pvk9UlCsBSE7JMDSzxjwgy8Ca1o4k2wA4I7CygLuBXFnZNd29EtSMA/vxLWBBTG4DdyTbFaVzSwFvA8+BgqQZJ2ppAiwEazlgw8z6SSa7ZrYrwAxQCgC3grjEbUFzD9bjGOXDvf/qJHHBTSTLfeCJ7q6ejDvAe6mQlbOBeswomlUncSsArzQuaJ9r/kMsu7ooY4Zfgcfa001lkmg3db0UlLIlnXysNL4HVIFPct4IKv91UMTTQcysCrzRdV8IEqSuGPWVutv6HQG3gJfAQx0m/T1JPkLufh14Kgc7wB7wSPJFsq/rIBXJV1L8Ns1sOBUk7cVz95qCWwlAsjq1S5WR1obA1RgkN/Nt/j/jisC1INCLge7JVD4JCdi8fwbcvSgnFoyznvWOmTmnqv0FrErc7uTAReoAAAAASUVORK5CYII=";
         public const string imagesfindTracer = "iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QITFDIuAymbhAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAACcUlEQVRIx73VT4iVVRgG8N+9jv/SQSW6NIqoVKYurO5KCEVpIYQZhP9ol7oIIgpUqk2iSCi4aJUomtSipeBCU4QgmtICNyWMWTORqDNNlMWoME7d26Jn4PMy3flGyBcO53znO+95zvu8z3lPxb9WxWQTs+GyCzvSL8JruF3Cp4ppOIj+MiCV9GtwGluySTt7FPtwDZvwAxplwFZjoGT0C/ApVsZnVYGRtnQVo3oIs9EcI+qb8ZmOL7AW5/E6jpUBKUb1Fv5umZ+MvbiChzOu4gMcnSjIDXzWwvNolNfxG3ZlbiSHebMsXaP2Oy6Grkr629lsRnLQGWX9lPX9EwVZhG3ZdCin/RnPRYWtdgKHCgcqBXIT38bhApbjQP79iVuYFDpn46W0AXw4noR/ybiGFXgcOwLWRC9eRT3rV2BPqBpdUy8Lsh5f4gUMxnko92IJnsFTaYuxNZQ2k6NKGbquhucLeCRzp/B0Ihlp8X8l9NYxH3MihrYgw1lUK8z14CS+G0PaPyZPEk1HmUjmRUmfF+Y25f68UbikzQC+jccyN1QAHPee9OCJnP5FLEu5WZvc/ZVKPBfv5mDwFe6UARlMPqo4nmQ/ifexDudy4lqku7zFt5S6nsfZVNrdeBmXCkpr1wZS1+6xSekXYmMeommh40r6WfgI36e8/Joa1pvyU8NldGFmfL7B3XbvyZRIt9i6Wl7GzsL3duxEdyGi91IN7slJJY71jBv/obpK1NUIWDUq7M7FPJNK8E7+7ccfHYV69TU2jHVjW6y1CDbQl7q2GZ/g2bxJfTgyuuHU0DLV/dlIKgUszSMGH+Ow/8mWpD04+weEqqkBm7+YiAAAAABJRU5ErkJggg==";
+
+        // Sayings
 
         private static readonly List<string> c_Sayings = new List<string>()
         {
@@ -139,41 +134,68 @@ namespace LogLauncher
             "A broken clock is right twice a day"
         };
 
+        // LogItem collection used to store logs that are discovered during a scan
+
         private logitemCollection globallogitemCollection = new logitemCollection();
+
+        // Hint collection used to store the hints defined in the array logHints
 
         private logdescriptionItemCollection globallogdescriptionItemCollection = new logdescriptionItemCollection();
 
+        // The path to the Tracer used when launching logs
+
         private string TracerPath = null;
+
+        // Allow for disabling treeview code execution, used when updating the treeview during a scan
 
         private bool disabletreeView = false;        
 
+        // Trigger for stopping the monitoring background worker thread
+
         private bool switches_monitorLogs = false;
+
+        // Monitoring thread observation
 
         public bool switches_threadRunning = false;
 
+        // Trigger for stopping the SCCM/ConfigMgr Site and Client logging thread
+
         public bool switches_logging_threadRunning = false;
 
+        // Switch for hiding archive logs (filemask *.lo_)
+
         private bool switches_hide_archiveLogs = false;
+
+        // Switch for controlling whether multople logs are opened in individual tracers or passed to the tracer to merge\multi
+
         private bool switches_open_multipleLogs = true;
 
+        // Constants
+
+        private const string c_productVersion = "V3.1 - Robert Marshall";
+        private const string logfileExtension = "*.lo*";
+        public static readonly string[] c_colourWheel = { "FF2D3AF7", "FF3E4AF7", "FF4F5AF7", "FF606BF7", "FF7C84F7", "FF9299F7", "FFC6C9F7", "FFDFE0F7", "FFE6E7F5" };
         private const string c_archiveLog = "Archive Log";
         private const string c_activeLog = "Active Log";
-
         private const string c_activelog_Extension = ".log";
-
         private const string c_archivelog_Extension = ".lo_";
-
         private const string c_Notification = "Notification";
         private const string c_Diagnostic = "Diagnostic";
 
-        private List<string> logpathHistory = new List<string>();
+        // Monitoring delay in seconds
 
         private int throttleDelay = 0;
 
+        // Scan thread observation
+
         private bool switches_scan_threadRunning = false;
+
+        // Gradient start and end colours
 
         private Color gradientcolourStart = new Color();
         private Color gradientcolourEnd = new Color();
+
+        // Switches for SCCM Site and SCCM Client detection
 
         private bool siteserverDetected = false;
 
@@ -188,6 +210,14 @@ namespace LogLauncher
         // Configuration Manager Support Center path
 
         public static string supportcenterPath = "";
+
+        // Search keypress last event date
+
+        private DateTime searchkeypressLast;
+
+        // Search string
+
+        private string searchkeypressText;
 
         public class servicecycleMessage
         {
@@ -884,7 +914,6 @@ namespace LogLauncher
 
                 newRow.Visible = true;
 
-
                 // Check if this log has an associated log hint
 
                 string alogdescriptionIndex = globallogdescriptionItemCollection.Contains(cleanedlogName);
@@ -1218,7 +1247,11 @@ namespace LogLauncher
         }
 
         private logitemCollection fetchLogs(combinedconfigCollection acombinedconfigCollection, logitemCollection existinglogitemCollection, object sender)
-        {            
+        {
+            // Log path history
+
+            List<string> logpathHistory = new List<string>();
+
             try
             {
                 foreach (combinedConfig acombinedConfig in acombinedconfigCollection)
@@ -1243,7 +1276,7 @@ namespace LogLauncher
                         if (acombinedConfig.abladeConfig is xmlbladeConfig) // Handle the XML Blade - Note that I don't deal with XML in an orthodox way, I do it Conan style, brute force using pattern matching
                         {
                             axmlbladeConfig = (xmlbladeConfig)acombinedConfig.abladeConfig;
-                            
+
                             object systembootDrive = getregkeyValue(acontrolConfig.remoteServer, "HKEY_LOCAL_MACHINE", @"Software\Microsoft\Windows\CurrentVersion\Setup", "BootDir");
 
                             var configfileContent = File.ReadLines(axmlbladeConfig.configfilePath);
@@ -1320,7 +1353,7 @@ namespace LogLauncher
                                     }
                                 }
                             }
-                        } // Epic nesting!
+                        }
 
                         if (acombinedConfig.abladeConfig is custombladeConfig) // Handle the custom Blade
                         {
@@ -1330,11 +1363,11 @@ namespace LogLauncher
                             {
                                 if (acustombladeConfig.logPath != "" || acustombladeConfig.logPath != null)
                                 {
-                                    fetchedlogLocations.Add(@"\\" + acontrolConfig.remoteServer + @"\" + acustombladeConfig.logPath.Substring(0, 1) + @"$\" + acustombladeConfig.logPath.Substring(3, acustombladeConfig.logPath.Length - 3)); // ????
+                                    fetchedlogLocations.Add(@"\\" + acontrolConfig.remoteServer + @"\" + acustombladeConfig.logPath);
                                 }
                             }
                             else
-                            {                                
+                            {
                                 fetchedlogLocations.Add(acustombladeConfig.logPath);
                             }
                         }
@@ -1375,13 +1408,22 @@ namespace LogLauncher
                             else
                             {
                                 dispatchMessage(c_Notification, "Fetching " + acontrolConfig.logClass + " logs for product " + acontrolConfig.logProduct, sender);
-                            }                          
+                            }
 
                             // Apply functions defined in Control
 
                             if (acontrolConfig.pathFilter != "")
                             {
-                                fetchedlogLocation = fetchedlogLocation.ToLower().Replace(acontrolConfig.pathFilter.ToLower(), "");
+                                try
+                                {
+                                    var pathfilterArray = acontrolConfig.pathFilter.Split('|');
+
+                                    fetchedlogLocation = fetchedlogLocation.ToLower().Replace(pathfilterArray[0], pathfilterArray[1]);
+                                }
+                                catch (Exception ee)
+                                {
+                                    diagnosticMessage("Error handling custom location - " + ee.Message);
+                                }
                             }
 
                             if (fetchedlogLocation.EndsWith(@"\"))
@@ -1494,8 +1536,6 @@ namespace LogLauncher
             }
 
             logitemCollection alogitemCollection = new logitemCollection();
-
-            logpathHistory.Clear();
 
             // Prepare the collections
 
@@ -2388,9 +2428,9 @@ namespace LogLauncher
                         acontrolConfig.logClass = splitElements[4];
                         acontrolConfig.logProduct = splitElements[3];
                         acontrolConfig.pathAppend = @"";
-                        acontrolConfig.pathFilter = "";
+                        acontrolConfig.pathFilter = ":|$";
                         acontrolConfig.recurseDirectory = Convert.ToBoolean(splitElements[2]);
-
+                        
                         acustombladeConfig.logPath = splitElements[0];                        
 
                         acombinedConfig.acontrolConfig = acontrolConfig;
@@ -2952,7 +2992,10 @@ namespace LogLauncher
 
             try
             {
-                dgv_Logs.Sort(this.dgv_Logs.Columns["dgv_c_lastWritten"], ListSortDirection.Descending);
+                if (rcc_sortbyModified.Checked)
+                {
+                    dgv_Logs.Sort(this.dgv_Logs.Columns["dgv_c_lastWritten"], ListSortDirection.Descending);
+                }                
             }
             catch (Exception)
             {
@@ -3071,80 +3114,7 @@ namespace LogLauncher
         private void dgv_Logs_DoubleClick(object sender, EventArgs e)
         { 
                 launchLogs(dgv_Logs.SelectedRows);
-        }
-
-        private void dgv_Logs_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyData == Keys.Enter)
-            {
-                launchLogs(dgv_Logs.SelectedRows);
-
-                e.Handled = true;
-            }
-
-            if (!e.Handled && (e.KeyValue >= 65 && e.KeyValue <= 90)) // Higher than or equal too 'a' and lower than or equal too 'z'
-            {
-                bool foundaSelection = false;
-
-                // Store currently selected Rows
-
-                int currentIndex = 0;
-
-                foreach (DataGridViewRow adgvRow in dgv_Logs.SelectedRows)
-                {
-                    currentIndex = adgvRow.Index;
-
-                    break;
-                }
-
-                try
-                {
-                    foreach (DataGridViewRow adgvRow in dgv_Logs.Rows)
-                    {
-                        if (!foundaSelection)
-                        {
-                            if (adgvRow.Cells["dgv_c_logName"].Value.ToString().ToLower().StartsWith(e.KeyCode.ToString().ToLower()))
-                            {
-                                adgvRow.Selected = true;
-
-                                dgv_Logs.FirstDisplayedScrollingRowIndex = adgvRow.Index;
-
-                                foundaSelection = true;
-
-                                e.Handled = true;
-                            }
-                            else
-                            {
-                                adgvRow.Selected = false;
-                            }
-                        }
-                        else
-                        {
-                            adgvRow.Selected = false;
-                        }
-                    }
-                }
-                catch (Exception ee)
-                {
-                    diagnosticMessage("Error during Logs datagrid meddling - " + ee.Message);
-                }
-
-                if (!e.Handled) // Handle not finding a selection
-                {
-                    foreach (DataGridViewRow adgvRow in dgv_Logs.Rows)
-                    {
-                        if (adgvRow.Index == currentIndex)
-                        {
-                            adgvRow.Selected = true;
-
-                            dgv_Logs.FirstDisplayedScrollingRowIndex = currentIndex;
-                        }
-                    }
-
-                    e.Handled = true;
-                }                        
-            }      
-        }
+        }       
 
         private void tv_Logs_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -3193,8 +3163,6 @@ namespace LogLauncher
                         tvNode.BackColor = tv_Logs.BackColor;
                     }
                 }
-
-
             }
             catch (Exception)
             {
@@ -3782,15 +3750,14 @@ namespace LogLauncher
                 else
                 {
                     rb_scanLogs.Enabled = true; // Re-enable the Scan Logs button since we didn't succeed in connecting to the device
+
+                    notificationMessage("Destination does not respond");
+
+                    diagnosticMessage("Destination does not respond");
                 }
-
-                notificationMessage("Destination does not respond");
-
-                diagnosticMessage("Destination does not respond");
             }
             catch (Exception)
             {
-
 
             }
         }
@@ -3882,7 +3849,7 @@ namespace LogLauncher
                 dgv_Logs.ResumeLayout();
             }
 
-            notificationMessage("Monitoring logs for " + alogItem.logClass + @" \ " + alogItem.logProduct + " " + suffixRowsPayload.suffixText);
+            notificationMessage("Monitoring logs for " + alogItem.logProduct + @" \ " + alogItem.logClass + " " + suffixRowsPayload.suffixText);
         }
 
         private void bw_monitor_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -3904,6 +3871,21 @@ namespace LogLauncher
                     switches_threadRunning = false;
 
                     diagnosticMessage("Stopped monitoring logs thread");
+
+                    foreach (TreeNode tvNode in this.tv_Logs.Nodes)
+                    {
+                        foreach (TreeNode tvnodeCategory in tvNode.Nodes)
+                        {
+                            foreach (TreeNode tvnodeProduct in tvnodeCategory.Nodes)
+                            {
+                                tvnodeProduct.ForeColor = Color.Black;
+                            }
+
+                            tvnodeCategory.ForeColor = Color.Black;
+                        }
+
+                        tvNode.ForeColor = Color.Black;
+                    }
 
                     // globallogitemCollection = updategloballogstateData(globallogitemCollection, (logitemCollection)e.Result);
                 }
@@ -4031,13 +4013,16 @@ namespace LogLauncher
                     }
                 }
 
-                try // Sort the DGV on last modified
+                if (rcc_sortbyModified.Checked)
                 {
-                    this.dgv_Logs.Sort(this.dgv_c_lastWritten, ListSortDirection.Descending);
-                }
-                catch (Exception)
-                {
+                    try // Sort the DGV on last modified
+                    {
+                        this.dgv_Logs.Sort(this.dgv_c_lastWritten, ListSortDirection.Descending);
+                    }
+                    catch (Exception)
+                    {
 
+                    }
                 }
             }
             catch (Exception)
@@ -4529,25 +4514,25 @@ namespace LogLauncher
 
         private void rb_scanLogs_Click(object sender, EventArgs e)
         { 
-            rb_scanLogs.Enabled = false;
-
-            panel_customLocations.Visible = false;
-            panel_Logs.Visible = true;
-            panel_Logging.Visible = false;
-            panel_Help.Visible = false;
-            panel_Diagnostics.Visible = false;            
-
-            dgv_Logging.Rows.Clear();
-
             try
             {
                 if (!switches_scan_threadRunning && !switches_threadRunning)
                 {
+                    rb_scanLogs.Enabled = false;
+
+                    panel_customLocations.Visible = false;
+                    panel_Logs.Visible = true;
+                    panel_Logging.Visible = false;
+                    panel_Help.Visible = false;
+                    panel_Diagnostics.Visible = false;
+
+                    dgv_Logging.Rows.Clear();
+
                     // Check if destination exists, query a basic Windows Operating System registry key
 
                     notificationMessage("Checking destination is ready for us");
 
-                    initiatedeviceScan(deviceName);                    
+                    initiatedeviceScan(deviceName);                                        
                 }
                 else
                 {
@@ -4669,6 +4654,10 @@ namespace LogLauncher
                         {
 
                         }
+
+                        // Change selected treeview node foreground color to show it is being monitored
+
+                        this.tv_Logs.SelectedNode.ForeColor = Color.Green;
 
                         // Refresh the stale state data for the rows in dgv_Logs - Monitoring might be initiated by the user a while after opening, making logs in view stale
 
@@ -4861,28 +4850,28 @@ namespace LogLauncher
                                 {
                                     DataGridViewRow newRow = (DataGridViewRow)dgv_customLocations.Rows[0].Clone();
 
-                                    newRow.Cells["c_cust_customLocation"].Value = splitElements[0];
-                                    newRow.Cells["c_cust_fileMask"].Value = splitElements[1];
-                                    newRow.Cells["c_cust_recurseFolder"].Value = splitElements[2];
-                                    newRow.Cells["c_cust_logClass"].Value = splitElements[3];
-                                    newRow.Cells["c_cust_logProduct"].Value = splitElements[4];
+                                    newRow.Cells[0].Value = splitElements[0];
+                                    newRow.Cells[1].Value = splitElements[1];
+                                    newRow.Cells[2].Value = splitElements[2];
+                                    newRow.Cells[3].Value = splitElements[3];
+                                    newRow.Cells[4].Value = splitElements[4];
 
                                     newRow.Visible = true;
 
                                     dgv_customLocations.Rows.Add(newRow);
                                 }
                             }
-                            catch (Exception) // Handle this being the first row in the DGV by creating a new row
+                            catch (Exception ee) // Handle this being the first row in the DGV by creating a new row
                             {                                
                                 if (splitElements.Count() == 5)
                                 {
-                                    dgv_customLocations.Rows.Add("", "", "", "","");
-
+                                    dgv_customLocations.Rows.Add();
+                                    
                                     DataGridViewRow newRow = (DataGridViewRow)dgv_customLocations.Rows[0].Clone();
 
                                     dgv_customLocations.Rows.Clear();
 
-                                    newRow.Cells[0].Value = splitElements[0];
+                                    newRow.Cells[0].Value = splitElements[0];                                    
                                     newRow.Cells[1].Value = splitElements[1];
                                     newRow.Cells[2].Value = splitElements[2];
                                     newRow.Cells[3].Value = splitElements[3];
@@ -4995,6 +4984,8 @@ namespace LogLauncher
                     {
 
                     }
+
+                    // ***
 
                     renderlocationsDGV();
                 }
@@ -5208,6 +5199,60 @@ namespace LogLauncher
         private void ribbon1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void dgv_Logs_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (DateTime.Now - searchkeypressLast > new TimeSpan(0, 0, 1)) // Check if the last keypress time has expired
+                {
+                    searchkeypressText = e.KeyChar.ToString();
+                }
+                else // Expired, so build up the search string
+                {
+                    searchkeypressText += e.KeyChar.ToString();
+                }
+
+                searchkeypressLast = DateTime.Now;
+
+                // Search the DGV for the string
+
+                int searchRow = 0;
+
+                bool searchfoundrowSwitch = false;
+
+                for (int i = 0; i < Convert.ToInt16(dgv_Logs.Rows.Count); i++)
+                {
+                    if (dgv_Logs.Rows[i].Cells["dgv_c_logName"].Value.ToString().StartsWith(searchkeypressText))
+                    {
+                        searchRow = i;
+                        searchfoundrowSwitch = true;
+                        break;
+                    }
+                }
+
+                if (searchfoundrowSwitch) // We have a match
+                {
+                    foreach (DataGridViewRow adgvRow in dgv_Logs.Rows)
+                    {
+                        adgvRow.Selected = false;
+                    }
+
+                    dgv_Logs.FirstDisplayedScrollingRowIndex = searchRow;
+
+                    dgv_Logs.Rows[searchRow].Selected = true;
+                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Error during Logs datagrid searching - " + ee.Message);
+            }
+        }
+
+        private void ribbonOrbMenuItem5_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
