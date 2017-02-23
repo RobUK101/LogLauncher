@@ -59,5 +59,15 @@ namespace LogLauncher.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] System_Windows_Forms_Ribbon35 {
+            get {
+                object obj = ResourceManager.GetObject("System_Windows_Forms_Ribbon35", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

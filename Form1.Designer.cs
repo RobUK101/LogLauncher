@@ -97,11 +97,11 @@
             this.rb_openLogs = new System.Windows.Forms.RibbonButton();
             this.rb_refreshLogs = new System.Windows.Forms.RibbonButton();
             this.ribbonPanel6 = new System.Windows.Forms.RibbonPanel();
-            this.rb_Logging = new System.Windows.Forms.RibbonButton();
-            this.rb_supportCenter = new System.Windows.Forms.RibbonButton();
             this.rb_showLogs = new System.Windows.Forms.RibbonButton();
             this.rb_customPaths = new System.Windows.Forms.RibbonButton();
+            this.rb_Logging = new System.Windows.Forms.RibbonButton();
             this.rb_debugWindow = new System.Windows.Forms.RibbonButton();
+            this.rb_supportCenter = new System.Windows.Forms.RibbonButton();
             this.rb_Help = new System.Windows.Forms.RibbonButton();
             this.rt_Monitoring = new System.Windows.Forms.RibbonTab();
             this.ribbonPanel3 = new System.Windows.Forms.RibbonPanel();
@@ -111,8 +111,6 @@
             this.ribbonSeparator4 = new System.Windows.Forms.RibbonSeparator();
             this.rcc_Newest = new System.Windows.Forms.RibbonColorChooser();
             this.rcc_Oldest = new System.Windows.Forms.RibbonColorChooser();
-            this.ribbonSeparator8 = new System.Windows.Forms.RibbonSeparator();
-            this.rcc_sortbyModified = new System.Windows.Forms.RibbonCheckBox();
             this.rt_Trace = new System.Windows.Forms.RibbonTab();
             this.ribbonPanel7 = new System.Windows.Forms.RibbonPanel();
             this.rtb_tracerPath = new System.Windows.Forms.RibbonTextBox();
@@ -161,6 +159,7 @@
             this.ribbonSeparator5 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator6 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator7 = new System.Windows.Forms.RibbonSeparator();
+            this.rcc_sortbyModified = new System.Windows.Forms.RibbonCheckBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -822,12 +821,14 @@
             // ribbonPanel2
             // 
             this.ribbonPanel2.Items.Add(this.rcb_hidearchiveLogs);
+            this.ribbonPanel2.Items.Add(this.rcc_sortbyModified);
             this.ribbonPanel2.Text = "";
             // 
             // rcb_hidearchiveLogs
             // 
             this.rcb_hidearchiveLogs.Checked = true;
             this.rcb_hidearchiveLogs.Text = "Hide Archive Logs";
+            this.rcb_hidearchiveLogs.ToolTip = "Hide logs ending in lo_, usually know as archive log files";
             this.rcb_hidearchiveLogs.CheckBoxCheckChanged += new System.EventHandler(this.rcb_hidearchiveLogs_CheckBoxCheckChanged);
             // 
             // ribbonPanel4
@@ -864,27 +865,6 @@
             this.ribbonPanel6.Items.Add(this.rb_Help);
             this.ribbonPanel6.Text = "";
             // 
-            // rb_Logging
-            // 
-            this.rb_Logging.Image = ((System.Drawing.Image)(resources.GetObject("rb_Logging.Image")));
-            this.rb_Logging.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_Logging.SmallImage")));
-            this.rb_Logging.Text = "Logging";
-            this.rb_Logging.ToolTip = "Change Site and Client log settings";
-            this.rb_Logging.ToolTipTitle = "Log Settings";
-            this.rb_Logging.Value = "Logging";
-            this.rb_Logging.Visible = false;
-            this.rb_Logging.Click += new System.EventHandler(this.rb_Logging_Click);
-            // 
-            // rb_supportCenter
-            // 
-            this.rb_supportCenter.Image = ((System.Drawing.Image)(resources.GetObject("rb_supportCenter.Image")));
-            this.rb_supportCenter.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_supportCenter.SmallImage")));
-            this.rb_supportCenter.Text = "CMSC";
-            this.rb_supportCenter.ToolTip = "Open Support Center";
-            this.rb_supportCenter.ToolTipTitle = "Configuration Manager Support Center";
-            this.rb_supportCenter.Visible = false;
-            this.rb_supportCenter.Click += new System.EventHandler(this.rb_supportCenter_Click);
-            // 
             // rb_showLogs
             // 
             this.rb_showLogs.Image = ((System.Drawing.Image)(resources.GetObject("rb_showLogs.Image")));
@@ -904,6 +884,17 @@
             this.rb_customPaths.ToolTipTitle = "Show Custom Locations";
             this.rb_customPaths.Click += new System.EventHandler(this.rb_customPaths_Click);
             // 
+            // rb_Logging
+            // 
+            this.rb_Logging.Image = ((System.Drawing.Image)(resources.GetObject("rb_Logging.Image")));
+            this.rb_Logging.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_Logging.SmallImage")));
+            this.rb_Logging.Text = "Logging";
+            this.rb_Logging.ToolTip = "Change Site and Client log settings";
+            this.rb_Logging.ToolTipTitle = "Log Settings";
+            this.rb_Logging.Value = "Logging";
+            this.rb_Logging.Visible = false;
+            this.rb_Logging.Click += new System.EventHandler(this.rb_Logging_Click);
+            // 
             // rb_debugWindow
             // 
             this.rb_debugWindow.Image = ((System.Drawing.Image)(resources.GetObject("rb_debugWindow.Image")));
@@ -912,6 +903,16 @@
             this.rb_debugWindow.ToolTip = "Show the Debug Window";
             this.rb_debugWindow.ToolTipTitle = "Debugging";
             this.rb_debugWindow.Click += new System.EventHandler(this.rb_debugWindow_Click);
+            // 
+            // rb_supportCenter
+            // 
+            this.rb_supportCenter.Image = ((System.Drawing.Image)(resources.GetObject("rb_supportCenter.Image")));
+            this.rb_supportCenter.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_supportCenter.SmallImage")));
+            this.rb_supportCenter.Text = "CMSC";
+            this.rb_supportCenter.ToolTip = "Open Support Center";
+            this.rb_supportCenter.ToolTipTitle = "Configuration Manager Support Center";
+            this.rb_supportCenter.Visible = false;
+            this.rb_supportCenter.Click += new System.EventHandler(this.rb_supportCenter_Click);
             // 
             // rb_Help
             // 
@@ -936,8 +937,6 @@
             this.ribbonPanel3.Items.Add(this.ribbonSeparator4);
             this.ribbonPanel3.Items.Add(this.rcc_Newest);
             this.ribbonPanel3.Items.Add(this.rcc_Oldest);
-            this.ribbonPanel3.Items.Add(this.ribbonSeparator8);
-            this.ribbonPanel3.Items.Add(this.rcc_sortbyModified);
             this.ribbonPanel3.Text = "";
             // 
             // rb_Monitor
@@ -953,6 +952,7 @@
             this.rup_Duration.Text = "Refresh every (seconds) ";
             this.rup_Duration.TextBoxText = "5";
             this.rup_Duration.TextBoxWidth = 50;
+            this.rup_Duration.ToolTip = "The frequency of monitoring in seconds";
             this.rup_Duration.Value = "5";
             this.rup_Duration.UpButtonClicked += new System.Windows.Forms.MouseEventHandler(this.rup_Duration_UpButtonClicked);
             this.rup_Duration.DownButtonClicked += new System.Windows.Forms.MouseEventHandler(this.rup_Duration_DownButtonClicked);
@@ -964,6 +964,7 @@
             this.rcc_Newest.Image = ((System.Drawing.Image)(resources.GetObject("rcc_Newest.Image")));
             this.rcc_Newest.SmallImage = ((System.Drawing.Image)(resources.GetObject("rcc_Newest.SmallImage")));
             this.rcc_Newest.Text = "Newest";
+            this.rcc_Newest.ToolTip = "The color to mark most recently modified files";
             this.rcc_Newest.Click += new System.EventHandler(this.rcc_Newest_Click);
             // 
             // rcc_Oldest
@@ -972,12 +973,9 @@
             this.rcc_Oldest.Image = ((System.Drawing.Image)(resources.GetObject("rcc_Oldest.Image")));
             this.rcc_Oldest.SmallImage = ((System.Drawing.Image)(resources.GetObject("rcc_Oldest.SmallImage")));
             this.rcc_Oldest.Text = "Oldest";
+            this.rcc_Oldest.ToolTip = "The color to mark logs that have been modified in this monitoring session, but ha" +
+    "ve not been modified since";
             this.rcc_Oldest.Click += new System.EventHandler(this.rcc_Oldest_Click);
-            // 
-            // rcc_sortbyModified
-            // 
-            this.rcc_sortbyModified.Checked = true;
-            this.rcc_sortbyModified.Text = "Automatically sort Logs";
             // 
             // rt_Trace
             // 
@@ -996,12 +994,14 @@
             this.rtb_tracerPath.Text = "Path";
             this.rtb_tracerPath.TextBoxText = "";
             this.rtb_tracerPath.TextBoxWidth = 400;
+            this.rtb_tracerPath.ToolTip = "The full path to your chosen Tracer tool";
             // 
             // rb_tracerFind
             // 
             this.rb_tracerFind.Image = ((System.Drawing.Image)(resources.GetObject("rb_tracerFind.Image")));
             this.rb_tracerFind.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_tracerFind.SmallImage")));
             this.rb_tracerFind.Text = "Find";
+            this.rb_tracerFind.ToolTip = "Find a Tracer to use when opening Logs";
             this.rb_tracerFind.Value = "...";
             this.rb_tracerFind.Click += new System.EventHandler(this.rb_tracerFind_Click);
             // 
@@ -1013,8 +1013,9 @@
             // rcb_MultiMerge
             // 
             this.rcb_MultiMerge.Text = "Merge\\Multiple";
-            this.rcb_MultiMerge.ToolTip = "Open multiple log files in Trace as either merged, if supported, or as multiple w" +
-    "indows";
+            this.rcb_MultiMerge.ToolTip = "Open multiple log files in your chosen tracer, merged if supported, or as multipl" +
+    "e windows (Note there is no automation for Merge in CMTrace but there is in CMLo" +
+    "gViewer)";
             this.rcb_MultiMerge.CheckBoxCheckChanged += new System.EventHandler(this.rcb_MultiMerge_CheckBoxCheckChanged);
             // 
             // ribbonOrbRecentItem1
@@ -1380,13 +1381,19 @@
             this.ribbonOrbMenuItem4.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem4.SmallImage")));
             this.ribbonOrbMenuItem4.Text = "ribbonOrbMenuItem4";
             // 
+            // rcc_sortbyModified
+            // 
+            this.rcc_sortbyModified.Checked = true;
+            this.rcc_sortbyModified.Text = "Auto Sort Logs";
+            this.rcc_sortbyModified.ToolTip = "Sort logs on last modified date";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(903, 618);
-            this.Controls.Add(this.panel_customLocations);
             this.Controls.Add(this.panel_Logs);
+            this.Controls.Add(this.panel_customLocations);
             this.Controls.Add(this.panel_Help);
             this.Controls.Add(this.panel_Diagnostics);
             this.Controls.Add(this.ribbon1);
@@ -1559,10 +1566,9 @@
         private System.Windows.Forms.RibbonSeparator ribbonSeparator5;
         private System.Windows.Forms.RibbonSeparator ribbonSeparator6;
         private System.Windows.Forms.RibbonSeparator ribbonSeparator7;
-        private System.Windows.Forms.RibbonSeparator ribbonSeparator8;
-        private System.Windows.Forms.RibbonCheckBox rcc_sortbyModified;
         private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem5;
         private System.Windows.Forms.RibbonOrbOptionButton ribbonOrbOptionButton1;
+        private System.Windows.Forms.RibbonCheckBox rcc_sortbyModified;
     }
 }
 
