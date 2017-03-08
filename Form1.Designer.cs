@@ -93,6 +93,7 @@
             this.rcb_remoteServer = new System.Windows.Forms.RibbonComboBox();
             this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
             this.rcb_hidearchiveLogs = new System.Windows.Forms.RibbonCheckBox();
+            this.rcc_sortbyModified = new System.Windows.Forms.RibbonCheckBox();
             this.ribbonPanel4 = new System.Windows.Forms.RibbonPanel();
             this.rb_openLogs = new System.Windows.Forms.RibbonButton();
             this.rb_refreshLogs = new System.Windows.Forms.RibbonButton();
@@ -159,7 +160,6 @@
             this.ribbonSeparator5 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator6 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator7 = new System.Windows.Forms.RibbonSeparator();
-            this.rcc_sortbyModified = new System.Windows.Forms.RibbonCheckBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -261,7 +261,7 @@
             this.dgv_Logs.TabIndex = 10;
             this.dgv_Logs.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgv_Logs_ColumnDisplayIndexChanged);
             this.dgv_Logs.DoubleClick += new System.EventHandler(this.dgv_Logs_DoubleClick);
-            this.dgv_Logs.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dgv_Logs_KeyPress);
+            this.dgv_Logs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_Logs_KeyDown);
             // 
             // dgv_c_hiddenlogName
             // 
@@ -817,6 +817,7 @@
             this.rcb_remoteServer.ToolTipTitle = "Enter a device name";
             this.rcb_remoteServer.Value = "";
             this.rcb_remoteServer.TextBoxTextChanged += new System.EventHandler(this.rcb_remoteServer_TextBoxTextChanged);
+            this.rcb_remoteServer.TextBoxValidated += new System.EventHandler(this.rcb_remoteServer_TextBoxValidated);
             // 
             // ribbonPanel2
             // 
@@ -830,6 +831,12 @@
             this.rcb_hidearchiveLogs.Text = "Hide Archive Logs";
             this.rcb_hidearchiveLogs.ToolTip = "Hide logs ending in lo_, usually know as archive log files";
             this.rcb_hidearchiveLogs.CheckBoxCheckChanged += new System.EventHandler(this.rcb_hidearchiveLogs_CheckBoxCheckChanged);
+            // 
+            // rcc_sortbyModified
+            // 
+            this.rcc_sortbyModified.Checked = true;
+            this.rcc_sortbyModified.Text = "Auto Sort Logs";
+            this.rcc_sortbyModified.ToolTip = "Sort logs on last modified date";
             // 
             // ribbonPanel4
             // 
@@ -1381,12 +1388,6 @@
             this.ribbonOrbMenuItem4.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem4.SmallImage")));
             this.ribbonOrbMenuItem4.Text = "ribbonOrbMenuItem4";
             // 
-            // rcc_sortbyModified
-            // 
-            this.rcc_sortbyModified.Checked = true;
-            this.rcc_sortbyModified.Text = "Auto Sort Logs";
-            this.rcc_sortbyModified.ToolTip = "Sort logs on last modified date";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1567,7 +1568,6 @@
         private System.Windows.Forms.RibbonSeparator ribbonSeparator6;
         private System.Windows.Forms.RibbonSeparator ribbonSeparator7;
         private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem5;
-        private System.Windows.Forms.RibbonOrbOptionButton ribbonOrbOptionButton1;
         private System.Windows.Forms.RibbonCheckBox rcc_sortbyModified;
     }
 }
