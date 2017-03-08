@@ -1,4 +1,4 @@
-﻿// Notepad++ HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Notepad++\UninstallString = d:\Program Files (x86)\Notepad++\uninstall.exe  --- notepad++.exe
+﻿// Log Launcher
 
 /// Feel free to re-use concepts and actual code from this project, attribution if you make something similiar from these here bones is all I ask
 
@@ -9,10 +9,7 @@
 // Implemented a really cool Ribbon sourced from https://www.codeproject.com/Articles/364272/Easily-Add-a-Ribbon-into-a-WinForms-Application-Cs,
 // thanks to KoglTH, toATwork, adriancs and Michael Spradlin, great work!
 
-// To compile this project you will need to have the System.Windows.Forms.Ribbon35.dll file placed in the compile folder (debug\release)
-//   Use ILMerge and ILMergeGUI to combine DLL and EXE into an EXE containing both files.
-
-// V 2.3 is not release-ready
+// To compile this project you will need to have the System.Windows.Forms.Ribbon35.dll file placed in the projects resource folder
 
 using System;
 using System.Collections.Generic;
