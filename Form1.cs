@@ -169,7 +169,7 @@ namespace LogLauncher
 
         // Constants       
 
-        private const string c_productVersion = "V3.2 - Robert Marshall";
+        private const string c_productVersion = "V3.3";
         private const string c_productTitle = "LogLauncher - " + c_productVersion;
         private const string logfileExtension = "*.lo*";
         public static readonly string[] c_colourWheel = { "FF2D3AF7", "FF3E4AF7", "FF4F5AF7", "FF606BF7", "FF7C84F7", "FF9299F7", "FFC6C9F7", "FFDFE0F7", "FFE6E7F5" };
@@ -614,10 +614,54 @@ namespace LogLauncher
                         {
                             // Set the global deviceName to the command line supplied
 
-                            deviceName = anArgument;
+                            deviceName = anArgument.ToUpper();
 
                             //return; // We'll use the first filtered element found    
                         }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void populateserverMRU()
+        {
+            // Recent servers list
+
+            try
+            {
+                if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers"))
+                {
+                    string[] recentServers = (string[])getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers");
+
+                    try
+                    {
+                        rcb_remoteServer.DropDownItems.Clear();
+
+                        foreach (string recentServer in recentServers)
+                        {
+                            RibbonTextBox aribbontextBox = new RibbonTextBox();
+
+                            aribbontextBox.TextBoxText = recentServer.ToUpper();
+                            aribbontextBox.Text = recentServer.ToUpper();
+                            aribbontextBox.Value = recentServer.ToUpper();
+
+                            aribbontextBox.AllowTextEdit = false;
+
+                            rcb_remoteServer.DropDownItems.Add(aribbontextBox);
+
+                            rcb_remoteServer.SelectedValue = recentServer.ToUpper();
+
+                            rcb_remoteServer.SelectedItem = aribbontextBox;
+                        }
+                    }
+
+                    catch (Exception)
+                    {
+
                     }
                 }
             }
@@ -669,50 +713,7 @@ namespace LogLauncher
             catch (Exception ee)
             {
                 diagnosticMessage("Could not create the LogLauncher registry keys to store your preferences - " + ee.Message);
-            }
-
-            // Recent servers list
-
-            try
-            {
-                if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "RecentServers"))
-                {
-                    string[] recentServers = (string[])getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher","RecentServers");
-
-                    try
-                    {
-                        rcb_remoteServer.DropDownItems.Clear();
-
-                        foreach (string recentServer in recentServers)
-                        {
-                            RibbonTextBox aribbontextBox = new RibbonTextBox();
-
-                            aribbontextBox.TextBoxText = recentServer;
-                            aribbontextBox.Text = recentServer;
-                            aribbontextBox.Value = recentServer;
-                                
-                            aribbontextBox.AllowTextEdit = false;                            
-
-                            rcb_remoteServer.DropDownItems.Add(aribbontextBox);
-
-                            rcb_remoteServer.SelectedValue = recentServer;
-
-                            rcb_remoteServer.SelectedItem = aribbontextBox;
-
-                            deviceName = recentServer; // This will be overridden by command line input of the device name
-                        }
-                    }
-
-                    catch (Exception )
-                    {
-
-                    }            
-                }
-            }
-            catch (Exception )
-            {
-
-            }
+            }          
 
             // Monitoring Timer Duration
 
@@ -1542,7 +1543,7 @@ namespace LogLauncher
         {
             if (remoteServer == "")
             {
-                remoteServer = System.Environment.MachineName;
+                remoteServer = System.Environment.MachineName.ToUpper();
             }
 
             logitemCollection alogitemCollection = new logitemCollection();
@@ -2524,7 +2525,7 @@ namespace LogLauncher
 
             tv_Logs.Nodes.Clear();
 
-            tv_Logs.Nodes.Add("All");
+            tv_Logs.Nodes.Add(deviceName);
             
             TreeNode parentNode = tv_Logs.Nodes[0];
 
@@ -2616,9 +2617,16 @@ namespace LogLauncher
                     }
                     else
                     {
-                        if (thelogItem.logClass == this.tv_Logs.SelectedNode.Text || this.tv_Logs.SelectedNode.Text == "All" || thelogItem.logProduct == this.tv_Logs.SelectedNode.Text)
+                        if (thelogItem.logClass == this.tv_Logs.SelectedNode.Text || this.tv_Logs.SelectedNode.Text == deviceName || thelogItem.logProduct == this.tv_Logs.SelectedNode.Text)
                         {
-                            dgvAdd(thelogItem.logProduct, thelogItem.fulllogName, thelogItem.logClass, thelogItem.LogName, thelogItem.logLocation, thelogItem.logType, thelogItem.logSize, thelogItem.loglastModified, true);
+                            if (rcc_ignoreCRASHDUMP.Checked && thelogItem.fulllogName.Contains("CRASHDUMP"))
+                            {
+
+                            }
+                            else
+                            { 
+                                dgvAdd(thelogItem.logProduct, thelogItem.fulllogName, thelogItem.logClass, thelogItem.LogName, thelogItem.logLocation, thelogItem.logType, thelogItem.logSize, thelogItem.loglastModified, true);
+                            }
                         }
                     }
                 }
@@ -2995,7 +3003,7 @@ namespace LogLauncher
 
             // Set version in status strip
 
-            toolStripStatusLabel2.Text = c_productVersion;
+            toolStripStatusLabel2.Text = c_productVersion + " by Robert Marshall EM MVP";
 
             // Handle Tracer
 
@@ -3021,6 +3029,10 @@ namespace LogLauncher
             bw.RunWorkerCompleted +=
                 new RunWorkerCompletedEventHandler(bw_scan_RunWorkerCompleted);
 
+            // Populate the Server MRU list for the deviceName combobox
+
+            populateserverMRU();
+
             // Get Command line parameter for device to connect too, if it isn't supplied then it remains empty            
 
             getcommandlineParameters(); // Placed here so that it overrides all other changes if command line is supplied
@@ -3029,22 +3041,23 @@ namespace LogLauncher
 
             if (deviceName == "" || deviceName == null)
             {
-                deviceName = System.Environment.MachineName;
+                deviceName = System.Environment.MachineName.ToUpper();
             }
 
-            // Populate the device name drop down box
+            // Check if the devicename is in the MRU list, if it is highlight it
 
-            RibbonTextBox aribbontextBox = new RibbonTextBox();
+            bool addtomRU = true;
 
-            aribbontextBox.TextBoxText = deviceName;
-            aribbontextBox.Text = deviceName;
-            aribbontextBox.Value = deviceName;           
-            aribbontextBox.AllowTextEdit = false;
-
-            if (!rcb_remoteServer.DropDownItems.Contains(aribbontextBox))
+            foreach (RibbonTextBox aRibbonTextBox in rcb_remoteServer.DropDownItems)
             {
-                rcb_remoteServer.DropDownItems.Add(aribbontextBox);
-                rcb_remoteServer.SelectedItem = aribbontextBox;
+                if (aRibbonTextBox.Text.ToLower() == deviceName.ToLower())
+                {
+                    addtomRU = false;
+
+                    rcb_remoteServer.SelectedItem = aRibbonTextBox;
+                        
+                    break;
+                }
             }
 
             bw.RunWorkerAsync(deviceName);
@@ -3281,22 +3294,23 @@ namespace LogLauncher
         {
             RibbonTextBox aribbontextBox = new RibbonTextBox();
 
-            aribbontextBox.TextBoxText = rcb_remoteServer.TextBoxText;
-            aribbontextBox.Text = rcb_remoteServer.TextBoxText;
-            aribbontextBox.Value = rcb_remoteServer.TextBoxText;
+            aribbontextBox.TextBoxText = deviceName.ToUpper();
+            aribbontextBox.Text = deviceName.ToUpper();
+            aribbontextBox.Value = deviceName.ToUpper();
 
             aribbontextBox.AllowTextEdit = false;
 
-            bool textwasFound = false;
+            bool entrywasFound = false;
 
             try
             {
-
                 foreach (RibbonTextBox aRibbonTextBox in rcb_remoteServer.DropDownItems)
                 {
-                    if (aRibbonTextBox.TextBoxText == rcb_remoteServer.TextBoxText)
+                    if (aRibbonTextBox.TextBoxText.ToLower() == rcb_remoteServer.TextBoxText.ToLower())
                     {
-                        textwasFound = true;
+                        entrywasFound = true;
+
+                        break;
                     }
                 }
             }
@@ -3305,7 +3319,7 @@ namespace LogLauncher
 
             }
 
-            if (!textwasFound && deviceName != "")
+            if (!entrywasFound && deviceName != "")
             { 
                 try
                 {
@@ -3315,6 +3329,8 @@ namespace LogLauncher
                     }
 
                     rcb_remoteServer.DropDownItems.Add(aribbontextBox);
+
+                    rcb_remoteServer.SelectedItem = aribbontextBox;
 
                     // Store recent servers back to registry
 
@@ -3664,7 +3680,7 @@ namespace LogLauncher
 
                     if (deviceName == null || deviceName == "")
                     {
-                        deviceName = System.Environment.MachineName;
+                        deviceName = System.Environment.MachineName.ToUpper();
                     }
 
                     bw.RunWorkerAsync(deviceName);
@@ -4588,7 +4604,7 @@ namespace LogLauncher
 
                     // Check if destination exists, query a basic Windows Operating System registry key
 
-                    notificationMessage("Checking destination is ready for us");
+                    notificationMessage("Checking destination is ready for us");                    
 
                     initiatedeviceScan(deviceName);
                 }
@@ -4620,9 +4636,9 @@ namespace LogLauncher
         {
             if (!switches_startupPhase)
             {
-                if (rcb_remoteServer.TextBoxText != deviceName)
+                if (rcb_remoteServer.TextBoxText.ToLower() != deviceName.ToLower())
                 {
-                    deviceName = rcb_remoteServer.TextBoxText;
+                    deviceName = rcb_remoteServer.TextBoxText.ToUpper();
                 }
             }
         }
@@ -4695,10 +4711,10 @@ namespace LogLauncher
                 {
                     bool initiateMonitoring = true;
 
-                    if (tv_Logs.SelectedNode.Text == "All")
+                    if (tv_Logs.SelectedNode.Text == deviceName)
                     {
-                        diagnosticMessage("Cannot monitor the All node, no real reason to monitor every log");
-                        notificationMessage("Cannot monitor the All node, no real reason to monitor every log");
+                        diagnosticMessage("Cannot monitor the top node, no real reason to monitor every log");
+                        notificationMessage("Cannot monitor the top node, no real reason to monitor every log");
 
                         initiateMonitoring = false;
                     }
@@ -5336,6 +5352,52 @@ namespace LogLauncher
 
                 // return;
             }
+        }
+
+        private void rcc_ignoreCRASHDUMP_Click(object sender, EventArgs e)
+        {
+            rcc_ignoreCRASHDUMP.Checked = !rcc_ignoreCRASHDUMP.Checked;
+        }
+
+        private void rcb_hidearchiveLogs_Click(object sender, EventArgs e)
+        {
+            rcb_hidearchiveLogs.Checked = !rcb_hidearchiveLogs.Checked;
+
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "HideArchiveLogs", Convert.ToString(rcb_hidearchiveLogs.Checked));
+
+            if (rcb_hidearchiveLogs.Checked)
+            {
+                switches_hide_archiveLogs = true;
+
+                dgv_Logs.Columns["dgv_c_Type"].Visible = false;
+
+                renderLogs(globallogitemCollection, true);
+            }
+            else
+            {
+                switches_hide_archiveLogs = false;
+
+                dgv_Logs.Columns["dgv_c_Type"].Visible = true;
+
+                renderLogs(globallogitemCollection, true);
+            }
+
+            notificationMessage(this.tv_Logs.SelectedNode.Text + " contains " + dgv_Logs.Rows.Count.ToString() + " objects - " + getSaying());
+        }
+
+        private void rcc_sortbyModified_Click(object sender, EventArgs e)
+        {
+            rcc_sortbyModified.Checked = !rcc_sortbyModified.Checked;
+        }
+
+        private void dgv_Logs_Click(object sender, EventArgs e)
+        {
+            ribbon1.ActiveTab = rt_Home;
+        }
+
+        private void tv_Logs_Click(object sender, EventArgs e)
+        {
+            ribbon1.ActiveTab = rt_Home;
         }
     }
 }
