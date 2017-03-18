@@ -161,6 +161,9 @@
             this.ribbonSeparator5 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator6 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator7 = new System.Windows.Forms.RibbonSeparator();
+            this.pb_snapOut = new System.Windows.Forms.PictureBox();
+            this.pb_pinSlider = new System.Windows.Forms.PictureBox();
+            this.tspb_Monitoring = new System.Windows.Forms.ToolStripProgressBar();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -186,6 +189,8 @@
             this.panel_Help.SuspendLayout();
             this.panel_customLocations.SuspendLayout();
             this.panel_Diagnostics.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_snapOut)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_pinSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // tv_Logs
@@ -197,15 +202,18 @@
             this.tv_Logs.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tv_Logs.Location = new System.Drawing.Point(3, 0);
             this.tv_Logs.Name = "tv_Logs";
-            this.tv_Logs.Size = new System.Drawing.Size(211, 500);
+            this.tv_Logs.Size = new System.Drawing.Size(194, 500);
             this.tv_Logs.TabIndex = 0;
             this.tv_Logs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv_Logs_AfterSelect);
             this.tv_Logs.Click += new System.EventHandler(this.tv_Logs_Click);
+            this.tv_Logs.MouseEnter += new System.EventHandler(this.tv_Logs_MouseEnter);
+            this.tv_Logs.MouseLeave += new System.EventHandler(this.tv_Logs_MouseLeave);
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
+            this.tspb_Monitoring,
             this.toolStripStatusLabel2});
             this.statusStrip1.Location = new System.Drawing.Point(0, 617);
             this.statusStrip1.Name = "statusStrip1";
@@ -217,7 +225,7 @@
             // 
             this.toolStripStatusLabel1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(423, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(392, 17);
             this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -225,7 +233,7 @@
             // 
             this.toolStripStatusLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(423, 17);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(392, 17);
             this.toolStripStatusLabel2.Spring = true;
             // 
             // dgv_Logs
@@ -258,10 +266,11 @@
             this.dgv_Logs.RowHeadersVisible = false;
             this.dgv_Logs.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgv_Logs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_Logs.Size = new System.Drawing.Size(704, 500);
+            this.dgv_Logs.Size = new System.Drawing.Size(721, 500);
             this.dgv_Logs.StandardTab = true;
             this.dgv_Logs.TabIndex = 10;
             this.dgv_Logs.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgv_Logs_ColumnDisplayIndexChanged);
+            this.dgv_Logs.SelectionChanged += new System.EventHandler(this.dgv_Logs_SelectionChanged);
             this.dgv_Logs.Click += new System.EventHandler(this.dgv_Logs_Click);
             this.dgv_Logs.DoubleClick += new System.EventHandler(this.dgv_Logs_DoubleClick);
             this.dgv_Logs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_Logs_KeyDown);
@@ -847,7 +856,7 @@
             // rcc_ignoreCRASHDUMP
             // 
             this.rcc_ignoreCRASHDUMP.Checked = true;
-            this.rcc_ignoreCRASHDUMP.Text = "Ignore Crashdumps";
+            this.rcc_ignoreCRASHDUMP.Text = "Skip Crashdumps";
             this.rcc_ignoreCRASHDUMP.Click += new System.EventHandler(this.rcc_ignoreCRASHDUMP_Click);
             // 
             // ribbonPanel4
@@ -1012,7 +1021,7 @@
             // 
             this.rtb_tracerPath.Text = "Path";
             this.rtb_tracerPath.TextBoxText = "";
-            this.rtb_tracerPath.TextBoxWidth = 400;
+            this.rtb_tracerPath.TextBoxWidth = 600;
             this.rtb_tracerPath.ToolTip = "The full path to your chosen Tracer tool";
             // 
             // rb_tracerFind
@@ -1109,13 +1118,15 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.pb_pinSlider);
+            this.splitContainer1.Panel1.Controls.Add(this.pb_snapOut);
             this.splitContainer1.Panel1.Controls.Add(this.tv_Logs);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgv_Logs);
             this.splitContainer1.Size = new System.Drawing.Size(931, 503);
-            this.splitContainer1.SplitterDistance = 217;
+            this.splitContainer1.SplitterDistance = 200;
             this.splitContainer1.TabIndex = 11;
             // 
             // rtb_Help
@@ -1400,6 +1411,38 @@
             this.ribbonOrbMenuItem4.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem4.SmallImage")));
             this.ribbonOrbMenuItem4.Text = "ribbonOrbMenuItem4";
             // 
+            // pb_snapOut
+            // 
+            this.pb_snapOut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.pb_snapOut.BackColor = System.Drawing.SystemColors.Info;
+            this.pb_snapOut.Location = new System.Drawing.Point(3, 0);
+            this.pb_snapOut.Name = "pb_snapOut";
+            this.pb_snapOut.Size = new System.Drawing.Size(23, 500);
+            this.pb_snapOut.TabIndex = 1;
+            this.pb_snapOut.TabStop = false;
+            this.pb_snapOut.Visible = false;
+            this.pb_snapOut.MouseEnter += new System.EventHandler(this.pb_snapOut_MouseEnter);
+            // 
+            // pb_pinSlider
+            // 
+            this.pb_pinSlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pb_pinSlider.Location = new System.Drawing.Point(181, 1);
+            this.pb_pinSlider.Name = "pb_pinSlider";
+            this.pb_pinSlider.Size = new System.Drawing.Size(15, 14);
+            this.pb_pinSlider.TabIndex = 3;
+            this.pb_pinSlider.TabStop = false;
+            this.pb_pinSlider.Click += new System.EventHandler(this.pb_Test_Click);
+            // 
+            // tspb_Monitoring
+            // 
+            this.tspb_Monitoring.Name = "tspb_Monitoring";
+            this.tspb_Monitoring.Size = new System.Drawing.Size(100, 16);
+            this.tspb_Monitoring.Step = 1;
+            this.tspb_Monitoring.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.tspb_Monitoring.ToolTipText = "Monitoring in progress ...";
+            this.tspb_Monitoring.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1446,6 +1489,8 @@
             this.panel_customLocations.ResumeLayout(false);
             this.panel_customLocations.PerformLayout();
             this.panel_Diagnostics.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pb_snapOut)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_pinSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1582,6 +1627,9 @@
         private System.Windows.Forms.RibbonOrbMenuItem ribbonOrbMenuItem5;
         private System.Windows.Forms.RibbonCheckBox rcc_sortbyModified;
         private System.Windows.Forms.RibbonCheckBox rcc_ignoreCRASHDUMP;
+        private System.Windows.Forms.PictureBox pb_snapOut;
+        private System.Windows.Forms.PictureBox pb_pinSlider;
+        private System.Windows.Forms.ToolStripProgressBar tspb_Monitoring;
     }
 }
 
