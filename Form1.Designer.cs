@@ -35,6 +35,7 @@
             this.tv_Logs = new System.Windows.Forms.TreeView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tspb_Monitoring = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.dgv_Logs = new System.Windows.Forms.DataGridView();
             this.dgv_c_hiddenlogName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -129,6 +130,8 @@
             this.ribbonOrbMenuItem2 = new System.Windows.Forms.RibbonOrbMenuItem();
             this.panel_Logs = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.pb_pinSlider = new System.Windows.Forms.PictureBox();
+            this.pb_snapOut = new System.Windows.Forms.PictureBox();
             this.rtb_Help = new System.Windows.Forms.RichTextBox();
             this.b_deleteLocation = new System.Windows.Forms.Button();
             this.b_addupdateLocation = new System.Windows.Forms.Button();
@@ -161,9 +164,6 @@
             this.ribbonSeparator5 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator6 = new System.Windows.Forms.RibbonSeparator();
             this.ribbonSeparator7 = new System.Windows.Forms.RibbonSeparator();
-            this.pb_snapOut = new System.Windows.Forms.PictureBox();
-            this.pb_pinSlider = new System.Windows.Forms.PictureBox();
-            this.tspb_Monitoring = new System.Windows.Forms.ToolStripProgressBar();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Logs)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -185,12 +185,12 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_pinSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_snapOut)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_customLocations)).BeginInit();
             this.panel_Help.SuspendLayout();
             this.panel_customLocations.SuspendLayout();
             this.panel_Diagnostics.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_snapOut)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_pinSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // tv_Logs
@@ -225,15 +225,26 @@
             // 
             this.toolStripStatusLabel1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(392, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(459, 17);
             this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tspb_Monitoring
+            // 
+            this.tspb_Monitoring.Name = "tspb_Monitoring";
+            this.tspb_Monitoring.Size = new System.Drawing.Size(100, 16);
+            this.tspb_Monitoring.Step = 1;
+            this.tspb_Monitoring.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.tspb_Monitoring.ToolTipText = "Monitoring in progress ...";
+            this.tspb_Monitoring.Visible = false;
+            this.tspb_Monitoring.Click += new System.EventHandler(this.tspb_Monitoring_Click);
+            this.tspb_Monitoring.DoubleClick += new System.EventHandler(this.tspb_Monitoring_DoubleClick);
             // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(392, 17);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(459, 17);
             this.toolStripStatusLabel2.Spring = true;
             // 
             // dgv_Logs
@@ -1129,6 +1140,29 @@
             this.splitContainer1.SplitterDistance = 200;
             this.splitContainer1.TabIndex = 11;
             // 
+            // pb_pinSlider
+            // 
+            this.pb_pinSlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pb_pinSlider.Location = new System.Drawing.Point(181, 1);
+            this.pb_pinSlider.Name = "pb_pinSlider";
+            this.pb_pinSlider.Size = new System.Drawing.Size(15, 14);
+            this.pb_pinSlider.TabIndex = 3;
+            this.pb_pinSlider.TabStop = false;
+            this.pb_pinSlider.Click += new System.EventHandler(this.pb_Test_Click);
+            // 
+            // pb_snapOut
+            // 
+            this.pb_snapOut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.pb_snapOut.BackColor = System.Drawing.SystemColors.Info;
+            this.pb_snapOut.Location = new System.Drawing.Point(3, 0);
+            this.pb_snapOut.Name = "pb_snapOut";
+            this.pb_snapOut.Size = new System.Drawing.Size(23, 500);
+            this.pb_snapOut.TabIndex = 1;
+            this.pb_snapOut.TabStop = false;
+            this.pb_snapOut.Visible = false;
+            this.pb_snapOut.MouseEnter += new System.EventHandler(this.pb_snapOut_MouseEnter);
+            // 
             // rtb_Help
             // 
             this.rtb_Help.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1411,38 +1445,6 @@
             this.ribbonOrbMenuItem4.SmallImage = ((System.Drawing.Image)(resources.GetObject("ribbonOrbMenuItem4.SmallImage")));
             this.ribbonOrbMenuItem4.Text = "ribbonOrbMenuItem4";
             // 
-            // pb_snapOut
-            // 
-            this.pb_snapOut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.pb_snapOut.BackColor = System.Drawing.SystemColors.Info;
-            this.pb_snapOut.Location = new System.Drawing.Point(3, 0);
-            this.pb_snapOut.Name = "pb_snapOut";
-            this.pb_snapOut.Size = new System.Drawing.Size(23, 500);
-            this.pb_snapOut.TabIndex = 1;
-            this.pb_snapOut.TabStop = false;
-            this.pb_snapOut.Visible = false;
-            this.pb_snapOut.MouseEnter += new System.EventHandler(this.pb_snapOut_MouseEnter);
-            // 
-            // pb_pinSlider
-            // 
-            this.pb_pinSlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pb_pinSlider.Location = new System.Drawing.Point(181, 1);
-            this.pb_pinSlider.Name = "pb_pinSlider";
-            this.pb_pinSlider.Size = new System.Drawing.Size(15, 14);
-            this.pb_pinSlider.TabIndex = 3;
-            this.pb_pinSlider.TabStop = false;
-            this.pb_pinSlider.Click += new System.EventHandler(this.pb_Test_Click);
-            // 
-            // tspb_Monitoring
-            // 
-            this.tspb_Monitoring.Name = "tspb_Monitoring";
-            this.tspb_Monitoring.Size = new System.Drawing.Size(100, 16);
-            this.tspb_Monitoring.Step = 1;
-            this.tspb_Monitoring.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.tspb_Monitoring.ToolTipText = "Monitoring in progress ...";
-            this.tspb_Monitoring.Visible = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1484,13 +1486,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pb_pinSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_snapOut)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_customLocations)).EndInit();
             this.panel_Help.ResumeLayout(false);
             this.panel_customLocations.ResumeLayout(false);
             this.panel_customLocations.PerformLayout();
             this.panel_Diagnostics.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pb_snapOut)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_pinSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
