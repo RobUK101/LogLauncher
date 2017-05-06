@@ -57,6 +57,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>Resources\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -113,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\System.Windows.Forms.Ribbon35.dll" />
+    <None Include="Resources\Ionic.Zip.dll" />
     <Content Include="SMSMarshall-Logo-256x256.ico" />
     <Content Include="SMSMarshall-Logo-clean.ico" />
     <Content Include="SMSMarshall-Logo-TRANS-256.ico" />
@@ -138,6 +142,9 @@
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>taskkill -IM "LogLauncher.vshost.exe" /F</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

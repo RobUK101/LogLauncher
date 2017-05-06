@@ -18,6 +18,8 @@ namespace LogLauncher
             try
             {
                 AppDomain.CurrentDomain.AssemblyResolve += (sender, arg) => { if (arg.Name.Contains("Ribbon")) return Assembly.Load(Properties.Resources.System_Windows_Forms_Ribbon35); return null; };
+
+                AppDomain.CurrentDomain.AssemblyResolve += (sender, arg) => { if (arg.Name.Contains("Ionic")) return Assembly.Load(Properties.Resources.Ionic_Zip); return null; };
             }
             catch (Exception)
             {

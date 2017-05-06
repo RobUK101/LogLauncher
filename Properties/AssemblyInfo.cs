@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("LogLauncher")]
-[assembly: AssemblyDescription("LogLauncher by Robert Marshall - Free for all commercial and non-commercial uses")]
+[assembly: AssemblyDescription("LogLauncher by Robert Marshall EM MVP - Free for all commercial and non-commercial uses")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SMSMarshall Ltd")]
 [assembly: AssemblyProduct("LogLauncher")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.4.0.0")]
-[assembly: AssemblyFileVersion("3.4.0.0")]
+[assembly: AssemblyVersion("3.5.0.0")]
+[assembly: AssemblyFileVersion("3.5.0.0")]

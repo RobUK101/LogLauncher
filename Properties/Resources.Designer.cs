@@ -63,6 +63,16 @@ namespace LogLauncher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Ionic_Zip {
+            get {
+                object obj = ResourceManager.GetObject("Ionic_Zip", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] System_Windows_Forms_Ribbon35 {
             get {
                 object obj = ResourceManager.GetObject("System_Windows_Forms_Ribbon35", resourceCulture);
