@@ -138,17 +138,13 @@ namespace LogLauncher
             "A broken clock is right twice a day"
         };
 
-       // Switches 
+        // Switches 
+
+        private bool afterselectDisabled = false; // Enable\Disable the treeview afterselect eventing
 
         private bool visualEffects = true; // Visual effects switch - On by default and used for the TreeView Slider effect, but will b e disabled if RDP detected
 
         private bool zipthreadRunning = false; // Switch for when Zip thread runs        
-
-        private logitemCollection globallogitemCollection = new logitemCollection(); // LogItem collection used to store logs that are discovered during a scan
-        
-        private loggingpaneldevicesCollection globalloggingpaneldevicesCollection = new loggingpaneldevicesCollection(); // Logging feature collection for devices that have client or server detected        
-
-        private logdescriptionItemCollection globallogdescriptionItemCollection = new logdescriptionItemCollection(); // Hint collection used to store the hints defined in the array logHints        
 
         private string TracerPath = null; // The path to the Tracer used when launching logs
 
@@ -178,18 +174,30 @@ namespace LogLauncher
 
         // Constants       
 
-        private const string c_productVersion = "V3.5";
+        private const string c_productVersion = "V3.6";
         private const string c_productTitle = "LogLauncher - " + c_productVersion;
         private const string logfileExtension = "*.lo*";
         public static readonly string[] c_colourWheel = { "FF2D3AF7", "FF3E4AF7", "FF4F5AF7", "FF606BF7", "FF7C84F7", "FF9299F7", "FFC6C9F7", "FFDFE0F7", "FFE6E7F5" };
         private const string c_archiveLog = "Archive Log";
         private const string c_activeLog = "Active Log";
-        private const string c_activelog_Extension = ".log";
-        private const string c_archivelog_Extension = ".lo_";
+        private const string c_activelog_Extension = ".log"; // Do not modify
+        private const string c_archivelog_Extension = ".lo_"; // Do not modify
         private const string c_Notification = "Notification";
         private const string c_Diagnostic = "Diagnostic";
 
         // Variables
+
+        private int globalfontSize = 9;
+
+        private string globalfontName = "Arial";
+
+        private logitemCollection globallogitemCollection = new logitemCollection(); // LogItem collection used to store logs that are discovered during a scan
+
+        private loggingpaneldevicesCollection globalloggingpaneldevicesCollection = new loggingpaneldevicesCollection(); // Logging feature collection for devices that have client or server detected        
+
+        private logdescriptionItemCollection globallogdescriptionItemCollection = new logdescriptionItemCollection(); // Hint collection used to store the hints defined in the array logHints        
+
+        private List<string> monitortargetList = new List<string>();
 
         private int throttleDelay = 0; // Monitoring delay in seconds
 
@@ -225,6 +233,7 @@ namespace LogLauncher
         {
             public string suffixText { get; set; }
             public logitemCollection updatedRows { get; set; }
+            public string additionalText { get; set; }
         }
 
         public class messageObject
@@ -880,6 +889,46 @@ namespace LogLauncher
 
             }
 
+            // Font
+
+            try
+            {
+                if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "Font"))
+                {
+                    globalfontName = getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "Font").ToString();
+                }
+                else
+                {
+                    globalfontName = "Arial";
+
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "Font", "Arial");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            // Font Size
+
+            try
+            {
+                if (regkeyvalueExist("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "FontSize"))
+                {
+                    globalfontSize = Convert.ToInt16(getregkeyValue("", "HKEY_CURRENT_USER", @"Software\SMSMarshall\LogLauncher", "FontSize"));
+                }
+                else
+                {
+                    globalfontSize = 9;
+
+                    updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "FontSize", "9");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
             // Hide Archive Logs
 
             try
@@ -992,6 +1041,8 @@ namespace LogLauncher
             try
             {
                 DataGridViewRow newRow = (DataGridViewRow)dgv_Logs.Rows[0].Clone();
+                
+                newRow.DefaultCellStyle.Font = new Font(globalfontName, globalfontSize, FontStyle.Regular);
 
                 newRow.Cells[0].Value = fulllogName;
                 newRow.Cells[1].Value = cleanedlogName;
@@ -1037,6 +1088,8 @@ namespace LogLauncher
                 dgv_Logs.Rows.Add(fulllogName, logClass, cleanedlogName, cmagentlogLocation, logType, logfileSize, logfileSize / 1024 / 1024, loglastModified);
 
                 DataGridViewRow newRow = (DataGridViewRow)dgv_Logs.Rows[0].Clone();
+
+                newRow.DefaultCellStyle.Font = new Font(globalfontName, globalfontSize, FontStyle.Regular);
 
                 dgv_Logs.Rows.Clear();
 
@@ -1217,9 +1270,21 @@ namespace LogLauncher
                         alogItem.logSize = thefileInfo.Length;
 
                         alogItem.loglastModified = thefileInfo.LastWriteTime;
+
+                        foreach (logItem updatelogItem in globallogitemCollection)
+                        {
+                            if (updatelogItem.fulllogName == alogItem.fulllogName)
+                            {
+                                updatelogItem.loglastModified = thefileInfo.LastWriteTime;
+
+                                updatelogItem.logSize = thefileInfo.Length;
+
+                                break;
+                            }
+                        }
                     }
                 }
-                catch (Exception ee)
+                catch (Exception ee) // File most likely no longer exists so handle the exception
                 {
                     if (ee.Message.ToString().ToLower().Contains("could not find file")) // Remove the log entry
                     {
@@ -1298,7 +1363,7 @@ namespace LogLauncher
                                         newlogItem.logProduct = alogDefinition.LogProduct;
                                     }
 
-                                    if (aFile.Name.Substring(aFile.Name.Length - 3, 3) == c_archivelog_Extension)
+                                    if (aFile.Name.Substring(aFile.Name.Length - c_archivelog_Extension.Length, c_archivelog_Extension.Length) == c_archivelog_Extension)
                                     {
                                         newlogItem.logType = "Archive Log";
                                     }
@@ -1740,7 +1805,7 @@ namespace LogLauncher
                 acontrolConfig.remoteServer = remoteServer;
                 acontrolConfig.fileextensionOverride = "";
                 acontrolConfig.fileMask = "*.lo*";
-                acontrolConfig.logClass = @"Agent\MP";
+                acontrolConfig.logClass = @"Agent-MP";
                 acontrolConfig.logProduct = "ConfigMgr";
                 acontrolConfig.pathAppend = @"";
                 acontrolConfig.pathFilter = "";
@@ -1774,7 +1839,7 @@ namespace LogLauncher
                 acontrolConfig.remoteServer = remoteServer;
                 acontrolConfig.fileextensionOverride = "";
                 acontrolConfig.fileMask = "*.lo*";
-                acontrolConfig.logClass = @"Agent\MP";
+                acontrolConfig.logClass = @"Agent-MP";
                 acontrolConfig.logProduct = "ConfigMgr";
                 acontrolConfig.pathAppend = @"Logs";
                 acontrolConfig.pathFilter = "";
@@ -2000,7 +2065,7 @@ namespace LogLauncher
                 acontrolConfig.recurseDirectory = true;
 
                 axmlbladeConfig.configfilePath = configfilePath;
-                axmlbladeConfig.searchPattern = c_activelog_Extension;
+                axmlbladeConfig.searchPattern = "log";
                 axmlbladeConfig.searchcaseSensitive = false;
                 axmlbladeConfig.searchProperty = "directory=";
 
@@ -2345,7 +2410,7 @@ namespace LogLauncher
                         acontrolConfig.disregardduplicatePath = false;
                         acontrolConfig.logClass = @"SQL Database Services";
                         acontrolConfig.logProduct = "SQL Server";
-                        acontrolConfig.pathAppend = c_activelog_Extension;
+                        acontrolConfig.pathAppend = "log";
                         acontrolConfig.pathFilter = "";
                         acontrolConfig.recurseDirectory = true;
 
@@ -2381,7 +2446,7 @@ namespace LogLauncher
                         acontrolConfig.disregardduplicatePath = true;
                         acontrolConfig.logClass = @"SQL Database Services";
                         acontrolConfig.logProduct = "SQL Server";
-                        acontrolConfig.pathAppend = c_activelog_Extension;
+                        acontrolConfig.pathAppend = "log";
                         acontrolConfig.pathFilter = "";
                         acontrolConfig.recurseDirectory = true;
 
@@ -2459,7 +2524,7 @@ namespace LogLauncher
                 acontrolConfig.disregardduplicatePath = false;
                 acontrolConfig.logClass = @"SQL Setup Logs";
                 acontrolConfig.logProduct = "SQL Server";
-                acontrolConfig.pathAppend = c_activelog_Extension;
+                acontrolConfig.pathAppend = "log";
                 acontrolConfig.pathFilter = "";
                 acontrolConfig.recurseDirectory = true;
 
@@ -2625,9 +2690,11 @@ namespace LogLauncher
             return alogitemCollection;
         }
 
-        private void buildtreeView(logitemCollection theLogs)
+        private void buildtreeView(logitemCollection theLogs, string targetDevice)
         {
-            // Helper for Site and Client detection
+        // Helper for Site and Client detection
+
+            tv_Logs.Font = new Font(globalfontName, globalfontSize, FontStyle.Regular);
 
             siteserverDetected = false;
 
@@ -2635,19 +2702,31 @@ namespace LogLauncher
 
             List<string> deviceList = new List<string>();
 
-            foreach (logItem alogItem in theLogs)
+            if (targetDevice != "")
             {
-                if (!deviceList.Contains(alogItem.logDevice)) deviceList.Add(alogItem.logDevice);
+                deviceList.Add(targetDevice);
             }
+            else
+            {
 
-            tv_Logs.BeginUpdate(); // Set treeview so that we can update it quickly
+                foreach (logItem alogItem in theLogs)
+                {
+                    if (!deviceList.Contains(alogItem.logDevice)) deviceList.Add(alogItem.logDevice);
+                }
+            }
+            
+            // tv_Logs.BeginUpdate(); // Set treeview so that we can update it quickly
 
             disabletreeView = true; // Set so other methods do not interact with the treeview
 
-            tv_Logs.Nodes.Clear();
+            if (targetDevice == "")
+            {
+                tv_Logs.Nodes.Clear();
+            }
+
 
             foreach (string deviceTarget in deviceList)
-            {                               
+            {                
                 tv_Logs.Nodes.Add(deviceTarget); // Add the device as a parent node
 
                 TreeNode lastparentNode = tv_Logs.Nodes[tv_Logs.Nodes.Count - 1];
@@ -2675,7 +2754,7 @@ namespace LogLauncher
                                         siteserverDetected = true;
                                     }
 
-                                    if (alogItem.logClass == @"Agent\MP") // Detect if a ConfigMgr Agent is being added
+                                    if (alogItem.logClass == @"Agent-MP") // Detect if a ConfigMgr Agent is being added
                                     {
                                         clientDetected = true;
                                     }
@@ -2697,18 +2776,25 @@ namespace LogLauncher
 
             }
 
-            // Find last added Parent node
+            // Find last added Parent node - Change to find the device target
 
             TreeNode atreeNode = new TreeNode();
 
             foreach (TreeNode insidatreeNode in tv_Logs.Nodes)
             {
-                atreeNode = insidatreeNode;
+                if (insidatreeNode.Text == targetDevice)
+                {
+                    insidatreeNode.ExpandAll();
+                }
+                else
+                {
+                    insidatreeNode.Collapse();
+                }
             }
 
-            tv_Logs.SelectedNode = tv_Logs.Nodes[tv_Logs.Nodes.Count - 1];
+            //tv_Logs.SelectedNode = tv_Logs.Nodes[tv_Logs.Nodes.Count - 1];
 
-            tv_Logs.SelectedNode.ExpandAll();
+            //tv_Logs.SelectedNode.ExpandAll();
 
             try
             {
@@ -2723,21 +2809,30 @@ namespace LogLauncher
                 diagnosticMessage("Logic implosion getting selected TreeView node - " + ee.Message);
             }
 
-            tv_Logs.EndUpdate();
+            //tv_Logs.EndUpdate();
 
             disabletreeView = false;
         }
 
-        private void renderLogs(bool ignoretreeView)
+        private void renderLogs(bool ignoretreeView, string targetDevice)
         {            
             dgv_Logs.Rows.Clear(); // Clear DGV rows         
 
             if (!ignoretreeView) // Build tree view
             {
-                buildtreeView(globallogitemCollection);
+                buildtreeView(globallogitemCollection, targetDevice);
             }
 
-            string deviceTarget = gettvselectednodedeviceName(); // Get the device that is being referenced in the TreeView       
+            string deviceTarget = "";
+
+            if (deviceTarget == "")
+            {
+                deviceTarget = gettvselectednodedeviceName(); // Get the device that is being referenced in the TreeView
+            }
+            else
+            {
+                deviceTarget = targetDevice;
+            }
 
             // Add the row if it meets criteria
 
@@ -2757,7 +2852,7 @@ namespace LogLauncher
                             {
                                 if (rcc_ignoreCRASHDUMP.Checked && thelogItem.fulllogName.ToLower().Contains("crashdump"))
                                 {
-                                    string dfdf = "";
+
                                 }
                                 else
                                 {
@@ -2779,6 +2874,8 @@ namespace LogLauncher
 
                 dgv_Logs.ClearSelection();
             }
+
+            
         }
 
         private void updateGradient()
@@ -3044,10 +3141,10 @@ namespace LogLauncher
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
+        {          
             // Uncomment to generate Base64 for an RTF file for the Help Panels contents
 
-            showhelpText(@"c:\TEMP\Help-Form-Contents-Compressed-V3.5.rtf");
+            // showhelpText(@"c:\TEMP\Help-Form-Contents-Compressed-V3.5.rtf");
 
             this.Text = c_productTitle; // Set the application Title text
 
@@ -3063,14 +3160,34 @@ namespace LogLauncher
 
                 rtb_Help.Rtf = System.Text.Encoding.UTF8.GetString(decodedString);
             }
-            catch (Exception)
+            catch (Exception ee)
             {
+            
+            }
+            // Populate the Font drop down box on the Ribbon (Configuration)
 
+            foreach (FontFamily font in System.Drawing.FontFamily.Families)
+            {
+                RibbonTextBox aribbontextBox = new RibbonTextBox();
+
+                aribbontextBox.TextBoxText = font.Name;
+                aribbontextBox.Value = font.Name;
+                aribbontextBox.Text = font.Name;
+
+                aribbontextBox.AllowTextEdit = false;
+
+                rcb_Fonts.DropDownItems.Add(aribbontextBox);
+
+                rcb_Fonts.SelectedItem = aribbontextBox;                
             }
 
-            // 
+            // Set dgv_Logs Font
 
-            switches_startupPhase = true; // Set startup phase switch so that methods that detect this switch hold off
+            dgv_Logs.ColumnHeadersDefaultCellStyle.Font = new Font(globalfontName, globalfontSize, FontStyle.Regular);
+
+            // Set startup phase switch so that methods that detect this switch hold off
+
+            switches_startupPhase = true; 
 
             // Convert images stored as Base64 into Bitmaps
 
@@ -3141,6 +3258,8 @@ namespace LogLauncher
 
             getloglauncherSettings(); // Get Log Launcher settings from HKCU Registry hive
 
+            ribbon1.Font = new Font(globalfontName, 8, FontStyle.Regular);
+
             updateGradient(); // Create the colour gradient palette for log monitoring
 
             throttleDelay = Convert.ToInt16(rup_Duration.Value); // Set throttle value
@@ -3204,7 +3323,11 @@ namespace LogLauncher
 
             // Start the log discovery (scan) thread
 
-            bw.RunWorkerAsync(targetDevice);
+            reportSuffixUpdatedRows outgoingcommBlock = new reportSuffixUpdatedRows();
+
+            outgoingcommBlock.additionalText = targetDevice;
+
+            bw.RunWorkerAsync(outgoingcommBlock);
         }
 
         private void launchLogs(DataGridViewSelectedRowCollection dgvRows)
@@ -3282,69 +3405,86 @@ namespace LogLauncher
 
         private void tv_Logs_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            panel_customLocations.Visible = false;
-            panel_Logs.Visible = true;
-            panel_Logging.Visible = false;
-            panel_Help.Visible = false;
-            panel_Diagnostics.Visible = false;
-
-            // Change the colour of the currently selected node
-
-            try
+            if (!afterselectDisabled)
             {
-                foreach (TreeNode tvNode in this.tv_Logs.Nodes)
+                panel_customLocations.Visible = false;
+                panel_Logs.Visible = true;
+                panel_Logging.Visible = false;
+                panel_Help.Visible = false;
+                panel_Diagnostics.Visible = false;
+
+                // Change the colour of the currently selected node
+
+                try
                 {
-                    foreach (TreeNode tvnodeCategory in tvNode.Nodes)
+                    foreach (TreeNode tvNode in this.tv_Logs.Nodes)
                     {
-                        foreach (TreeNode tvnodeProduct in tvnodeCategory.Nodes)
+                        foreach (TreeNode tvnodeCategory in tvNode.Nodes)
                         {
-                            if (tvnodeProduct == this.tv_Logs.SelectedNode)
+                            foreach (TreeNode tvnodeProduct in tvnodeCategory.Nodes)
                             {
-                                tvnodeProduct.BackColor = Color.LightBlue;
+                                if (tvnodeProduct == this.tv_Logs.SelectedNode)
+                                {
+                                    tvnodeProduct.BackColor = Color.LightBlue;
+                                }
+                                else
+                                {
+                                    tvnodeProduct.BackColor = tv_Logs.BackColor;
+                                }
+                            }
+
+                            if (tvnodeCategory == this.tv_Logs.SelectedNode)
+                            {
+                                tvnodeCategory.BackColor = Color.LightBlue;
                             }
                             else
                             {
-                                tvnodeProduct.BackColor = tv_Logs.BackColor;
+                                tvnodeCategory.BackColor = tv_Logs.BackColor;
                             }
                         }
 
-                        if (tvnodeCategory == this.tv_Logs.SelectedNode)
+                        if (tvNode == this.tv_Logs.SelectedNode)
                         {
-                            tvnodeCategory.BackColor = Color.LightBlue;
+                            tvNode.BackColor = Color.LightBlue;
                         }
                         else
                         {
-                            tvnodeCategory.BackColor = tv_Logs.BackColor;
+                            tvNode.BackColor = tv_Logs.BackColor;
                         }
                     }
-
-                    if (tvNode == this.tv_Logs.SelectedNode)
-                    {
-                        tvNode.BackColor = Color.LightBlue;
-                    }
-                    else
-                    {
-                        tvNode.BackColor = tv_Logs.BackColor;
-                    }
                 }
-            }
-            catch (Exception)
-            {
-
-            }
-
-            try
-            {
-                if (!disabletreeView)
+                catch (Exception)
                 {
-                    renderLogs(true);
+
                 }
 
-                notificationMessage(this.tv_Logs.SelectedNode.FullPath + " contains " + dgv_Logs.Rows.Count.ToString() + " objects - " + getSaying());
-            }
-            catch (Exception ee)
-            {
-                diagnosticMessage("Error during tv_Logs_afterSelect - " + ee.Message);
+                try
+                {
+                    if (!disabletreeView)
+                    {
+                        renderLogs(true, "");
+                    }
+
+                    notificationMessage(this.tv_Logs.SelectedNode.FullPath + " contains " + dgv_Logs.Rows.Count.ToString() + " objects - " + getSaying());
+                }
+                catch (Exception ee)
+                {
+                    diagnosticMessage("Error during tv_Logs_afterSelect - " + ee.Message);
+                }
+
+                // If enabled refresh the data in the selected Node so the user is always looking at current information
+
+                if (rcb_refreshnodesonClick.Checked) // Is Auto Refresh Logs turned on
+                {
+                    if (!monitortargetList.Contains(tv_Logs.SelectedNode.FullPath)) // Check if selected node is being monitored, if it is skip refreshing its data
+                    {
+                        logitemCollection tosendlogitemCollection = convertdgvtologItems(dgv_Logs.Rows);
+
+                        tosendlogitemCollection = refreshlogsinDataset(tosendlogitemCollection);
+
+                        updatedgvRows(tosendlogitemCollection, true); // Render the updated logitem Collection                    
+                    }
+                }
             }
         }
 
@@ -3658,7 +3798,7 @@ namespace LogLauncher
 
                     highlightandmovetodgvRow(this.dgv_Logging, false, "c_dgv_logging_componentName", true);
 
-                    dgv_Logs.ClearSelection(); // *** 
+                    dgv_Logs.ClearSelection();
                 }
                 catch (Exception)
                 {
@@ -3817,13 +3957,22 @@ namespace LogLauncher
 
         private void bw_scan_DoWork(object sender, DoWorkEventArgs e)
         {
+            reportSuffixUpdatedRows incommingcommBlock = (reportSuffixUpdatedRows)e.Argument;
+
+            string deviceName = incommingcommBlock.additionalText;
+
             switches_scan_threadRunning = true;
 
             try
             {
-                logitemCollection theLogs = logDiscovery(e.Argument.ToString(), sender); // Discover logs
+                logitemCollection theLogs = logDiscovery(deviceName, sender); // Discover logs
 
-                e.Result = theLogs;
+                reportSuffixUpdatedRows outgoingcommBlock = new reportSuffixUpdatedRows();
+
+                outgoingcommBlock.updatedRows = theLogs;
+                outgoingcommBlock.additionalText = deviceName;
+
+                e.Result = outgoingcommBlock; // Send to RunWorkerCompleted the device name and log collection
             }
             catch (Exception)
             {
@@ -3832,36 +3981,32 @@ namespace LogLauncher
         }
 
         private void bw_scan_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {            
-            string targetDevice = "";
-
+        {
             try
             {
-                // Store this device in the device MRU, by retrieving the device name from the supplied recordset if one was returned
+                // Store this device in the device MRU
 
-                foreach (logItem templogItem in (logitemCollection)e.Result)
-                {
-                    targetDevice = templogItem.logDevice;
+                reportSuffixUpdatedRows incommingcommBlock = (reportSuffixUpdatedRows)e.Result;
 
-                    storedevicenameMRU(targetDevice);
+                string targetDevice = incommingcommBlock.additionalText;
 
-                    diagnosticMessage("Device scanned: " + targetDevice);
+                storedevicenameMRU(targetDevice);
 
-                    break;
-                }
+                diagnosticMessage("Device scanned: " + targetDevice);
 
                 if (e.Cancelled == false)
                 {
-                    logitemCollection thelogitemCollection = (logitemCollection)e.Result;
+                    logitemCollection thelogitemCollection = incommingcommBlock.updatedRows;
 
                     foreach (logItem alogItem in thelogitemCollection) // Add the log scan results to the global logs collection
                     {
                         globallogitemCollection.Add(alogItem);
                     }
 
-                    renderLogs(false);
+                    renderLogs(false, targetDevice);
 
-                    notificationMessage(thelogitemCollection.Count.ToString() + " logs added, total logs " + globallogitemCollection.Count.ToString() + " - " + getSaying()); }
+                    notificationMessage(thelogitemCollection.Count.ToString() + " logs added, total logs " + globallogitemCollection.Count.ToString() + " - " + getSaying());
+                }
 
                 if (siteserverDetected) // Populate dgv_Logging
                 {
@@ -3899,7 +4044,7 @@ namespace LogLauncher
 
                 highlightandmovetodgvRow(dgv_Logs, false, "dgv_c_lastWritten", true);
 
-                dgv_Logs.ClearSelection(); // *** 
+                dgv_Logs.ClearSelection();
             }
             catch (Exception ee)
             {
@@ -4059,7 +4204,11 @@ namespace LogLauncher
                     bw.RunWorkerCompleted +=
                         new RunWorkerCompletedEventHandler(bw_scan_RunWorkerCompleted);
 
-                    bw.RunWorkerAsync(e.Result);
+                    reportSuffixUpdatedRows outgoingcommBlock = new reportSuffixUpdatedRows();                    
+
+                    outgoingcommBlock.additionalText = e.Result.ToString();
+
+                    bw.RunWorkerAsync(outgoingcommBlock);
                 }
                 else
                 {
@@ -4080,7 +4229,11 @@ namespace LogLauncher
         {
             try
             {
-                logitemCollection thelogItems = (logitemCollection)e.Argument;
+                reportSuffixUpdatedRows initialPayload = (reportSuffixUpdatedRows)e.Argument;                
+
+                logitemCollection thelogItems = initialPayload.updatedRows;
+
+                string navpanelfullPath = initialPayload.additionalText;
 
                 switches_threadRunning = true;
 
@@ -4118,6 +4271,8 @@ namespace LogLauncher
 
                         suffixRowsPayload.updatedRows = thelogItems;
 
+                        suffixRowsPayload.additionalText = navpanelfullPath;
+
                         worker.ReportProgress(0, suffixRowsPayload);
 
                         for (int i = 1; i < throttleDelay; i++)
@@ -4150,17 +4305,14 @@ namespace LogLauncher
 
             logitemCollection thelogItems = (logitemCollection)suffixRowsPayload.updatedRows; // Obtain updated logitem Collection
 
-            logItem alogItem = thelogItems.Item(0);
+            string navpanefullPath = suffixRowsPayload.additionalText; // Obtain the navigation pane node being monitored
 
-            if (gettvselectednodedeviceName() == alogItem.logDevice)
+            if (navpanefullPath == tv_Logs.SelectedNode.FullPath)
             {
-                if (this.tv_Logs.SelectedNode.Text == alogItem.logClass)
-                {
-                    updatedgvRows(thelogItems); // Render the updated logitem Collection                
-                }
+                updatedgvRows(thelogItems, false); // Render the updated logitem Collection                
             }
 
-            notificationMessage("Monitoring logs " + alogItem.logDevice + @"\" + alogItem.logProduct + @"\" + alogItem.logClass + " " + suffixRowsPayload.suffixText, Color.Red);
+            notificationMessage("Monitoring logs " + suffixRowsPayload.additionalText + " " + suffixRowsPayload.suffixText, Color.Red);
         }
 
         private void bw_monitor_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -4285,7 +4437,7 @@ namespace LogLauncher
             }
         }
 
-        private void updatedgvRows(logitemCollection alogitemCollection)
+        private void updatedgvRows(logitemCollection alogitemCollection, bool noColour)
         {
             dgv_Logs.SuspendLayout();
 
@@ -4301,6 +4453,8 @@ namespace LogLauncher
                     {
                         DataGridViewRow newRow = (DataGridViewRow)dgv_Logs.Rows[0].Clone();
 
+                        newRow.DefaultCellStyle.Font = new Font(globalfontName, globalfontSize, FontStyle.Regular);
+
                         newRow.Cells[0].Value = verifylogItem.fulllogName;
                         newRow.Cells[1].Value = verifylogItem.LogName;
                         newRow.Cells[2].Value = verifylogItem.logClass;
@@ -4315,7 +4469,7 @@ namespace LogLauncher
 
                         newRow.Visible = true;
 
-                        if (verifylogItem.fulllogName.Substring(verifylogItem.fulllogName.Length - 3, 3) == c_archivelog_Extension && rcb_hidearchiveLogs.Checked)
+                        if (verifylogItem.fulllogName.Substring(verifylogItem.fulllogName.Length - c_archivelog_Extension.Length, c_archivelog_Extension.Length) == c_archivelog_Extension && rcb_hidearchiveLogs.Checked)
                         {
 
                         }
@@ -4363,23 +4517,29 @@ namespace LogLauncher
                                 aRow.Cells["dgv_c_logsizeMB"].Value = alogItem.logSize / 1024 / 1024;
                                 aRow.Cells["dgv_c_lastWritten"].Value = alogItem.loglastModified;
 
-                                aRow.DefaultCellStyle.BackColor = colourList[0];
+                                if (!noColour)
+                                {
+                                    aRow.DefaultCellStyle.BackColor = colourList[0];
+                                }
                             }
                             else // Row needs to be colour cycled since the log hasn't been updated
                             {
-                                for (int i = 0; i < colourList.Count; i++)
+                                if (!noColour)
                                 {
-                                    if (aRow.DefaultCellStyle.BackColor.Name.ToLower() == colourList[i].Name.ToLower())
+                                    for (int i = 0; i < colourList.Count; i++)
                                     {
-                                        if (i < colourList.Count - 1)
+                                        if (aRow.DefaultCellStyle.BackColor.Name.ToLower() == colourList[i].Name.ToLower())
                                         {
-                                            aRow.DefaultCellStyle.BackColor = colourList[i + 1];
+                                            if (i < colourList.Count - 1)
+                                            {
+                                                aRow.DefaultCellStyle.BackColor = colourList[i + 1];
 
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            break;
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
                                         }
                                     }
                                 }
@@ -4940,8 +5100,112 @@ namespace LogLauncher
             bw.RunWorkerAsync(targetDevice);
         }
 
+        private void removedevicefromGlobal(string deviceName)
+        {
+            //try
+            //{
+                List<int> removalList = new List<int>();
+
+                foreach (logItem alogItem in globallogitemCollection)
+                {
+                    string finaldeviceName = "";
+
+                    if (alogItem.logDevice == null) // Try and get the device name from the full log path if that isn't null as well
+                    {
+                        if (!alogItem.fulllogName.Equals(null))
+                        {
+                        string chopping = alogItem.fulllogName.Substring(2, alogItem.fulllogName.Length - 2);                        
+
+                        finaldeviceName = chopping.Substring(0, chopping.IndexOf(@"\"));
+                        }
+                    }
+                    else
+                    {
+                        finaldeviceName = alogItem.logDevice;
+                    }
+
+                    if (finaldeviceName.ToUpper() == deviceName.ToUpper())
+                    {
+                        if (alogItem.fulllogName.Equals(null))
+                        {
+                            string sds = "";
+                        }
+                        removalList.Add(Convert.ToInt16(globallogitemCollection.Contains(alogItem.fulllogName)));
+                    }
+                }
+
+                removalList.Reverse();
+
+                foreach (int anInt in removalList)
+                {
+                    globallogitemCollection.Remove(anInt);
+                }
+            //}
+            //catch (Exception ee)
+            //{
+            //    string wewew = "2l";
+            //}
+        }
+
+        private void removedevicefromnnavigationPanel(string deviceName)
+        {
+            tv_Logs.BeginUpdate();
+            
+            foreach (TreeNode mainNodes in tv_Logs.Nodes)
+            {
+                if (mainNodes.Text.ToUpper() == deviceName.ToUpper())
+                {
+                    try
+                    {
+                        foreach (TreeNode achildNode in mainNodes.Nodes)
+                        {
+                            foreach (TreeNode anotherchildNode in achildNode.Nodes)
+                            {
+                                try
+                                {
+                                    anotherchildNode.Remove();
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                            }
+
+                            try
+                            {
+                                achildNode.Remove();
+                            }
+                            catch (Exception)
+                            {
+
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                    try
+                    {
+                        mainNodes.Remove();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                    break;
+                }
+            }
+
+            tv_Logs.EndUpdate();
+        }
+
         private void scanLogs(string devicescanTarget)
         {
+            afterselectDisabled = true; // Disable tv_Logs afterSelect event
+
             // Check if this device has already been scanned
 
             bool alreadyExists = false;
@@ -4953,53 +5217,68 @@ namespace LogLauncher
 
             if (alreadyExists)
             {
-                notificationMessage("Device has already been scanned, ignoring");
+                // Remove the data for this device from the Global dataset
+
+                notificationMessage("Purging scan data for this device");
+
+                removedevicefromGlobal(devicescanTarget);                
+
+                removedevicefromnnavigationPanel(devicescanTarget);              
+
+                notificationMessage("Device scan data purged");
             }
-            else
+
+            afterselectDisabled = false; // Enable tv_Logs afterSelect event
+
+            try
             {
-                try
+                if (!switches_scan_threadRunning && !switches_threadRunning)
                 {
-                    if (!switches_scan_threadRunning && !switches_threadRunning)
+                    rb_scanLogs.Enabled = false;
+
+                    panel_customLocations.Visible = false;
+                    panel_Logs.Visible = true;
+                    panel_Logging.Visible = false;
+                    panel_Help.Visible = false;
+                    panel_Diagnostics.Visible = false;
+
+                    dgv_Logs.Rows.Clear();
+
+                    // Check if destination exists, query a basic Windows Operating System registry key
+
+                    notificationMessage("Checking destination is ready for us");
+
+                    initiatedeviceScan(devicescanTarget);
+                }
+                else
+                {
+                    if (switches_scan_threadRunning)
                     {
-                        rb_scanLogs.Enabled = false;
-
-                        panel_customLocations.Visible = false;
-                        panel_Logs.Visible = true;
-                        panel_Logging.Visible = false;
-                        panel_Help.Visible = false;
-                        panel_Diagnostics.Visible = false;
-
-                        dgv_Logs.Rows.Clear();
-
-                        // Check if destination exists, query a basic Windows Operating System registry key
-
-                        notificationMessage("Checking destination is ready for us");
-
-                        initiatedeviceScan(devicescanTarget);
+                        diagnosticMessage("Scan thread is already running");
                     }
-                    else
-                    {
-                        if (switches_scan_threadRunning)
-                        {
-                            diagnosticMessage("Scan thread is already running");
-                        }
 
-                        if (switches_threadRunning)
-                        {
-                            diagnosticMessage("Turn off monitoring before scanning for logs again");
-                        }
+                    if (switches_threadRunning)
+                    {
+                        diagnosticMessage("Turn off monitoring before scanning for logs again");
                     }
                 }
-                catch (Exception ee)
-                {
-                    diagnosticMessage("Error during scanning of logs - " + ee.Message);
-                }
+            }
+            catch (Exception ee)
+            {
+                diagnosticMessage("Error during scanning of logs - " + ee.Message);
             }
         }
 
         private void rb_scanLogs_Click(object sender, EventArgs e)
         {
-            scanLogs(rcb_remoteServer.TextBoxText.ToUpper());
+            if (!switches_threadRunning)
+            {
+                scanLogs(rcb_remoteServer.TextBoxText.ToUpper());
+            }
+            else
+            {
+                notificationMessage("Stop Monitoring feature to Scan another device");
+            }
         }
 
         private void rcb_remoteServer_TextBoxTextChanged(object sender, EventArgs e)
@@ -5053,7 +5332,7 @@ namespace LogLauncher
 
                 dgv_Logs.Columns["dgv_c_Type"].Visible = false;
 
-                renderLogs(true);
+                renderLogs(true, "");
             }
             else
             {
@@ -5061,7 +5340,7 @@ namespace LogLauncher
 
                 dgv_Logs.Columns["dgv_c_Type"].Visible = true;
 
-                renderLogs(true);
+                renderLogs(true, "");
             }
 
             notificationMessage(this.tv_Logs.SelectedNode.Text + " contains " + dgv_Logs.Rows.Count.ToString() + " objects - " + getSaying());
@@ -5077,8 +5356,9 @@ namespace LogLauncher
                 {
                     if (!tv_Logs.SelectedNode.FullPath.Contains(@"\"))
                     {
-                        diagnosticMessage("Cannot monitor this node, no real reason to monitor every log");
-                        notificationMessage("Cannot monitor this node, no real reason to monitor every log");
+                        diagnosticMessage("Cannot monitor node " + tv_Logs.SelectedNode.Text + ", no real reason to monitor every log");
+
+                        notificationMessage("Cannot monitor node " + tv_Logs.SelectedNode.Text + ", no real reason to monitor every log");
                     }
                     else
                     {
@@ -5123,7 +5403,15 @@ namespace LogLauncher
 
                         logitemCollection tosendlogitemCollection = retrievelogsfromGlobal(tv_Logs.SelectedNode.Text, deviceTarget);
 
-                        bw.RunWorkerAsync(tosendlogitemCollection);
+                        reportSuffixUpdatedRows initialPayload = new reportSuffixUpdatedRows();
+
+                        initialPayload.updatedRows = tosendlogitemCollection;
+
+                        initialPayload.additionalText = tv_Logs.SelectedNode.FullPath;
+
+                        bw.RunWorkerAsync(initialPayload);
+
+                        monitortargetList.Add(tv_Logs.SelectedNode.FullPath); // Add this device to the global monitor list
 
                         diagnosticMessage("Monitoring thread started");
 
@@ -5134,6 +5422,8 @@ namespace LogLauncher
                 }
                 else // Thread must be running, the user is asking us to stop it
                 {
+                    monitortargetList.Remove(tv_Logs.SelectedNode.FullPath); // Remove this device from the global monitor list
+
                     switches_monitorLogs = false;
 
                     diagnosticMessage("Closing thread");
@@ -5154,15 +5444,19 @@ namespace LogLauncher
             beginMonitoring();
         }
 
-        private void rb_refreshLogs_Click(object sender, EventArgs e)
+        private void refreshLogs() /// Only call run from UI thread
         {
             if (!switches_scan_threadRunning && !switches_threadRunning)
             {
+                notificationMessage("Refreshing logs in current view");
+                
                 logitemCollection tosendlogitemCollection = convertdgvtologItems(dgv_Logs.Rows);
 
                 tosendlogitemCollection = refreshlogsinDataset(tosendlogitemCollection);
 
-                updatedgvRows(tosendlogitemCollection); // Render the updated logitem Collection
+                updatedgvRows(tosendlogitemCollection, true); // Render the updated logitem Collection
+
+                notificationMessage("Refreshed logs in current view");
             }
             else
             {
@@ -5176,6 +5470,11 @@ namespace LogLauncher
                     diagnosticMessage("Turn off monitoring before refreshing the view");
                 }
             }
+        }
+
+        private void rb_refreshLogs_Click(object sender, EventArgs e)
+        {
+            refreshLogs();
         }
 
         private void rb_openLogs_Click(object sender, EventArgs e)
@@ -5737,52 +6036,59 @@ namespace LogLauncher
 
         private void dgv_Logs_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyData != Keys.Enter)
+            if (e.KeyData != Keys.Enter) // Check if non-Enter key pressed
             {
-                try
+                if (e.KeyData == Keys.F5)
                 {
-                    if (DateTime.Now - searchkeypressLast > new TimeSpan(0, 0, 1)) // Check if the last keypress time has expired
-                    {
-                        searchkeypressText = e.KeyData.ToString().ToLower();
-                    }
-                    else // Expired, so build up the search string
-                    {
-                        searchkeypressText += e.KeyData.ToString().ToLower();
-                    }
-
-                    searchkeypressLast = DateTime.Now;
-
-                    // Search the DGV for the string
-
-                    int searchRow = 0;
-
-                    bool searchfoundrowSwitch = false;
-
-                    for (int i = 0; i < Convert.ToInt16(dgv_Logs.Rows.Count); i++)
-                    {
-                        if (dgv_Logs.Rows[i].Cells["dgv_c_logName"].Value.ToString().ToLower().StartsWith(searchkeypressText))
-                        {
-                            searchRow = i;
-                            searchfoundrowSwitch = true;
-                            break;
-                        }
-                    }
-
-                    if (searchfoundrowSwitch) // We have a match
-                    {
-                        foreach (DataGridViewRow adgvRow in dgv_Logs.Rows)
-                        {
-                            adgvRow.Selected = false;
-                        }
-
-                        dgv_Logs.FirstDisplayedScrollingRowIndex = searchRow;
-
-                        dgv_Logs.Rows[searchRow].Selected = true;
-                    }
+                    refreshLogs();
                 }
-                catch (Exception ee)
+                else
                 {
-                    diagnosticMessage("Error during Logs datagrid searching - " + ee.Message);
+                    try
+                    {
+                        if (DateTime.Now - searchkeypressLast > new TimeSpan(0, 0, 1)) // Check if the last keypress time has expired
+                        {
+                            searchkeypressText = e.KeyData.ToString().ToLower();
+                        }
+                        else // Expired, so build up the search string
+                        {
+                            searchkeypressText += e.KeyData.ToString().ToLower();
+                        }
+
+                        searchkeypressLast = DateTime.Now;
+
+                        // Search the DGV for the string
+
+                        int searchRow = 0;
+
+                        bool searchfoundrowSwitch = false;
+
+                        for (int i = 0; i < Convert.ToInt16(dgv_Logs.Rows.Count); i++)
+                        {
+                            if (dgv_Logs.Rows[i].Cells["dgv_c_logName"].Value.ToString().ToLower().StartsWith(searchkeypressText))
+                            {
+                                searchRow = i;
+                                searchfoundrowSwitch = true;
+                                break;
+                            }
+                        }
+
+                        if (searchfoundrowSwitch) // We have a match
+                        {
+                            foreach (DataGridViewRow adgvRow in dgv_Logs.Rows)
+                            {
+                                adgvRow.Selected = false;
+                            }
+
+                            dgv_Logs.FirstDisplayedScrollingRowIndex = searchRow;
+
+                            dgv_Logs.Rows[searchRow].Selected = true;
+                        }
+                    }
+                    catch (Exception ee)
+                    {
+                        diagnosticMessage("Error during Logs datagrid searching - " + ee.Message);
+                    }
                 }
             }
             else // Enter was pressed, so handle log opening (triyng to work out how to stop the row skip in the dgv_Logs dgv
@@ -5814,7 +6120,7 @@ namespace LogLauncher
 
                 dgv_Logs.Columns["dgv_c_Type"].Visible = false;
 
-                renderLogs(true);
+                renderLogs(true, "");
             }
             else
             {
@@ -5822,7 +6128,7 @@ namespace LogLauncher
 
                 dgv_Logs.Columns["dgv_c_Type"].Visible = true;
 
-                renderLogs(true);
+                renderLogs(true, "");
             }
 
             notificationMessage(this.tv_Logs.SelectedNode.Text + " contains " + dgv_Logs.Rows.Count.ToString() + " objects - " + getSaying());
@@ -6186,6 +6492,56 @@ namespace LogLauncher
         private void tsmi_monitorNode_Click(object sender, EventArgs e)
         {
             beginMonitoring();
+        }
+
+        private void rcb_refreshnodesonClick_Click(object sender, EventArgs e)
+        {
+            rcb_refreshnodesonClick.Checked = !rcb_refreshnodesonClick.Checked;
+        }
+
+        private void tv_Logs_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.F5)
+            {
+                refreshLogs();
+            }
+        }
+
+        private void rcb_Fonts_DropDownItemClicked(object sender, RibbonItemEventArgs e)
+        {
+            rcb_Fonts.SelectedItem = e.Item;
+
+            globalfontName = e.Item.Text;
+
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "Font", Convert.ToString(e.Item.Text));          
+        }
+
+        private void rup_fontSize_DownButtonClicked(object sender, MouseEventArgs e)
+        {
+            if (Convert.ToInt16(rup_fontSize.Value) > 8 )
+            {
+                rup_fontSize.Value = (Convert.ToInt16(rup_fontSize.Value) - 1).ToString(); ;
+
+                rup_fontSize.TextBoxText = rup_fontSize.Value;
+            }
+
+            globalfontSize = Convert.ToInt16(rup_fontSize.Value);
+
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "FontSize", Convert.ToString(globalfontSize));
+        }
+
+        private void rup_fontSize_UpButtonClicked(object sender, MouseEventArgs e)
+        {
+            if (Convert.ToInt16(rup_fontSize.Value) < 15)
+            {
+                rup_fontSize.Value = (Convert.ToInt16(rup_fontSize.Value) + 1).ToString(); ;
+
+                rup_fontSize.TextBoxText = rup_fontSize.Value;
+            }
+
+            globalfontSize = Convert.ToInt16(rup_fontSize.Value);
+
+            updateloglauncherSettings(returnregistryHive("HKEY_CURRENT_USER"), "FontSize", Convert.ToString(globalfontSize));
         }
     }
 }
