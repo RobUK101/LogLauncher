@@ -283,7 +283,7 @@
             // 
             this.toolStripStatusLabel1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(506, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(337, 17);
             this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -314,7 +314,7 @@
             // 
             this.toolStripStatusLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(506, 17);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(337, 17);
             this.toolStripStatusLabel2.Spring = true;
             // 
             // dgv_Logs
@@ -924,8 +924,8 @@
             // 
             this.rcb_remoteServer.Text = "Device";
             this.rcb_remoteServer.TextBoxText = "";
-            this.rcb_remoteServer.ToolTip = "Device Name";
-            this.rcb_remoteServer.ToolTipTitle = "Enter a device name";
+            this.rcb_remoteServer.ToolTip = "Enter a device name";
+            this.rcb_remoteServer.ToolTipTitle = "Device Name";
             this.rcb_remoteServer.Value = "";
             this.rcb_remoteServer.TextBoxTextChanged += new System.EventHandler(this.rcb_remoteServer_TextBoxTextChanged);
             this.rcb_remoteServer.TextBoxValidated += new System.EventHandler(this.rcb_remoteServer_TextBoxValidated);
@@ -943,6 +943,7 @@
             this.rcb_hidearchiveLogs.Checked = true;
             this.rcb_hidearchiveLogs.Text = "Hide Archive Logs";
             this.rcb_hidearchiveLogs.ToolTip = "Hide logs ending in lo_, usually know as archive log files";
+            this.rcb_hidearchiveLogs.ToolTipTitle = "Hide Archive Logs";
             this.rcb_hidearchiveLogs.CheckBoxCheckChanged += new System.EventHandler(this.rcb_hidearchiveLogs_CheckBoxCheckChanged);
             this.rcb_hidearchiveLogs.Click += new System.EventHandler(this.rcb_hidearchiveLogs_Click);
             // 
@@ -951,12 +952,15 @@
             this.rcc_sortbyModified.Checked = true;
             this.rcc_sortbyModified.Text = "Auto Sort Logs";
             this.rcc_sortbyModified.ToolTip = "Sort logs on last modified date";
+            this.rcc_sortbyModified.ToolTipTitle = "Automatically Sort Logs";
             this.rcc_sortbyModified.Click += new System.EventHandler(this.rcc_sortbyModified_Click);
             // 
             // rcc_ignoreCRASHDUMP
             // 
             this.rcc_ignoreCRASHDUMP.Checked = true;
             this.rcc_ignoreCRASHDUMP.Text = "Hide Crashdumps";
+            this.rcc_ignoreCRASHDUMP.ToolTip = "Hide from view the logs stored in any discovered SCCM CrashDump folders";
+            this.rcc_ignoreCRASHDUMP.ToolTipTitle = "Hide SCCM CrashDumps";
             this.rcc_ignoreCRASHDUMP.Click += new System.EventHandler(this.rcc_ignoreCRASHDUMP_Click);
             // 
             // rcb_refreshnodesonClick
@@ -965,7 +969,7 @@
             this.rcb_refreshnodesonClick.Text = "Auto Refresh Logs";
             this.rcb_refreshnodesonClick.ToolTip = "Refresh logs when node selected in Navigation Panel ";
             this.rcb_refreshnodesonClick.ToolTipTitle = "Refresh Logs";
-            this.rcb_refreshnodesonClick.Value = "Auto Refresh Logs";
+            this.rcb_refreshnodesonClick.Value = "Automatically Refresh Logs";
             this.rcb_refreshnodesonClick.Click += new System.EventHandler(this.rcb_refreshnodesonClick_Click);
             // 
             // ribbonPanel4
@@ -1091,7 +1095,7 @@
             this.rb_debugWindow.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_debugWindow.SmallImage")));
             this.rb_debugWindow.Text = "Info";
             this.rb_debugWindow.ToolTip = "Show the Debug Window";
-            this.rb_debugWindow.ToolTipTitle = "Debugging";
+            this.rb_debugWindow.ToolTipTitle = "Show LogLauncher Activity";
             this.rb_debugWindow.Click += new System.EventHandler(this.rb_debugWindow_Click);
             // 
             // rb_supportCenter
@@ -1135,6 +1139,7 @@
             this.rb_Monitor.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_Monitor.SmallImage")));
             this.rb_Monitor.Text = "Monitor";
             this.rb_Monitor.ToolTip = "Begin monitoring device Logs";
+            this.rb_Monitor.ToolTipTitle = "Begin Monitoring";
             this.rb_Monitor.Click += new System.EventHandler(this.rb_Monitor_Click);
             // 
             // rup_Duration
@@ -1143,6 +1148,7 @@
             this.rup_Duration.TextBoxText = "5";
             this.rup_Duration.TextBoxWidth = 50;
             this.rup_Duration.ToolTip = "The frequency of monitoring in seconds";
+            this.rup_Duration.ToolTipTitle = "Refresh Interval";
             this.rup_Duration.Value = "5";
             this.rup_Duration.UpButtonClicked += new System.Windows.Forms.MouseEventHandler(this.rup_Duration_UpButtonClicked);
             this.rup_Duration.DownButtonClicked += new System.Windows.Forms.MouseEventHandler(this.rup_Duration_DownButtonClicked);
@@ -1155,6 +1161,7 @@
             this.rcc_Newest.SmallImage = ((System.Drawing.Image)(resources.GetObject("rcc_Newest.SmallImage")));
             this.rcc_Newest.Text = "Newest";
             this.rcc_Newest.ToolTip = "The color to mark most recently modified files";
+            this.rcc_Newest.ToolTipTitle = "Newest Colour";
             this.rcc_Newest.Click += new System.EventHandler(this.rcc_Newest_Click);
             // 
             // rcc_Oldest
@@ -1165,6 +1172,7 @@
             this.rcc_Oldest.Text = "Oldest";
             this.rcc_Oldest.ToolTip = "The color to mark logs that have been modified in this monitoring session, but ha" +
     "ve not been modified since";
+            this.rcc_Oldest.ToolTipTitle = "Oldest Colour";
             this.rcc_Oldest.Click += new System.EventHandler(this.rcc_Oldest_Click);
             // 
             // rt_Trace
@@ -1187,6 +1195,7 @@
             this.rtb_tracerPath.TextBoxText = "";
             this.rtb_tracerPath.TextBoxWidth = 200;
             this.rtb_tracerPath.ToolTip = "The full path to your chosen Tracer tool";
+            this.rtb_tracerPath.ToolTipTitle = "Tracer Path";
             // 
             // rb_tracerFind
             // 
@@ -1194,6 +1203,7 @@
             this.rb_tracerFind.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_tracerFind.SmallImage")));
             this.rb_tracerFind.Text = "Find";
             this.rb_tracerFind.ToolTip = "Find a Tracer to use when opening Logs";
+            this.rb_tracerFind.ToolTipTitle = "Find Tracer";
             this.rb_tracerFind.Value = "...";
             this.rb_tracerFind.Click += new System.EventHandler(this.rb_tracerFind_Click);
             // 
@@ -1208,6 +1218,7 @@
             this.rcb_MultiMerge.ToolTip = "Open multiple log files in your chosen tracer, merged if supported, or as multipl" +
     "e windows (Note there is no automation for Merge in CMTrace but there is in CMLo" +
     "gViewer)";
+            this.rcb_MultiMerge.ToolTipTitle = "Merge\\Multiple Windows";
             this.rcb_MultiMerge.CheckBoxCheckChanged += new System.EventHandler(this.rcb_MultiMerge_CheckBoxCheckChanged);
             // 
             // ribbonPanel5
@@ -1220,6 +1231,8 @@
             // 
             this.rtb_zipoutputDirectory.Text = "ZIP Destination";
             this.rtb_zipoutputDirectory.TextBoxText = "";
+            this.rtb_zipoutputDirectory.ToolTip = "Folder to be used when zipping up Logs";
+            this.rtb_zipoutputDirectory.ToolTipTitle = "Zip Destination";
             this.rtb_zipoutputDirectory.TextBoxTextChanged += new System.EventHandler(this.rtb_zipoutputDirectory_TextBoxTextChanged);
             this.rtb_zipoutputDirectory.TextBoxValidated += new System.EventHandler(this.rtb_zipoutputDirectory_TextBoxValidated);
             // 
@@ -1228,6 +1241,8 @@
             this.rb_zipoutputdirectorySelect.Image = ((System.Drawing.Image)(resources.GetObject("rb_zipoutputdirectorySelect.Image")));
             this.rb_zipoutputdirectorySelect.SmallImage = ((System.Drawing.Image)(resources.GetObject("rb_zipoutputdirectorySelect.SmallImage")));
             this.rb_zipoutputdirectorySelect.Text = "Select";
+            this.rb_zipoutputdirectorySelect.ToolTip = "Find the ZIP folder and set as the default location for ZIP files";
+            this.rb_zipoutputdirectorySelect.ToolTipTitle = "Find ZIP Folder";
             this.rb_zipoutputdirectorySelect.Click += new System.EventHandler(this.rb_zipoutputdirectorySelect_Click);
             // 
             // ribbonPanel9
@@ -1241,6 +1256,9 @@
             this.rcb_Fonts.AllowTextEdit = false;
             this.rcb_Fonts.Text = "Font";
             this.rcb_Fonts.TextBoxText = "";
+            this.rcb_Fonts.ToolTip = "Select the font to be used by LogLauncher";
+            this.rcb_Fonts.ToolTipTitle = "Choose Font";
+            this.rcb_Fonts.Value = "Arial";
             this.rcb_Fonts.DropDownItemClicked += new System.Windows.Forms.RibbonComboBox.RibbonItemEventHandler(this.rcb_Fonts_DropDownItemClicked);
             // 
             // rup_fontSize
@@ -1249,6 +1267,8 @@
             this.rup_fontSize.Text = "Size";
             this.rup_fontSize.TextBoxText = "9";
             this.rup_fontSize.TextBoxWidth = 30;
+            this.rup_fontSize.ToolTip = "Choose the font size, limited to a range of 8 and 15";
+            this.rup_fontSize.ToolTipTitle = "Choose Font Size";
             this.rup_fontSize.Value = "9";
             this.rup_fontSize.UpButtonClicked += new System.Windows.Forms.MouseEventHandler(this.rup_fontSize_UpButtonClicked);
             this.rup_fontSize.DownButtonClicked += new System.Windows.Forms.MouseEventHandler(this.rup_fontSize_DownButtonClicked);
@@ -1647,8 +1667,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1027, 642);
-            this.Controls.Add(this.panel_Help);
             this.Controls.Add(this.panel_Logs);
+            this.Controls.Add(this.panel_Help);
             this.Controls.Add(this.panel_Logging);
             this.Controls.Add(this.panel_Diagnostics);
             this.Controls.Add(this.ribbon1);
